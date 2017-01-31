@@ -1,13 +1,14 @@
 Package: test2
 Title: Test2
 Version: 0.0.1
-Authors@R: Sam Levin levisc8@gmail creator
-	   Gudrun Carl gudrun.carl@ufz.de author of most functions
-
-Description: Wrappers that allow for easily implementation of 
-WRMs and GEEs in species distribution modeling (SDM).
-
-Depends: R (>= 3.3.1) CHECK LATER
+Authors: Sam Levin
+	 Gudrun Carl
+Maintainer: Sam Levin levisc8@gmail.com
+Description: Wrappers that allow for easily implementation of WRMs and GEEs in species distribution modeling (SDM).
+Depends: R (>= 3.0.0)
+Imports: gee,
+	 geepack,
+	 MASS
 License: FIX LATER
 Encoding: UTF-8
 LazyData: true
