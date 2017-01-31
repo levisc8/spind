@@ -1,3 +1,5 @@
+#' @export
+
 summary_gee<-function(model){
    cat("\n","Call:","\n")
    print(model$call)
