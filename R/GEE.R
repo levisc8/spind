@@ -59,8 +59,7 @@ GEE<-function(formula,family,data,coord,
   # Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
   # Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
   ###############################################################################
-  require(gee)
-  require(geepack)
+
   at<-intersect(names(data),all.vars(formula))
   if(length(at)==0) stop("formula: specified notation is missing")
   nn<-nrow(data)
@@ -243,7 +242,6 @@ qic.culc<-function(formula,data,family,mu,var.robust,var.indep.naive){
   # value:   QIC        quasi-information criterion
   #          loglik     quasi-likelihood
   ###############################################################################
-  require(MASS)
 
   X<-model.matrix(formula,data)
   if(is.vector(model.frame(formula,data)[[1]])){
