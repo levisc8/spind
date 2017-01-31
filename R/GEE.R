@@ -1,3 +1,4 @@
+#' @export
 GEE<-function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE,graph=FALSE,silent=TRUE){
