@@ -9,7 +9,7 @@ Depends: R (>= 3.0.0)
 Imports: gee,
 	 geepack,
 	 MASS
-License: FIX LATER
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.0
