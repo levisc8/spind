@@ -4,40 +4,58 @@
 #' @export
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
-              plot=FALSE,graph=FALSE,silent=TRUE){
+              plot=FALSE,silent=TRUE){
   ###############################################################################
-  #' @title  GEE (Generalized Estimating Equations).
+  #' @title  GEE (Generalized Estimating Equations)
   #' @description
   #' \code{GEE} provides a GEE-based method to account for spatial
   #' autocorrelation in multiple linear regressions
   #' @details
-  #' GEE can be used to fit linear models for response vectors of  different
-  #' distributions: "gaussian", "binomial", or "poisson". As spatial
-  #' model, it is a generalized linear model in which the residuals may be
-  #' autocorrelated. It accounts for spatial (2-dimensional) residual
-  #' autocorrelation in case of regular gridded datasets. The grid cells
+  #' GEE can be used to fit linear models for response variables with
+  #' different distributions: "gaussian", "binomial", or "poisson".
+  #' As a spatial model, it is a generalized linear model in which the residuals
+  #' may be autocorrelated. It accounts for spatial (2-dimensional) residual
+  #' autocorrelation in cases of regular gridded datasets. The grid cells
   #' are assumed to be square.
-  #' @param formula  with specified notation according to names in data frame.
-  #' @param family   "gaussian", "binomial", or "poisson".
-  #' @param  data     data frame.
-  #' @param  coord    a matrix of two columns with corresponding cartesian
+  #'
+  #' @param formula  variable names must match variables in \code{data}.
+  #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
+  #' @param data     a data frame with names that match the variables specified in \code{formula}.
+  #' @param coord    a matrix of two columns with corresponding cartesian
   #' coordinates, which have to be integer (grid cell numbering).
-  #' @param  corstr   autocorrelation structure: "independence", "fixed",
-  #'          "exchangeable", "quadratic"  are possible.
-  #'          "independence" = GLM, i.e. correlation matrix = identity matrix;
-  #'          "fixed" for best autocorrelation removal by means of an adapted
-  #'          isotropic power function specifying all correlation
-  #'          coefficients "exchangeable", "quadratic" for clustering, i.e.
-  #'          the correlation matrix has a block diagonal form:
-  #'          "exchangeable": all intra-block correlation coefficients are equal;
-  #'          "quadratic": intra-block correlation coefficients for different
+  #' @param  corstr   expected autocorrelation structure: "independence", "fixed",
+  #' "exchangeable", "quadratic"  are possible.
+  #'
+  #'  \itemize{
+  #'    \item\emph{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
+  #'
+  #'    \item\emph{fixed} for best autocorrelation removal by means of an adapted
+  #'    isotropic power function specifying all correlation
+  #'    coefficients
+  #'
+  #'    \item\emph{exchangeable} and \emph{quadratic} for clustering, i.e.
+  #'    the correlation matrix has a block diagonal form:
+  #'
+  #'    \itemize{
+  #'       \item\emph{exchangeable}: all intra-block correlation coefficients are equal
+  #'
+  #'       \item\emph{quadratic}: intra-block correlation coefficients for different
   #'          distances can be different.
-  #' @param cluster  cluster size for cluster models: "exchangeable", "quadratic".
-  #'          cluster= 2,3,4 are allowed for size 2*2,3*3,4*4, respectively.
-  #' @param  moran.params    a list of parameters for calculating Moran's I.
-  #'          This is passed to \code{wrm.moran} internally.
-  #' @param  plot     a logical value indicating whether results should be plotted.
-  #' @param graph    a logical value indicating whether results should be displayed.
+  #'          }
+  #'        }
+  #' @param cluster  cluster size for cluster models \emph{exchangeable}
+  #'  and \emph{quadratic}. values of 2, 3, and 4 are allowed
+  #'  \itemize{
+  #'    \item 2 - a 2*2 cluster
+  #'
+  #'    \item 3 - a 3*3 cluster
+  #'
+  #'    \item 4 - a 4*4 cluster
+  #'  }
+  #'
+  #' @param moran.params    a list of parameters for calculating Moran's I.
+  #' These are passed to \code{wrm.moran} internally.
+  #' @param plot    a logical value indicating whether results should be plotted.
   #' @param silent a logical value controlling whether parameter estimates are
   #' printed after each iteration
   #'
@@ -184,15 +202,12 @@ GEE <- function(formula,family,data,coord,
     QIC <- Icrit$QIC
   }
 
-  if(!plot & !graph) {ac0 <- NA; ac <- NA}
-  if(plot | graph) {
-    x <- coord[,1]
-    y <- coord[,2]
-    ac0 <- acfft(x,y,res0,lim1,lim2)
-    ac <- acfft(x,y,resid,lim1,lim2)
-  }
+  x <- coord[,1]
+  y <- coord[,2]
+  ac0 <- acfft(x,y,res0,lim1,lim2)
+  ac <- acfft(x,y,resid,lim1,lim2)
 
-  if(graph){
+  if(plot){
     y1 <- min(min(ac0),min(ac))-.1
     y2 <- max(max(ac0),max(ac))+.1
     plot(ac0,type="b",ylim=c(y1,y2),
@@ -232,7 +247,7 @@ qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   #'
   #' @description
   #' A function for calculating quasi-likelihood and Quasi-Information
-  #' Criterion values based on the method of Hardin & Hilbe.
+  #' Criterion values based on the method of Hardin & Hilbe (2003).
   #' @param  formula  with specified notation according to names in data frame
   #' @param  family   "gaussian", "binomial", or "poisson"
   #' @param  data     data frame
@@ -241,10 +256,14 @@ qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   #' @param  var.indep.naive   naive variance of b values under the
   #' "independence" model
   #'
-  #' value:   QIC        quasi-information criterion
-  #'          loglik     quasi-likelihood
+  #' @return  A list with the following components:
+  #'
+  #' \code{QIC}        quasi-information criterion
+  #'
+  #' \code{loglik}     quasi-likelihood
 
-  #'@reference QIC as defined in Hardin & Hilbe (2003).
+  #' @references  QIC as defined in Hardin & Hilbe (2003).#This is confusing, ask for original H&H paper for this section
+  #'
   #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
   ###############################################################################
 
