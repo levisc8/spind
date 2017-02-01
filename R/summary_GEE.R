@@ -1,10 +1,12 @@
 #' @export
 
-summary_gee<-function(model){
+summary_gee<-function(model,printAutoCorMat=FALSE){
 #' @title Summarize the output from\code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
 #' @param model an object of class \code{gee}
+#' @param printAutoCorMat a logical indicating whether to print the
+#' autocorrelation matrix
 #'
 #'
 #'
@@ -32,6 +34,8 @@ summary_gee<-function(model){
    print(ac0)
    cat("\n","Autocorrelation of GEE residuals","\n")
    print(acg)
+
+   if(printAutoCorMat) print(model$Mat.ac)
 }
 
 

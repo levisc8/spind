@@ -51,16 +51,40 @@ GEE <- function(formula,family,data,coord,
   #'    \item 3 - a 3*3 cluster
   #'
   #'    \item 4 - a 4*4 cluster
-  #'  }
+  #' }
   #'
   #' @param moran.params    a list of parameters for calculating Moran's I.
   #' These are passed to \code{wrm.moran} internally.
-  #' @param plot    a logical value indicating whether results should be plotted.
+  #' @param plot    a logical value indicating whether results should be
+  #' plotted.
   #' @param silent a logical value controlling whether parameter estimates are
   #' printed after each iteration
   #'
-  #' @return An object of class "gee". List components can be viewed using the
-  #' \code{summary_gee} function
+  #' @return An object of class "gee". This consists of a list with the
+  #' following elements:
+  #' \describe{
+  #'       \item{\code{call}}{call}
+  #'       \item{\code{formula}}{formula}
+  #'       \item{\code{family}}{family}
+  #'       \item{\code{b}}{estimate of regression parameters}
+  #'       \item{\code{s.e.}}{standard errors}
+  #'       \item{\code{z}}{z values (or corresponding values for statistics)}
+  #'       \item{\code{p}}{probabilities}
+  #'       \item{\code{scale}}{scale parameter (dispersion parameter)}
+  #'       \item{\code{fitted}}{fitted values}
+  #'       \item{\code{resid}}{normalized Pearson residuals}
+  #'       \item{\code{w.ac}}{working autocorrelation parameters}
+  #'       \item{\code{Mat.ac}}{working autocorrelation matrix}
+  #'       \item{\code{QIC}}{quasi-information criterion}
+  #'       \item{\code{plot}}{logical indicating whether autocorrelation should
+  #'       be plotted}
+  #'       \item{\code{ac.glm}}{autocorrelation of glm.residuals}
+  #'       \item{\code{ac.gee}}{autocorrelation of gee.residuals}
+  #' }
+  #'
+  #' Elements can be viewed using the \code{\link{summary_gee}} function included in
+  #' the package
+  #'
   #'
   #'@references
   #' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
