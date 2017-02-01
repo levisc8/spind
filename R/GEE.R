@@ -12,13 +12,13 @@ GEE <- function(formula,family,data,coord,
   #' autocorrelation in multiple linear regressions
   #' @details
   #' GEE can be used to fit linear models for response vectors of  different
-  #' distributions: "gaussian", "binomial"(binary) or "poisson". As spatial
+  #' distributions: "gaussian", "binomial", or "poisson". As spatial
   #' model, it is a generalized linear model in which the residuals may be
   #' autocorrelated. It accounts for spatial (2-dimensional) residual
   #' autocorrelation in case of regular gridded datasets. The grid cells
   #' are assumed to be square.
   #' @param formula  with specified notation according to names in data frame.
-  #' @param family   "gaussian", "binomial"(binary) or "poisson".
+  #' @param family   "gaussian", "binomial", or "poisson".
   #' @param  data     data frame.
   #' @param  coord    a matrix of two columns with corresponding cartesian
   #' coordinates, which have to be integer (grid cell numbering).
@@ -81,7 +81,7 @@ GEE <- function(formula,family,data,coord,
     z <- summary(m0)$coefficients[,3]
     p <- summary(m0)$coefficients[,4]
     scale <- summary(m0)$dispersion
-    Icrit <- qic.culc(formula,data,family,fitted,var.indep.naive,var.indep.naive)
+    Icrit <- qic(formula,data,family,fitted,var.indep.naive,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -117,7 +117,7 @@ GEE <- function(formula,family,data,coord,
       if(z[ii]<0) p[ii] <- 2*(pnorm(z[ii]))
     }
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.culc(formula,data,family,fitted,var.naive,var.indep.naive)
+    Icrit <- qic(formula,data,family,fitted,var.naive,var.indep.naive)
     QIC <- Icrit$QIC
    }
 
@@ -149,7 +149,7 @@ GEE <- function(formula,family,data,coord,
     }
 
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.culc(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic(formula,data,family,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
 
    }
@@ -180,7 +180,7 @@ GEE <- function(formula,family,data,coord,
     p <- summary(mgeese)$mean[,4]
 
     scale <- as.numeric(summary(mgeese)$scale[1])
-    Icrit <- qic.culc(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic(formula,data,family,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -224,23 +224,28 @@ GEE <- function(formula,family,data,coord,
 
 }
 
-qic.culc <- function(formula,data,family,mu,var.robust,var.indep.naive){
+#' @export
+qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   ###############################################################################
-  # Description
-  # A function for calculating quasi-likelihood and Quasi-Information Criterion
-  # values.
-  # QIC as defined in Hardin & Hilbe (2003).
-  # Reference: Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
-  # Arguments:
-  # formula  with specified notation according to names in data frame
-  # family   "gaussian", "binomial"(binary) or "poisson"
-  # data     data frame
-  # mu       fitted values
-  # var.robust        variance of b values
-  # var.indep.naive   naive variance of b values under the "independence" model
-  #
-  # value:   QIC        quasi-information criterion
-  #          loglik     quasi-likelihood
+  #' @title Quasi-Information Criterion for Generalized Estimating
+  #' Equations
+  #'
+  #' @description
+  #' A function for calculating quasi-likelihood and Quasi-Information
+  #' Criterion values based on the method of Hardin & Hilbe.
+  #' @param  formula  with specified notation according to names in data frame
+  #' @param  family   "gaussian", "binomial", or "poisson"
+  #' @param  data     data frame
+  #' @param  mu       fitted values
+  #' @param  var.robust        variance of b values
+  #' @param  var.indep.naive   naive variance of b values under the
+  #' "independence" model
+  #'
+  #' value:   QIC        quasi-information criterion
+  #'          loglik     quasi-likelihood
+
+  #'@reference QIC as defined in Hardin & Hilbe (2003).
+  #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
   ###############################################################################
 
   X <- model.matrix(formula,data)
@@ -627,7 +632,6 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
   # Arguments
   # formula     a formula expression
   # family      "gaussian", "binomial", "poisson" are allowed
-  #             "binomial" = binary
   # data        a data frame
   # n           for maximal cluster size n*n
   # clusz       an object of function "clus.sz"
