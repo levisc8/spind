@@ -2,41 +2,56 @@
 % Please edit documentation in R/GEE.R
 \name{GEE}
 \alias{GEE}
-\title{GEE (Generalized Estimating Equations).}
+\title{GEE (Generalized Estimating Equations)}
 \usage{
 GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
-  moran.params = list(), plot = FALSE, graph = FALSE, silent = TRUE)
+  moran.params = list(), plot = FALSE, silent = TRUE)
 }
 \arguments{
-\item{formula}{with specified notation according to names in data frame.}
+\item{formula}{variable names must match variables in \code{data}.}
 
-\item{family}{"gaussian", "binomial"(binary) or "poisson".}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported.}
 
-\item{data}{data frame.}
+\item{data}{a data frame with names that match the variables specified in \code{formula}.}
 
 \item{coord}{a matrix of two columns with corresponding cartesian
 coordinates, which have to be integer (grid cell numbering).}
 
-\item{corstr}{autocorrelation structure: "independence", "fixed",
+\item{corstr}{expected autocorrelation structure: "independence", "fixed",
 "exchangeable", "quadratic"  are possible.
-"independence" = GLM, i.e. correlation matrix = identity matrix;
-"fixed" for best autocorrelation removal by means of an adapted
-isotropic power function specifying all correlation
-coefficients "exchangeable", "quadratic" for clustering, i.e.
-the correlation matrix has a block diagonal form:
-"exchangeable": all intra-block correlation coefficients are equal;
-"quadratic": intra-block correlation coefficients for different
-distances can be different.}
 
-\item{cluster}{cluster size for cluster models: "exchangeable", "quadratic".
-cluster= 2,3,4 are allowed for size 2*2,3*3,4*4, respectively.}
+ \itemize{
+   \item\emph{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
+
+   \item\emph{fixed} for best autocorrelation removal by means of an adapted
+   isotropic power function specifying all correlation
+   coefficients
+
+   \item\emph{exchangeable} and \emph{quadratic} for clustering, i.e.
+   the correlation matrix has a block diagonal form:
+
+   \itemize{
+      \item\emph{exchangeable}: all intra-block correlation coefficients are equal
+
+      \item\emph{quadratic}: intra-block correlation coefficients for different
+         distances can be different.
+         }
+       }}
+
+\item{cluster}{cluster size for cluster models \emph{exchangeable}
+ and \emph{quadratic}. values of 2, 3, and 4 are allowed
+ \itemize{
+   \item 2 - a 2*2 cluster
+
+   \item 3 - a 3*3 cluster
+
+   \item 4 - a 4*4 cluster
+ }}
 
 \item{moran.params}{a list of parameters for calculating Moran's I.
-This is passed to \code{wrm.moran} internally.}
+These are passed to \code{wrm.moran} internally.}
 
 \item{plot}{a logical value indicating whether results should be plotted.}
-
-\item{graph}{a logical value indicating whether results should be displayed.}
 
 \item{silent}{a logical value controlling whether parameter estimates are
 printed after each iteration}
@@ -50,11 +65,11 @@ An object of class "gee". List components can be viewed using the
 autocorrelation in multiple linear regressions
 }
 \details{
-GEE can be used to fit linear models for response vectors of  different
-distributions: "gaussian", "binomial"(binary) or "poisson". As spatial
-model, it is a generalized linear model in which the residuals may be
-autocorrelated. It accounts for spatial (2-dimensional) residual
-autocorrelation in case of regular gridded datasets. The grid cells
+GEE can be used to fit linear models for response variables with
+different distributions: "gaussian", "binomial", or "poisson".
+As a spatial model, it is a generalized linear model in which the residuals
+may be autocorrelated. It accounts for spatial (2-dimensional) residual
+autocorrelation in cases of regular gridded datasets. The grid cells
 are assumed to be square.
 }
 \references{
