@@ -30,9 +30,10 @@ A list with the following components:
 }
 \description{
 A function for calculating quasi-likelihood and Quasi-Information
-Criterion values based on the method of Hardin & Hilbe.
+Criterion values based on the method of Hardin & Hilbe (2003).
 }
 \references{
-QIC as defined in Hardin & Hilbe (2003).
+QIC as defined in Hardin & Hilbe (2003).#This is confusing, ask for original H&H paper for this section
+
 Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
 }

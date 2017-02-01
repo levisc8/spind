@@ -4,10 +4,13 @@
 \alias{summary_gee}
 \title{Summarize the output from\code{GEE}}
 \usage{
-summary_gee(model)
+summary_gee(model, printAutoCorMat = FALSE)
 }
 \arguments{
 \item{model}{an object of class \code{gee}}
+
+\item{printAutoCorMat}{a logical indicating whether to print the
+autocorrelation matrix}
 }
 \description{
 Returns summary of GEE parameter estimates and autocorrelations

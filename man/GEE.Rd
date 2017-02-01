@@ -46,19 +46,41 @@ coordinates, which have to be integer (grid cell numbering).}
    \item 3 - a 3*3 cluster
 
    \item 4 - a 4*4 cluster
- }}
+}}
 
 \item{moran.params}{a list of parameters for calculating Moran's I.
 These are passed to \code{wrm.moran} internally.}
 
-\item{plot}{a logical value indicating whether results should be plotted.}
+\item{plot}{a logical value indicating whether results should be
+plotted.}
 
 \item{silent}{a logical value controlling whether parameter estimates are
 printed after each iteration}
 }
 \value{
-An object of class "gee". List components can be viewed using the
-\code{summary_gee} function
+An object of class "gee". This consists of a list with the
+following elements:
+\describe{
+      \item{\code{call}}{call}
+      \item{\code{formula}}{formula}
+      \item{\code{family}}{family}
+      \item{\code{b}}{estimate of regression parameters}
+      \item{\code{s.e.}}{standard errors}
+      \item{\code{z}}{z values (or corresponding values for statistics)}
+      \item{\code{p}}{probabilities}
+      \item{\code{scale}}{scale parameter (dispersion parameter)}
+      \item{\code{fitted}}{fitted values}
+      \item{\code{resid}}{normalized Pearson residuals}
+      \item{\code{w.ac}}{working autocorrelation parameters}
+      \item{\code{Mat.ac}}{working autocorrelation matrix}
+      \item{\code{QIC}}{quasi-information criterion}
+      \item{\code{plot}}{logical indicating whether autocorrelation should
+      be plotted}
+      \item{\code{ac.glm}}{autocorrelation of glm.residuals}
+      \item{\code{ac.gee}}{autocorrelation of gee.residuals}
+}
+elements can be viewed using the \code{\link{summary_gee}} function included in
+the package
 }
 \description{
 \code{GEE} provides a GEE-based method to account for spatial
