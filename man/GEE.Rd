@@ -31,31 +31,19 @@ distances can be different.}
 \item{cluster}{cluster size for cluster models: "exchangeable", "quadratic".
 cluster= 2,3,4 are allowed for size 2*2,3*3,4*4, respectively.}
 
+\item{moran.params}{a list of parameters for calculating Moran's I.
+This is passed to \code{wrm.moran} internally.}
+
 \item{plot}{a logical value indicating whether results should be plotted.}
 
 \item{graph}{a logical value indicating whether results should be displayed.}
 
-\item{moran}{a list of parameters for calculating Moran's I.
-This is passed to wrm.moran.}
+\item{silent}{a logical value controlling whether parameter estimates are
+printed after each iteration}
 }
 \value{
-An object of class "gee" is a list containing the following components:
-         call       call
-         formula    formula
-         family     family
-         b          estimate of regression parameters
-         s.e.       standard errors
-         z          z values (or corresponding values for statistics)
-         p          probabilities
-         scale      scale parameter (dispersion parameter)
-         fitted     fitted values
-         resid      normalized Pearson residuals
-         w.ac       working autocorrelation parameters
-         W.ac       working autocorrelation matrix
-         QIC        quasi-information criterion
-         if plot or graph is true:
-         ac.glm     autocorrelation of glm.residuals
-         ac         autocorrelation of gee.residuals
+An object of class "gee". List components can be viewed using the
+\code{summary_gee} function
 }
 \description{
 \code{GEE} provides a GEE-based method to account for spatial
