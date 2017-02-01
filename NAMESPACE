@@ -2,3 +2,6 @@
 
 export(GEE)
 export(summary_gee)
+import(MASS)
+import(graphics)
+import(stats)
