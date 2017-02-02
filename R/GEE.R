@@ -151,7 +151,9 @@ GEE <- function(formula,family,data,coord,
     D <- as.matrix(dist(coord))
     R <- alpha^(D^v)
     data <- data.frame(data,id)
-    mgee <- gee::gee(formula=formula,family=family,data=data,id=id,R=R,corstr="fixed")
+    suppressMessages(capture.output({
+      mgee <- gee::gee(formula=formula,family=family,
+                       data=data,id=id,R=R,corstr="fixed")}))
     var.naive <- mgee$naive.variance
     para3 <- "a=alpha^(d^v) "
     ashort <- c(alpha,v)
@@ -182,7 +184,9 @@ GEE <- function(formula,family,data,coord,
 
     clusz <- clus.sz(id)
     zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
-    mgee <- gee::gee(formula=formula,family=family,data=dato,id=id,corstr="exchangeable")
+    suppressMessages(capture.output({
+      mgee <- gee::gee(formula=formula,family=family,
+                     data=dato,id=id,corstr="exchangeable")}))
     var.robust <- mgee$robust.variance
     ashort <- mgee$w[1,2]
     a <- a.gee(mgee$w,cluster,type="gee",corstr="exchangeable")
