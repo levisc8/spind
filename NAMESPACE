@@ -2,9 +2,11 @@
 
 export(GEE)
 export(acfft)
+export(adjusted.actuals)
 export(qic)
 export(summary_gee)
 import(MASS)
+import(grDevices)
 import(graphics)
 import(stats)
 import(utils)
