@@ -284,14 +284,14 @@ qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   #' \code{independence} model
   #'
   #' @return  A list with the following components:
+  #'  \describe{
+  #'    \item{\code{QIC}}{quasi-information criterion}
+  #'    \item{\code{loglik}}{quasi-likelihood}
+  #'  }
+  #' @references
+  #' Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
   #'
-  #' \code{QIC}        quasi-information criterion
-  #'
-  #' \code{loglik}     quasi-likelihood
-
-  #' @references  QIC as defined in Hardin & Hilbe (2003). #This is confusing, ask for original H&H paper for this section
-  #'
-  #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
+  #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
   ###############################################################################
 
   X <- model.matrix(formula,data)
