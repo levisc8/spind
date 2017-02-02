@@ -7,9 +7,9 @@
 summary_gee(model, printAutoCorMat = FALSE)
 }
 \arguments{
-\item{model}{an object of class \code{gee}}
+\item{model}{An object of class \code{gee}}
 
-\item{printAutoCorMat}{a logical indicating whether to print the
+\item{printAutoCorMat}{A logical indicating whether to print the
 autocorrelation matrix}
 }
 \value{
