@@ -1,22 +1,24 @@
+#' @export
+
 
 acfft<-function(x,y,f,lim1=1,lim2=2,dmax=10){
-  ###############################################################################
-  # Spatial autocorrelation
-  #
-  # Description
-  # A function for calculating spatial autocorrelation (i.e. Moran’s I values).
-  # Arguments:
-  # x 	    a vector of length n representing the x coordinates
-  #         (integer, consecutively numbered cells).
-  # y 	    a vector of length n representing the y coordinates
-  #         (integer, consecutively numbered cells)
-  # f       a vector of same length
-  # lim1    lower bound for first bin
-  # lim2    upper bound for first bin
-  # dmax    number of bins, i.e. uniformly distributed distance classes
-  #
-  # Value: acfft returns a vector of Moran’s I values
-  ###############################################################################
+
+  #' @title Spatial autocorrelation diagnostics
+  #'
+  #' @description
+  #' A function for calculating spatial autocorrelation (i.e. Moran’s I values).
+  #'
+  #' @param x 	    a vector of length n representing the x coordinates
+  #'         (integer, consecutively numbered cells).
+  #' @param y 	    a vector of length n representing the y coordinates
+  #'         (integer, consecutively numbered cells)
+  #' @param f       residuals from independent regression
+  #' @param lim1    lower bound for first bin. Default is 1
+  #' @param lim2    upper bound for first bin. Default is 2
+  #' @param dmax    number of distance bins to examine. Bins are assumed to be
+  #' of uniform size. Default is 10.
+  #'
+  #' @return A vector of Moran’s I values for each distance bin.
 
   if(length(x)!=length(f)) stop("error in dimension")
   logic1<-identical(as.numeric(x),round(x,0))
