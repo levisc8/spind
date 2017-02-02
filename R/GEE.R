@@ -275,13 +275,13 @@ qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   #' @description
   #' A function for calculating quasi-likelihood and Quasi-Information
   #' Criterion values based on the method of Hardin & Hilbe (2003).
-  #' @param  formula  with specified notation according to names in data frame
-  #' @param  family   "gaussian", "binomial", or "poisson"
-  #' @param  data     data frame
-  #' @param  mu       fitted values
-  #' @param  var.robust        variance of b values
-  #' @param  var.indep.naive   naive variance of b values under the
-  #' "independence" model
+  #' @param  formula  a model formula
+  #' @param  family   \code{gaussian}, \code{binomial}, or \code{poisson}
+  #' @param  data     a data frame
+  #' @param  mu       fitted values from a model
+  #' @param  var.robust        variance of model parameters
+  #' @param  var.indep.naive   naive variance of model parameters under the
+  #' \code{independence} model
   #'
   #' @return  A list with the following components:
   #'
@@ -289,7 +289,7 @@ qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   #'
   #' \code{loglik}     quasi-likelihood
 
-  #' @references  QIC as defined in Hardin & Hilbe (2003).#This is confusing, ask for original H&H paper for this section
+  #' @references  QIC as defined in Hardin & Hilbe (2003). #This is confusing, ask for original H&H paper for this section
   #'
   #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
   ###############################################################################
