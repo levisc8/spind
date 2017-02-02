@@ -1,16 +1,19 @@
 #' @export
 
-summary_gee<-function(model,printAutoCorMat=FALSE){
+summary_gee<-function(model,printAutoCorPars=FALSE){
 #' @title Summarize the output from\code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
 #' @param model An object of class \code{gee}
-#' @param printAutoCorMat A logical indicating whether to print the
+#' @param printAutoCorPars A logical indicating whether to print the
 #' autocorrelation matrix
 #'
 #'@return Prints model details, parameter estimates, and autocorrelation values
-#'for the first 10 distance bins. Additionally, prints the autocorrelation matrix
-#'if \code{printAutoCorMat} = TRUE
+#'for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
+#'prints \describe{
+#'
+#'}
+#'.
 #'
    cat("\n","Call:","\n")
    print(model$call)
@@ -36,7 +39,10 @@ summary_gee<-function(model,printAutoCorMat=FALSE){
    cat("\n","Autocorrelation of GEE residuals","\n")
    print(acg)
 
-   if(printAutoCorMat) print(model$Mat.ac)
+   if(printAutoCorPars&model$corstr!="independence"){
+     cat('---','\n','Autocorrelation parameters from ',model$corstr," model",'\n')
+     print(model$Mat.ac)
+   }
 }
 
 

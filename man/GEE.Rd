@@ -66,6 +66,7 @@ following elements:
       \item{\code{call}}{Call}
       \item{\code{formula}}{Model formula}
       \item{\code{family}}{Family}
+      \item{\code{corstr}}{User-selected correlaton structure}
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors of the estimates}
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}

@@ -4,18 +4,21 @@
 \alias{summary_gee}
 \title{Summarize the output from\code{GEE}}
 \usage{
-summary_gee(model, printAutoCorMat = FALSE)
+summary_gee(model, printAutoCorPars = FALSE)
 }
 \arguments{
 \item{model}{An object of class \code{gee}}
 
-\item{printAutoCorMat}{A logical indicating whether to print the
+\item{printAutoCorPars}{A logical indicating whether to print the
 autocorrelation matrix}
 }
 \value{
 Prints model details, parameter estimates, and autocorrelation values
-for the first 10 distance bins. Additionally, prints the autocorrelation matrix
-if \code{printAutoCorMat} = TRUE
+for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
+prints \describe{
+
+}
+.
 }
 \description{
 Returns summary of GEE parameter estimates and autocorrelations
