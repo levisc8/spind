@@ -1,10 +1,11 @@
 #' @import graphics
 #' @import stats
 #' @import MASS
+#' @import utils
 #' @export
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
-              plot=FALSE,silent=TRUE){
+              plot=FALSE){
   ###############################################################################
   #' @title  GEE (Generalized Estimating Equations)
   #' @description
@@ -53,12 +54,17 @@ GEE <- function(formula,family,data,coord,
   #'    \item 4 - a 4*4 cluster
   #' }
   #'
-  #' @param moran.params    a list of parameters for calculating Moran's I.
-  #' These are passed to \code{wrm.moran} internally.
+  #' @param moran.params    A list of parameters for calculating Moran's I.
+  #'   \itemize{
+  #'     \item\code{lim1} Lower limit for first bin. Default is 0.
+  #'     \item\code{increment} step size for calculating I. Default is 1.
+  #'   }
+  #'
+  #'   # lim1      lower limit for first bin
+  # increment increment (=1 and lim1=0 is conform to correlog{ncf})
   #' @param plot    a logical value indicating whether results should be
   #' plotted.
-  #' @param silent a logical value controlling whether parameter estimates are
-  #' printed after each iteration
+  #'
   #'
   #' @return An object of class \code{gee}. This consists of a list with the
   #' following elements:
@@ -112,8 +118,8 @@ GEE <- function(formula,family,data,coord,
   res0 <- resid(m0,type="pearson")
   id <- rep(1,nn)
   dato <- data.frame(data,id)
-  mgee <- gee::gee(formula=formula,family=family,data=dato,id=id,
-            corstr="independence",silent=silent)
+  suppressMessages(capture.output({mgee <- gee::gee(formula=formula,family=family,data=dato,id=id,
+            corstr="independence")}))
   var.indep.naive <- mgee$naive.variance
 
   if(corstr=="independence"){
