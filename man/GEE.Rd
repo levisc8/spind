@@ -8,16 +8,16 @@ GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
   moran.params = list(), plot = FALSE)
 }
 \arguments{
-\item{formula}{variable names must match variables in \code{data}.}
+\item{formula}{Model formual. Variable names must match variables in \code{data}.}
 
 \item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported.}
 
-\item{data}{a data frame with names that match the variables specified in \code{formula}.}
+\item{data}{A data frame with names that match the variables specified in \code{formula}.}
 
-\item{coord}{a matrix of two columns with corresponding cartesian
+\item{coord}{A matrix of two columns with corresponding cartesian
 coordinates, which have to be integer (grid cell numbering).}
 
-\item{corstr}{expected autocorrelation structure: "independence", "fixed",
+\item{corstr}{Expected autocorrelation structure: "independence", "fixed",
 "exchangeable", "quadratic"  are possible.
 
  \itemize{
@@ -38,7 +38,7 @@ coordinates, which have to be integer (grid cell numbering).}
          }
        }}
 
-\item{cluster}{cluster size for cluster models \emph{exchangeable}
+\item{cluster}{Cluster size for cluster models \emph{exchangeable}
  and \emph{quadratic}. values of 2, 3, and 4 are allowed
  \itemize{
    \item 2 - a 2*2 cluster
@@ -49,15 +49,13 @@ coordinates, which have to be integer (grid cell numbering).}
 }}
 
 \item{moran.params}{A list of parameters for calculating Moran's I.
-  \itemize{
-    \item\code{lim1} Lower limit for first bin. Default is 0.
-    \item\code{increment} step size for calculating I. Default is 1.
-  }
+\itemize{
+  \item\code{lim1} Lower limit for first bin. Default is 0.
+  \item\code{increment} Step size for calculating I. Default is 1.
+}}
 
-  # lim1      lower limit for first bin}
-
-\item{plot}{a logical value indicating whether results should be
-plotted.}
+\item{plot}{A logical value indicating whether autocorrelation of
+residuals should be plotted.}
 }
 \value{
 An object of class \code{gee}. This consists of a list with the
@@ -80,8 +78,8 @@ following elements:
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
-      \item{\code{ac.glm}}{Autocorrelation of glm.residuals}
-      \item{\code{ac.gee}}{Autocorrelation of gee.residuals}
+      \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
+      \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 }
 
 Elements can be viewed using the \code{\link{summary_gee}} function included in
