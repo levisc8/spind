@@ -1,4 +1,4 @@
-#' Musdata
+#' Mus musculus data set
 #'
 #' A dataset containing 400 presence absence records of Mus musculus (a house mouse)
 #'
@@ -11,3 +11,5 @@
 #'    \item{y}{numeric - y coordinate for each grid cell}
 #'  }
 #'
+
+"musdata"
