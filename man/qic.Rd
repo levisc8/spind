@@ -8,32 +8,32 @@ Equations}
 qic(formula, data, family, mu, var.robust, var.indep.naive)
 }
 \arguments{
-\item{formula}{with specified notation according to names in data frame}
+\item{formula}{a model formula}
 
-\item{data}{data frame}
+\item{data}{a data frame}
 
-\item{family}{"gaussian", "binomial", or "poisson"}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}}
 
-\item{mu}{fitted values}
+\item{mu}{fitted values from a model}
 
-\item{var.robust}{variance of b values}
+\item{var.robust}{variance of model parameters}
 
-\item{var.indep.naive}{naive variance of b values under the
-"independence" model}
+\item{var.indep.naive}{naive variance of model parameters under the
+\code{independence} model}
 }
 \value{
 A list with the following components:
-
-\code{QIC}        quasi-information criterion
-
-\code{loglik}     quasi-likelihood
+ \describe{
+   \item{\code{QIC}}{quasi-information criterion}
+   \item{\code{loglik}}{quasi-likelihood}
+ }
 }
 \description{
 A function for calculating quasi-likelihood and Quasi-Information
 Criterion values based on the method of Hardin & Hilbe (2003).
 }
 \references{
-QIC as defined in Hardin & Hilbe (2003).#This is confusing, ask for original H&H paper for this section
+Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 
-Barnett et al. Methods in Ecology & Evolution 2010, 1, 1524.
+Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
 }
