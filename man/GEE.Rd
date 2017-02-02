@@ -5,7 +5,7 @@
 \title{GEE (Generalized Estimating Equations)}
 \usage{
 GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
-  moran.params = list(), plot = FALSE, silent = TRUE)
+  moran.params = list(), plot = FALSE)
 }
 \arguments{
 \item{formula}{variable names must match variables in \code{data}.}
@@ -58,9 +58,6 @@ coordinates, which have to be integer (grid cell numbering).}
 
 \item{plot}{a logical value indicating whether results should be
 plotted.}
-
-\item{silent}{a logical value controlling whether parameter estimates are
-printed after each iteration}
 }
 \value{
 An object of class \code{gee}. This consists of a list with the
