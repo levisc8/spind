@@ -2,7 +2,6 @@
 #' @import stats
 #' @import MASS
 #' @import utils
-#' @import lattice
 #'
 #' @title  GEE (Generalized Estimating Equations)
 #' @description
