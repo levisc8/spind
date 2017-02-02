@@ -58,7 +58,7 @@ plotted.}
 printed after each iteration}
 }
 \value{
-An object of class "gee". This consists of a list with the
+An object of class \code{gee}. This consists of a list with the
 following elements:
 \describe{
       \item{\code{call}}{Call}
@@ -90,7 +90,7 @@ autocorrelation in multiple linear regressions
 }
 \details{
 GEE can be used to fit linear models for response variables with
-different distributions: "gaussian", "binomial", or "poisson".
+different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
 As a spatial model, it is a generalized linear model in which the residuals
 may be autocorrelated. It accounts for spatial (2-dimensional) residual
 autocorrelation in cases of regular gridded datasets. The grid cells
