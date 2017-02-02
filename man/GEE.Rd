@@ -48,8 +48,13 @@ coordinates, which have to be integer (grid cell numbering).}
    \item 4 - a 4*4 cluster
 }}
 
-\item{moran.params}{a list of parameters for calculating Moran's I.
-These are passed to \code{wrm.moran} internally.}
+\item{moran.params}{A list of parameters for calculating Moran's I.
+  \itemize{
+    \item\code{lim1} Lower limit for first bin. Default is 0.
+    \item\code{increment} step size for calculating I. Default is 1.
+  }
+
+  # lim1      lower limit for first bin}
 
 \item{plot}{a logical value indicating whether results should be
 plotted.}
