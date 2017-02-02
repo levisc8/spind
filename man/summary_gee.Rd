@@ -12,6 +12,11 @@ summary_gee(model, printAutoCorMat = FALSE)
 \item{printAutoCorMat}{a logical indicating whether to print the
 autocorrelation matrix}
 }
+\value{
+Prints model details, parameter estimates, and autocorrelation values
+for the first 10 distance bins. Additionally, prints the autocorrelation matrix
+if \code{printAutoCorMat} = TRUE
+}
 \description{
 Returns summary of GEE parameter estimates and autocorrelations
 of the residuals.

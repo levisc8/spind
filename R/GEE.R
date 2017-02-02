@@ -63,27 +63,30 @@ GEE <- function(formula,family,data,coord,
   #' @return An object of class "gee". This consists of a list with the
   #' following elements:
   #' \describe{
-  #'       \item{\code{call}}{call}
-  #'       \item{\code{formula}}{formula}
-  #'       \item{\code{family}}{family}
-  #'       \item{\code{b}}{estimate of regression parameters}
-  #'       \item{\code{s.e.}}{standard errors}
-  #'       \item{\code{z}}{z values (or corresponding values for statistics)}
-  #'       \item{\code{p}}{probabilities}
+  #'       \item{\code{call}}{Call}
+  #'       \item{\code{formula}}{Model formula}
+  #'       \item{\code{family}}{Family}
+  #'       \item{\code{b}}{Estimate of regression parameters}
+  #'       \item{\code{s.e.}}{Standard errors of the estimates}
+  #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
+  #'       \item{\code{p}}{p-values}
   #'       \item{\code{scale}}{scale parameter (dispersion parameter)}
-  #'       \item{\code{fitted}}{fitted values}
-  #'       \item{\code{resid}}{normalized Pearson residuals}
-  #'       \item{\code{w.ac}}{working autocorrelation parameters}
-  #'       \item{\code{Mat.ac}}{working autocorrelation matrix}
-  #'       \item{\code{QIC}}{quasi-information criterion}
-  #'       \item{\code{plot}}{logical indicating whether autocorrelation should
+  #'       \item{\code{fitted}}{Fitted values}
+  #'       \item{\code{resid}}{Normalized Pearson residuals}
+  #'       \item{\code{w.ac}}{Working autocorrelation parameters}
+  #'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
+  #'       \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic}}
+  #'        for further details}
+  #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
   #'       be plotted}
-  #'       \item{\code{ac.glm}}{autocorrelation of glm.residuals}
-  #'       \item{\code{ac.gee}}{autocorrelation of gee.residuals}
+  #'       \item{\code{ac.glm}}{Autocorrelation of glm.residuals}
+  #'       \item{\code{ac.gee}}{Autocorrelation of gee.residuals}
   #' }
   #'
   #' Elements can be viewed using the \code{\link{summary_gee}} function included in
   #' the package
+  #'
+  #' @seealso \code{\link{qic}}, \code{\link{summary_gee}}
   #'
   #'
   #'@references
@@ -240,7 +243,7 @@ GEE <- function(formula,family,data,coord,
     points(ac,pch=2,type="b")
     v <- 1:2
     leg <- c("GLM Residuals","GEE Residuals")
-    legend(6,y2-.1,leg,pch=v)
+    legend('topright',leg,pch=v)
   }
 
   call <- match.call()

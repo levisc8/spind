@@ -4,13 +4,14 @@ summary_gee<-function(model,printAutoCorMat=FALSE){
 #' @title Summarize the output from\code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
-#' @param model an object of class \code{gee}
-#' @param printAutoCorMat a logical indicating whether to print the
+#' @param model An object of class \code{gee}
+#' @param printAutoCorMat A logical indicating whether to print the
 #' autocorrelation matrix
 #'
+#'@return Prints model details, parameter estimates, and autocorrelation values
+#'for the first 10 distance bins. Additionally, prints the autocorrelation matrix
+#'if \code{printAutoCorMat} = TRUE
 #'
-#'
-# ADD ADDITIONAL PARAMETERS TO ALLOW FOR RETURNING VARIANCE MATRIX, ETC
    cat("\n","Call:","\n")
    print(model$call)
    family<-model$family
