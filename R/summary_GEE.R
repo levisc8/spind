@@ -1,6 +1,3 @@
-#' @export
-
-summary_gee<-function(model,printAutoCorPars=FALSE){
 #' @title Summarize the output from\code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
@@ -13,8 +10,11 @@ summary_gee<-function(model,printAutoCorPars=FALSE){
 #'prints \describe{
 #'
 #'}
-#'.
 #'
+#'
+#' @export
+summary_gee<-function(model,printAutoCorPars=FALSE){
+
    cat("\n","Call:","\n")
    print(model$call)
    family<-model$family
@@ -44,26 +44,3 @@ summary_gee<-function(model,printAutoCorPars=FALSE){
      print(model$Mat.ac)
    }
 }
-
-
-
-
-
-  # Gee function returns....
-  # An object of class "gee" is a list containing the following components:
-  #          call       call
-  #          formula    formula
-  #          family     family
-  #          b          estimate of regression parameters
-  #          s.e.       standard errors
-  #          z          z values (or corresponding values for statistics)
-#          p          probabilities
-#          scale      scale parameter (dispersion parameter)
-#          fitted     fitted values
-#          resid      normalized Pearson residuals
-#          w.ac       working autocorrelation parameters
-#          Mat.ac       working autocorrelation matrix
-#          QIC        quasi-information criterion
-#          if plot or graph is true:
-#          ac.glm     autocorrelation of glm.residuals
-#          ac.gee         autocorrelation of gee.residuals

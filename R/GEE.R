@@ -2,104 +2,101 @@
 #' @import stats
 #' @import MASS
 #' @import utils
+#'
+#' @title  GEE (Generalized Estimating Equations)
+#' @description
+#' \code{GEE} provides a GEE-based method to account for spatial
+#' autocorrelation in multiple linear regressions
+#' @details
+#' GEE can be used to fit linear models for response variables with
+#' different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
+#' As a spatial model, it is a generalized linear model in which the residuals
+#' may be autocorrelated. It accounts for spatial (2-dimensional) residual
+#' autocorrelation in cases of regular gridded datasets. The grid cells
+#' are assumed to be square.
+#'
+#' @param formula  Model formual. Variable names must match variables in \code{data}.
+#' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
+#' @param data     A data frame with names that match the variables specified in \code{formula}.
+#' @param coord    A matrix of two columns with corresponding cartesian
+#' coordinates, which have to be integer (grid cell numbering).
+#' @param  corstr   Expected autocorrelation structure: "independence", "fixed",
+#' "exchangeable", "quadratic"  are possible.
+#'
+#'  \itemize{
+#'    \item\emph{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
+#'
+#'    \item\emph{fixed} for best autocorrelation removal by means of an adapted
+#'    isotropic power function specifying all correlation
+#'    coefficients
+#'
+#'    \item\emph{exchangeable} and \emph{quadratic} for clustering, i.e.
+#'    the correlation matrix has a block diagonal form:
+#'
+#'    \itemize{
+#'       \item\emph{exchangeable}: all intra-block correlation coefficients are equal
+#'
+#'       \item\emph{quadratic}: intra-block correlation coefficients for different
+#'          distances can be different.
+#'          }
+#'        }
+#' @param cluster  Cluster size for cluster models \emph{exchangeable}
+#'  and \emph{quadratic}. values of 2, 3, and 4 are allowed
+#'  \itemize{
+#'    \item 2 - a 2*2 cluster
+#'
+#'    \item 3 - a 3*3 cluster
+#'
+#'    \item 4 - a 4*4 cluster
+#' }
+#'
+#' @param moran.params    A list of parameters for calculating Moran's I.
+#'   \itemize{
+#'     \item\code{lim1} Lower limit for first bin. Default is 0.
+#'     \item\code{increment} Step size for calculating I. Default is 1.
+#'   }
+#'
+#' @param plot    A logical value indicating whether autocorrelation of
+#' residuals should be plotted.
+#'
+#'
+#' @return An object of class \code{gee}. This consists of a list with the
+#' following elements:
+#' \describe{
+#'       \item{\code{call}}{Call}
+#'       \item{\code{formula}}{Model formula}
+#'       \item{\code{family}}{Family}
+#'       \item{\code{corstr}}{User-selected correlaton structure}
+#'       \item{\code{b}}{Estimate of regression parameters}
+#'       \item{\code{s.e.}}{Standard errors of the estimates}
+#'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
+#'       \item{\code{p}}{p-values}
+#'       \item{\code{scale}}{scale parameter (dispersion parameter)}
+#'       \item{\code{fitted}}{Fitted values}
+#'       \item{\code{resid}}{Normalized Pearson residuals}
+#'       \item{\code{w.ac}}{Working autocorrelation parameters}
+#'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
+#'       \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic}}
+#'        for further details}
+#'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
+#'       be plotted}
+#'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
+#'       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
+#' }
+#'
+#' Elements can be viewed using the \code{\link{summary_gee}} function included in
+#' the package
+#'
+#' @seealso \code{\link{qic}}, \code{\link{summary_gee}}
+#'
+#'
+#'@references
+#' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
+#' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 #' @export
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE){
-  ###############################################################################
-  #' @title  GEE (Generalized Estimating Equations)
-  #' @description
-  #' \code{GEE} provides a GEE-based method to account for spatial
-  #' autocorrelation in multiple linear regressions
-  #' @details
-  #' GEE can be used to fit linear models for response variables with
-  #' different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
-  #' As a spatial model, it is a generalized linear model in which the residuals
-  #' may be autocorrelated. It accounts for spatial (2-dimensional) residual
-  #' autocorrelation in cases of regular gridded datasets. The grid cells
-  #' are assumed to be square.
-  #'
-  #' @param formula  variable names must match variables in \code{data}.
-  #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
-  #' @param data     a data frame with names that match the variables specified in \code{formula}.
-  #' @param coord    a matrix of two columns with corresponding cartesian
-  #' coordinates, which have to be integer (grid cell numbering).
-  #' @param  corstr   expected autocorrelation structure: "independence", "fixed",
-  #' "exchangeable", "quadratic"  are possible.
-  #'
-  #'  \itemize{
-  #'    \item\emph{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
-  #'
-  #'    \item\emph{fixed} for best autocorrelation removal by means of an adapted
-  #'    isotropic power function specifying all correlation
-  #'    coefficients
-  #'
-  #'    \item\emph{exchangeable} and \emph{quadratic} for clustering, i.e.
-  #'    the correlation matrix has a block diagonal form:
-  #'
-  #'    \itemize{
-  #'       \item\emph{exchangeable}: all intra-block correlation coefficients are equal
-  #'
-  #'       \item\emph{quadratic}: intra-block correlation coefficients for different
-  #'          distances can be different.
-  #'          }
-  #'        }
-  #' @param cluster  cluster size for cluster models \emph{exchangeable}
-  #'  and \emph{quadratic}. values of 2, 3, and 4 are allowed
-  #'  \itemize{
-  #'    \item 2 - a 2*2 cluster
-  #'
-  #'    \item 3 - a 3*3 cluster
-  #'
-  #'    \item 4 - a 4*4 cluster
-  #' }
-  #'
-  #' @param moran.params    A list of parameters for calculating Moran's I.
-  #'   \itemize{
-  #'     \item\code{lim1} Lower limit for first bin. Default is 0.
-  #'     \item\code{increment} step size for calculating I. Default is 1.
-  #'   }
-  #'
-  #'   # lim1      lower limit for first bin
-  # increment increment (=1 and lim1=0 is conform to correlog{ncf})
-  #' @param plot    a logical value indicating whether results should be
-  #' plotted.
-  #'
-  #'
-  #' @return An object of class \code{gee}. This consists of a list with the
-  #' following elements:
-  #' \describe{
-  #'       \item{\code{call}}{Call}
-  #'       \item{\code{formula}}{Model formula}
-  #'       \item{\code{family}}{Family}
-  #'       \item{\code{corstr}}{User-selected correlaton structure}
-  #'       \item{\code{b}}{Estimate of regression parameters}
-  #'       \item{\code{s.e.}}{Standard errors of the estimates}
-  #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
-  #'       \item{\code{p}}{p-values}
-  #'       \item{\code{scale}}{scale parameter (dispersion parameter)}
-  #'       \item{\code{fitted}}{Fitted values}
-  #'       \item{\code{resid}}{Normalized Pearson residuals}
-  #'       \item{\code{w.ac}}{Working autocorrelation parameters}
-  #'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
-  #'       \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic}}
-  #'        for further details}
-  #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
-  #'       be plotted}
-  #'       \item{\code{ac.glm}}{Autocorrelation of glm.residuals}
-  #'       \item{\code{ac.gee}}{Autocorrelation of gee.residuals}
-  #' }
-  #'
-  #' Elements can be viewed using the \code{\link{summary_gee}} function included in
-  #' the package
-  #'
-  #' @seealso \code{\link{qic}}, \code{\link{summary_gee}}
-  #'
-  #'
-  #'@references
-  #' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
-  #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
-  ###############################################################################
 
   at <- intersect(names(data),all.vars(formula))
   if(length(at)==0) stop("formula: specified notation is missing")
@@ -278,32 +275,34 @@ GEE <- function(formula,family,data,coord,
 
 }
 
+
+#' @title Quasi-Information Criterion for Generalized Estimating
+#' Equations
+#'
+#' @description
+#' A function for calculating quasi-likelihood and Quasi-Information
+#' Criterion values based on the method of Hardin & Hilbe (2003).
+#' @param  formula  a model formula
+#' @param  family   \code{gaussian}, \code{binomial}, or \code{poisson}
+#' @param  data     a data frame
+#' @param  mu       fitted values from a model
+#' @param  var.robust        variance of model parameters
+#' @param  var.indep.naive   naive variance of model parameters under the
+#' \code{independence} model
+#'
+#' @return  A list with the following components:
+#'  \describe{
+#'    \item{\code{QIC}}{quasi-information criterion}
+#'    \item{\code{loglik}}{quasi-likelihood}
+#'  }
+#' @references
+#' Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
+#'
+#' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
 #' @export
 qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
   ###############################################################################
-  #' @title Quasi-Information Criterion for Generalized Estimating
-  #' Equations
-  #'
-  #' @description
-  #' A function for calculating quasi-likelihood and Quasi-Information
-  #' Criterion values based on the method of Hardin & Hilbe (2003).
-  #' @param  formula  a model formula
-  #' @param  family   \code{gaussian}, \code{binomial}, or \code{poisson}
-  #' @param  data     a data frame
-  #' @param  mu       fitted values from a model
-  #' @param  var.robust        variance of model parameters
-  #' @param  var.indep.naive   naive variance of model parameters under the
-  #' \code{independence} model
-  #'
-  #' @return  A list with the following components:
-  #'  \describe{
-  #'    \item{\code{QIC}}{quasi-information criterion}
-  #'    \item{\code{loglik}}{quasi-likelihood}
-  #'  }
-  #' @references
-  #' Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
-  #'
-  #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
+
   ###############################################################################
 
   X <- model.matrix(formula,data)

@@ -18,7 +18,6 @@ for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
 prints \describe{
 
 }
-.
 }
 \description{
 Returns summary of GEE parameter estimates and autocorrelations
