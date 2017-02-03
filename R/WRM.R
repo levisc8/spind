@@ -1,47 +1,55 @@
-#' Wavelet-revised models
 #'
-#' Description
-#' A wavelet-based method to remove spatial autocorrelation
-#' in multiple linear regressions
-#' Details
+#' Wavelet-revised models (WRMs)
+#'
+#' @description A wavelet-based method to remove spatial autocorrelation
+#' in multiple linear regressions.
+#' @details
 #' WRM can be used to fit linear models for response vectors of different
-#' distributions: "gaussian", "binomial"(binary) or "poisson". As spatial model,
-#' it is a generalized linear model in which the residuals may be autocorrelated.
-#' It accounts for spatial (2-dimensional) residual autocorrelation
-#' in case of regular gridded datasets. The grid cells are assumed to be square.
+#' distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
+#' As a spatial model, it is a generalized linear model in which the residuals
+#' may be autocorrelated. It corrects for  2-dimensional residual
+#' autocorrelation for regular gridded data sets using the wavelet
+#' decomposition technique. The grid cells are assumed to be square.
 #'
-#' Arguments:
-#' formula   with specified notation according to names in data frame
-#' family    "gaussian", "binomial"(binary) or "poisson"
-#' data      a data frame
-#' coord     a matrix of two columns with corresponding cartesian coordinates,
-#'           which have to be integer (grid cell numbering)
-#' level     an integer specifying the depth of wavelet decomposition
-#'           0 without autocorrelation removal ( = GLM)
-#'           1 for best autocorrelation removal
-#'           higher integers possible (limit depends on sample size)
-#' wavelet   name of wavelet family: "haar" or "d4" or "la8"
-#' wtrafo    type of wavelet transform: either "dwt" or "modwt"
-#' b.ini     initial values for the parameters b
-#' pad       a list of parameters for padding wavelet coefficients.
-#'           This is passed to wrm.pad.
-#' #########Args for wrm.pad( padform   0 for padding with zeros,
-#'                             1 for padding with mean values,
-#                              2 for padding with mirror values.
-#                              Padform is automatically set to
-#                              zero in case of either level=0 or
-#                              a formula including an intercept
-#                              and a non-gaussian family)
-#                             padzone   factor for expanding the padding zone
-#
-#' control 	a list of parameters for controlling the fitting process.
-#'           This is passed to wrm.control.
-#' moran     a list of parameters for calculating Moran's I.
+#' @param formula  Model formula. Variable names must match variables in \code{data}.
+#' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
+#' @param data     A data frame with variable names that match the variables specified in \code{formula}.
+#' @param coord    A matrix of two columns with corresponding cartesian
+#' coordinates. Currently only supports integer coordinates.
+#' @param level    An integer specifying the depth of wavelet decomposition
+#'      \itemize{
+#'           \item{0} Without autocorrelation removal (equivalent to a GLM)
+#'           \item{1} For best autocorrelation removal
+#'           \item{...} Higher integers possible. The limit depends on sample size # We should expand on this. How does one determin the limit?
+#'        }
+#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}
+#' are possible.
+#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt} # briefly explain differences?
+#' @param b.ini     Initial parameter estimates. Default is NULL.
+#' @param pad       A list of parameters for padding wavelet coefficients.
+#' \itemize{
+#'    \item{padform} 0, 1, and 2 are possible.
+#'     \code{padform} is automatically set to
+#'     zero when either \code{level}=0 or
+#'     a \code{formula} including an intercept and a non-gaussian family
+#'    \itemize{
+#'      \item{0} Padding with 0s.
+#'      \item{1} Padding with mean values.
+#'      \item{2} Padding with mirror values.
+#'  }
+#'    \item{padzone} Factor for expanding the padding zone
+#'}
+#' @param control 	a list of parameters for controlling the fitting process.
+#'             # eps ---- positive convergence tolerance
+#'                denom.eps ---- the iterations converge when
+#'                 max(abs(coeff.new-coeff.old)/(abs(coeff.old)+denom.eps)) <= eps
+#'                itmax ---- integer giving the maximum number of iterations
+#' @param moran.params     a list of parameters for calculating Moran's I.
 #'           This is passed to wrm.moran.
-#' plot      a logical value indicating whether results should be plotted
-#' graph     a logical value indicating whether results should be displayed
+#' @param plot      a logical value indicating whether results should be plotted
+#' @param graph     a logical value indicating whether results should be displayed
 #'
-#' Value:
+#' @return
 #' An object of class "wrm" is a list containing the following components:
 #'          call       call
 #'          formula    formula
@@ -64,15 +72,18 @@
 #'          if plot or graph is true:
 #'          ac.glm     autocorrelation of glm.residuals
 #'          ac         autocorrelation of wavelet.residuals
-#' References
+#' @references
 #' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
 #' linear models to remove the effect of spatial autocorrelation.
-#' Geogr. Anal. 42 (3), 323 - 337
+#' Geographical Analysis 42 (3), 323 - 337
+#'
+#' @author Gudrun Carl
+#' @export
 
 
 WRM<-function(formula,family,data,coord,
               level=1,wavelet="haar",wtrafo="dwt",
-              b.ini=NULL,pad=list(),control=list(),moran=list(),
+              b.ini=NULL,pad=list(),control=list(),moran.params=list(),
               plot=FALSE,graph=FALSE){
 
   n<-dim(data)[1]
@@ -115,7 +126,7 @@ WRM<-function(formula,family,data,coord,
   if(family!="gaussian" & dimnames(X)[[2]][1]=="(Intercept)") padform<-0
   padzone<-pad$padzone
   control<-do.call("wrm.control",control)
-  moran<-do.call("wrm.moran",moran)
+  moran<-do.call("wrm.moran",moran.params)
   lim1<-moran$lim1
   lim2<-lim1 + moran$increment
 
