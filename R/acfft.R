@@ -1,4 +1,3 @@
-#' @export
 #' @title Spatial autocorrelation diagnostics
 #'
 #' @description
@@ -26,6 +25,7 @@
 #'
 #' @author Gudrun Carl
 
+#' @export
 acfft<-function(x,y,f,lim1=1,lim2=2,dmax=10){
 
 
