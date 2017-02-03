@@ -10,7 +10,8 @@ Imports: gee,
 	 geepack,
 	 MASS,
 	 splancs,
-	 lattice
+	 lattice,
+	 waveslim
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
