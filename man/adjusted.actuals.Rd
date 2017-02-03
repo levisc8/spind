@@ -24,3 +24,13 @@ a vector of adjusted actual values
 \description{
 ASK GUDRUN WHAT THIS ACTUALLY DOES
 }
+\examples{
+data(hook)
+data<- hook[,1:2]
+coord<- hook[,3:4]
+aa<-adjusted.actuals(data,coord,plot.maps=TRUE)
+
+}
+\author{
+Gudrun Carl
+}

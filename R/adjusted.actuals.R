@@ -18,7 +18,15 @@
 #'
 #'@return a vector of adjusted actual values
 #'
-#' @export
+#'@author Gudrun Carl
+#'
+#'@examples
+#'data(hook)
+#'data<- hook[,1:2]
+#'coord<- hook[,3:4]
+#'aa<-adjusted.actuals(data,coord,plot.maps=TRUE)
+#'
+#'@export
 
 adjusted.actuals<-function(data,coord,plot.maps=FALSE){
 
