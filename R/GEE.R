@@ -60,7 +60,7 @@
 #' residuals should be plotted.
 #'
 #'
-#' @return An object of class \code{gee}. This consists of a list with the
+#' @return An object of class \code{GEE}. This consists of a list with the
 #' following elements:
 #' \describe{
 #'       \item{\code{call}}{Call}

@@ -2,14 +2,15 @@
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
 #' @param object An object of class \code{GEE}
-#' @param ... Additional parameters to be passed summary. Currently, only option is
-#' @param printAutoCorPars - A logical indicating whether to print the
+#' @param ... Additional parameters to be passed summary.
+#' @param printAutoCorPars A logical indicating whether to print the
 #' autocorrelation matrix
 #'
 #'@return Prints model details, parameter estimates, and autocorrelation values
 #'for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
 #'prints autocorrelation parameters used in the model.
 #'
+#'@author Sam Levin
 #'
 #' @export
 summary.GEE<-function(object,...,printAutoCorPars=TRUE){

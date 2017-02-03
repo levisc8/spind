@@ -15,6 +15,16 @@
 #' of uniform size. Default is 10.
 #'
 #' @return A vector of Moran’s I values for each distance bin.
+#'
+#' @examples
+#' data(musdata)
+#' coords<- musdata[,4:5]
+#' mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
+#'
+#' ac<-acfft(coords[,1],coords[,2],resid(mglm,type="pearson"),lim1=0,lim2=1)
+#' ac
+#'
+#' @author Gudrun Carl
 
 acfft<-function(x,y,f,lim1=1,lim2=2,dmax=10){
 
