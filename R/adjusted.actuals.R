@@ -26,7 +26,7 @@ adjusted.actuals<-function(data,coord,plot.maps=FALSE){
   fb<-data[,1]
   fa<-data[,2]
 
-  if(length(x)!=length(fa)) stop("coordinates[,1] and coordinates[,2] have different dimensions")
+  if(length(x)!=length(fa)) stop("coordinates and data have different dimensions")
   logic1<-identical(as.numeric(x),round(x,0))
   logic2<-identical(as.numeric(y),round(y,0))
   if(!logic1 | !logic2) stop("coordinates not integer")
