@@ -89,6 +89,14 @@
 #'
 #' @seealso \code{\link{qic}}, \code{\link{summary_gee}}
 #'
+#'@examples
+#' data(musdata)
+#' coords<- musdata[,4:5]
+#'
+#' x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+#'       coord=coords, corstr="exchangeable", plot=TRUE)
+#'
+#' summary_gee(x,printAutoCorPars=T)
 #'
 #'@references
 #' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
