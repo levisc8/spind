@@ -19,7 +19,7 @@
 #'@param spatial A logical indcating whether spatially corrected indices
 #'(rather than classical indices) should be computed.
 #'
-#'@return A list with the following components
+#'@return A list with the following components:
 #'\describe{
 #'  \item{\code{kappa}}{Kappa statistic}
 #'  \item{\code{cm}}{Confusion matrix}

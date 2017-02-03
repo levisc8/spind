@@ -23,17 +23,17 @@ presences or modeled absences. Default is 0.5.}
 (rather than classical indices) should be computed.}
 }
 \value{
-A list with the following components
+A list with the following components:
 \describe{
- \item{kappa}{kappa}
- \item{cm}{confusion matrix}
- \item{sensitivity}{sensitivity}
- \item{specificity}{specificity}
- \item{actuals}{actuals or adjusted actuals}
- \item{splitlevel.pred}{level splitting of predicted values}
- \item{splitlevel.act}{level splitting of actuals or adjusted actuals}
- \item{splitposition.pred}{position splitting of predicted values}
- \item{splitposition.act}{position splitting of actuals or adjusted actuals}
+ \item{\code{kappa}}{Kappa statistic}
+ \item{\code{cm}}{Confusion matrix}
+ \item{\code{sensitivity}}{Sensitivity}
+ \item{\code{specificity}}{Specificity}
+ \item{\code{actuals}}{Actual occurence data or adjusted actual occurence data}
+ \item{\code{splitlevel.pred}}{Level splitting of predicted values}
+ \item{\code{splitlevel.act}}{Level splitting of actuals or adjusted actuals}
+ \item{\code{splitposition.pred}}{Position splitting of predicted values}
+ \item{\code{splitposition.act}}{Position splitting of actuals or adjusted actuals}
 }
 }
 \description{
