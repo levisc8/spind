@@ -15,11 +15,11 @@
 #' autocorrelation in cases of regular gridded datasets. The grid cells
 #' are assumed to be square.
 #'
-#' @param formula  Model formual. Variable names must match variables in \code{data}.
+#' @param formula  Model formula. Variable names must match variables in \code{data}.
 #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
-#' @param data     A data frame with names that match the variables specified in \code{formula}.
+#' @param data     A data frame with variable names that match the variables specified in \code{formula}.
 #' @param coord    A matrix of two columns with corresponding cartesian
-#' coordinates, which have to be integer (grid cell numbering).
+#' coordinates. Currently only supports integer coordinates.
 #' @param  corstr   Expected autocorrelation structure: "independence", "fixed",
 #' "exchangeable", "quadratic"  are possible.
 #'
