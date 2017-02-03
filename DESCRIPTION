@@ -8,7 +8,9 @@ Description: Wrappers that allow for easily implementation of WRMs and GEEs in s
 Depends: R (>= 3.0.0)
 Imports: gee,
 	 geepack,
-	 MASS
+	 MASS,
+	 splancs,
+	 lattice
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

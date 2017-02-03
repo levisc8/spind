@@ -1,4 +1,5 @@
 #'@import grDevices
+#'@import lattice
 
 
 
@@ -53,26 +54,26 @@ adjusted.actuals<-function(data,coord,plot.maps=FALSE){
   if (plot.maps){
     colours<-rev(gray(3:32/32 -3/32 ))
 
-    a<-levelplot(fa~x+y,
+    a<-lattice::levelplot(fa~x+y,
                  col.regions=colours,
                  colorkey=FALSE,
                  scales = list(draw=FALSE),
                  xlab="",ylab="",main="predictions")
 
-    b<-levelplot(fb~x+y,
+    b<-lattice::levelplot(fb~x+y,
                  col.regions=colours,
                  colorkey=FALSE,
                  scales = list(draw=FALSE),
                  xlab="",ylab="",main="actuals")
 
-    c<-levelplot(fbs~x+y,
+    c<-lattice::levelplot(fbs~x+y,
                  col.regions=colours,
                  colorkey=list(space="bottom"),
                  scales = list(draw=FALSE),
                  xlab="",ylab="",main="adjusted actuals")
 
-    tp <- trellis.par.get()
-    trellis.par.set(list(axis.line = list(col = "transparent")))
+    tp <- lattice::trellis.par.get()
+    lattice::trellis.par.set(list(axis.line = list(col = "transparent")))
     print(a,position=c(0.1,0.09,0.92,0.98),split=c(1,1,2,2),more=TRUE)
     print(b,position=c(0.12,0.09,0.94,0.98),split=c(2,1,2,2),more=TRUE)
     print(c,position=c(0.12,0,0.94,1.02),split=c(2,2,2,2),more=FALSE)
