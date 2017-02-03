@@ -84,10 +84,10 @@
 #'       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 #' }
 #'
-#' Elements can be viewed using the \code{\link{summary_gee}} function included in
+#' Elements can be viewed using the \code{\link{summary.GEE}} function included in
 #' the package
 #'
-#' @seealso \code{\link{qic}}, \code{\link{summary_gee}}
+#' @seealso \code{\link{qic}}, \code{\link{summary.GEE}}
 #'
 #'@examples
 #' data(musdata)
@@ -96,7 +96,7 @@
 #' x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
 #'       coord=coords, corstr="exchangeable", plot=TRUE)
 #'
-#' summary_gee(x,printAutoCorPars=T)
+#' summary(x,printAutoCorPars=TRUE)
 #'
 #'@references
 #' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
@@ -278,7 +278,7 @@ GEE <- function(formula,family,data,coord,
               QIC=QIC,
               ac.glm=ac0,
               ac.gee=ac)
-  class(fit) <- "gee"
+  class(fit) <- "GEE"
   return(fit)
 
 }

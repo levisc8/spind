@@ -82,7 +82,7 @@ following elements:
       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 }
 
-Elements can be viewed using the \code{\link{summary_gee}} function included in
+Elements can be viewed using the \code{\link{summary.GEE}} function included in
 the package
 }
 \description{
@@ -97,10 +97,20 @@ may be autocorrelated. It accounts for spatial (2-dimensional) residual
 autocorrelation in cases of regular gridded datasets. The grid cells
 are assumed to be square.
 }
+\examples{
+data(musdata)
+coords<- musdata[,4:5]
+
+x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+      coord=coords, corstr="exchangeable", plot=TRUE)
+
+summary(x,printAutoCorPars=TRUE)
+
+}
 \references{
 Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
 Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 }
 \seealso{
-\code{\link{qic}}, \code{\link{summary_gee}}
+\code{\link{qic}}, \code{\link{summary.GEE}}
 }

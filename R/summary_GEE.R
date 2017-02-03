@@ -1,28 +1,27 @@
 #' @title Summarize the output from\code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
-#' @param model An object of class \code{gee}
-#' @param printAutoCorPars A logical indicating whether to print the
+#' @param object An object of class \code{GEE}
+#' @param ... Additional parameters to be passed summary. Currently, only option is
+#' @param printAutoCorPars - A logical indicating whether to print the
 #' autocorrelation matrix
 #'
 #'@return Prints model details, parameter estimates, and autocorrelation values
 #'for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
-#'prints \describe{
-#'
-#'}
+#'prints autocorrelation parameters used in the model.
 #'
 #'
 #' @export
-summary_gee<-function(model,printAutoCorPars=FALSE){
+summary.GEE<-function(object,...,printAutoCorPars=TRUE){
 
    cat("\n","Call:","\n")
-   print(model$call)
-   family<-model$family
-   b<-model$b
-   s.e.<-model$s.e.
-   z<-model$z
-   p<-model$p
-   QIC<-model$QIC
+   print(object$call)
+   family<-object$family
+   b<-object$b
+   s.e.<-object$s.e.
+   z<-object$z
+   p<-object$p
+   QIC<-object$QIC
    beta<-cbind(b,s.e.,z,p)
    if(family=="gaussian")
       colnames(beta) <- c("Estimate", "Std.Err", "t value", "Pr(>|t|)")
@@ -32,15 +31,15 @@ summary_gee<-function(model,printAutoCorPars=FALSE){
    printCoefmat(beta)
    cat("---","\n","QIC: ",QIC,"\n" )
    cat("---","\n")
-   ac0<-model$ac.glm
-   acg<-model$ac.gee
+   ac0<-object$ac.glm
+   acg<-object$ac.gee
    cat("Autocorrelation of GLM residuals","\n")
    print(ac0)
    cat("\n","Autocorrelation of GEE residuals","\n")
    print(acg)
 
-   if(printAutoCorPars&model$corstr!="independence"){
-     cat('---','\n','Autocorrelation parameters from ',model$corstr," model",'\n')
-     print(model$Mat.ac)
+   if(printAutoCorPars&object$corstr!="independence"){
+     cat('---','\n','Autocorrelation parameters from ',object$corstr," model",'\n')
+     print(object$Mat.ac)
    }
 }
