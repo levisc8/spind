@@ -66,15 +66,9 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
   for(i.n in 1:n){
     thresh<-cutoff[i.n]
 
-    if(split==4) { # split=4
-      # split into 4 classes
-      # for split=4 -> 4x4 conf.matrix
+    if(split==4) {
       lower.split<-thresh/2
       upper.split<-(1+thresh)/2
-      # 0 ... lower.split
-      # lower.split ... thresh
-      # thresh ... upper.split
-      # upper.split ... 1
       splitlevel[1,]<-c(0,lower.split)
       splitlevel[2,]<-c(lower.split,thresh)
       splitlevel[3,]<-c(thresh,upper.split)
@@ -99,9 +93,8 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
         j<-which(pipos[k,]==1)
         cm[i,j]<-cm[i,j]+1
       }
-      # inversion in relation to the second. diagonal
       cm<-matrix(rev(as.vector(cm)),4,4, byrow = TRUE)
-      # weights w
+
       w<-matrix(NA,4,4)
       for (i in 1:4){
         for (j in 1:4){
@@ -111,13 +104,9 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
       sensitivity[i.n]<-sum(w[,1:2]*cm[,1:2])/sum(cm[,1:2])
       specificity[i.n]<-sum(w[,3:4]*cm[,3:4])/sum(cm[,3:4])
 
-    } # split=4
+    }
 
-    if(split==2) { # split=2
-      # split into 2 classes
-      # for split=2 -> 2x2 conf.matrix
-      # 0 ... thresh
-      # thresh ... 1
+    if(split==2) {
       splitlevel[1,]<-c(0,thresh)
       splitlevel[2,]<-c(thresh,1)
       pipos<-matrix(0,n,2)
@@ -134,9 +123,7 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
         j<-which(pipos[k,]==1)
         cm[i,j]<-cm[i,j]+1
       }
-      # inversion in relation to the second. diagonal
       cm<-matrix(rev(as.vector(cm)),2,2, byrow = TRUE)
-      # weights w
       w<-matrix(NA,2,2)
       for (i in 1:2){
         for (j in 1:2){
@@ -146,17 +133,16 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
       sensitivity[i.n]<-sum(w[,1]*cm[,1])/sum(cm[,1])
       specificity[i.n]<-sum(w[,2]*cm[,2])/sum(cm[,2])
 
-    } # split=2
+    }
 
-  }  # i.n loop
+  }
 
-  # TSS
+
   n<-length(pi)
   sensitivity[is.na(sensitivity)]<-0
   specificity[is.na(specificity)]<-0
   TSS<-max(sensitivity+specificity)-1
 
-  # ROC
   if(plot.ROC){
     plot(1-specificity,sensitivity,
          type="l",xlim=c(0,1),ylim=c(0,1),
@@ -164,10 +150,9 @@ th.indep<-function(data,coord,spatial=TRUE,plot.ROC=TRUE){
     points(c(0,1),c(0,1),type="l")
   }
 
-  # AUC
   dat<-cbind(c(1-specificity,1,1,0), c(sensitivity, 1, 0, 0))
   AUC<-splancs::areapl(dat)
 
-  list(AUC=AUC,TSS=TSS,sensitivity=sensitivity,specificity=specificity)
+  return(list(AUC=AUC,TSS=TSS,sensitivity=sensitivity,specificity=specificity))
 
 }

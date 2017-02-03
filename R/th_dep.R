@@ -63,15 +63,10 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
   splitlevel<-matrix(NA,split,2)
   splitlevely<-matrix(NA,split,2)
 
-  if(split==4) { # split=4
-    # split into 4 classes
-    # for split=4 -> 4x4 conf.matrix
+  if(split==4) {
     lower.split<-thresh/2
     upper.split<-(1+thresh)/2
-    # 0 ... lower.split
-    # lower.split ... thresh
-    # thresh ... upper.split
-    # upper.split ... 1
+
     splitlevel[1,]<-c(0,lower.split)
     splitlevel[2,]<-c(lower.split,thresh)
     splitlevel[3,]<-c(thresh,upper.split)
@@ -96,8 +91,7 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
       j<-which(pipos[k,]==1)
       cm[i,j]<-cm[i,j]+1
     }
-    # inversion in relation to the second. diagonal
-    # confusion matrix
+
     cm<-matrix(rev(as.vector(cm)),4,4, byrow = TRUE)
     # weights w
     w<-matrix(NA,4,4)
@@ -108,13 +102,9 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
     sensitivity<-sum(w[,1:2]*cm[,1:2])/sum(cm[,1:2])
     specificity<-sum(w[,3:4]*cm[,3:4])/sum(cm[,3:4])
 
-  } # split=4
+  }
 
-  if(split==2) { # split=2
-    # split into 2 classes
-    # for split=2 -> 2x2 conf.matrix
-    # 0 ... thresh
-    # thresh ... 1
+  if(split==2) {
     splitlevel[1,]<-c(0,thresh)
     splitlevel[2,]<-c(thresh,1)
     pipos<-matrix(0,n,2)
@@ -131,10 +121,8 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
       j<-which(pipos[k,]==1)
       cm[i,j]<-cm[i,j]+1
     }
-    # inversion in relation to the second. diagonal
-    # confusion matrix
+
     cm<-matrix(rev(as.vector(cm)),2,2, byrow = TRUE)
-    # weights w
     w<-matrix(NA,2,2)
     for (i in 1:2){
       for (j in 1:2){
@@ -143,10 +131,8 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
     sensitivity<-sum(w[,1]*cm[,1])/sum(cm[,1])
     specificity<-sum(w[,2]*cm[,2])/sum(cm[,2])
 
-  } # split=2
+  }
 
-
-  # kappa
   n<-sum(cm)
   pobserved<-sum(w*cm)/n
   pexpected<-0
@@ -157,7 +143,7 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
   kappa<-(pobserved-pexpected)/(1-pexpected)
   kappa<-as.numeric(kappa)
 
-  list(kappa=kappa,cm=cm,sensitivity=sensitivity,specificity=specificity,
+  return(list(kappa=kappa,cm=cm,sensitivity=sensitivity,specificity=specificity,
        actuals=y,splitlevel.pred=splitlevel,splitlevel.act=splitlevely,
-       splitposition.pred=pipos,splitposition.act=ypos)
+       splitposition.pred=pipos,splitposition.act=ypos))
 }
