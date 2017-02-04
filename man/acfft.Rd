@@ -28,3 +28,15 @@ A vector of Moran’s I values for each distance bin.
 \description{
 A function for calculating spatial autocorrelation (i.e. Moran’s I values).
 }
+\examples{
+data(musdata)
+coords<- musdata[,4:5]
+mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
+
+ac<-acfft(coords[,1],coords[,2],resid(mglm,type="pearson"),lim1=0,lim2=1)
+ac
+
+}
+\author{
+Gudrun Carl
+}

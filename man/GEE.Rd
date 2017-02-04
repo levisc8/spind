@@ -8,14 +8,14 @@ GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
   moran.params = list(), plot = FALSE)
 }
 \arguments{
-\item{formula}{Model formual. Variable names must match variables in \code{data}.}
+\item{formula}{Model formula. Variable names must match variables in \code{data}.}
 
 \item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported.}
 
-\item{data}{A data frame with names that match the variables specified in \code{formula}.}
+\item{data}{A data frame with variable names that match the variables specified in \code{formula}.}
 
 \item{coord}{A matrix of two columns with corresponding cartesian
-coordinates, which have to be integer (grid cell numbering).}
+coordinates. Currently only supports integer coordinates.}
 
 \item{corstr}{Expected autocorrelation structure: "independence", "fixed",
 "exchangeable", "quadratic"  are possible.
@@ -58,7 +58,7 @@ coordinates, which have to be integer (grid cell numbering).}
 residuals should be plotted.}
 }
 \value{
-An object of class \code{gee}. This consists of a list with the
+An object of class \code{GEE}. This consists of a list with the
 following elements:
 \describe{
       \item{\code{call}}{Call}
