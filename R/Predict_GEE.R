@@ -5,17 +5,19 @@
 #'
 #' @param object   A model object of class \code{GEE} to be used
 #' for making predictions
+#' @param ... Other arguments to be passed to \code{predict}
 #' @param newdata  A data frame containing variables with which to predict
 #'
 #' @return   A vector of predicted values
 #' @examples
 #' data(musdata)
-#' coords<-musdata[,1:2]
+#' coords<-musdata[,4:5]
 #' mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
-#'           coords=coords,corstr="fixed",plot=TRUE)
-#' pred<-predict(mgee,musdata)
+#'           coord=coords,corstr="fixed",plot=TRUE)
+#' pred<-predict(mgee,newdata=musdata)
 #'
-predict.GEE<-function(object,newdata){
+#'@export
+predict.GEE<-function(object,...,newdata){
 
 
   data<-newdata
@@ -23,7 +25,7 @@ predict.GEE<-function(object,newdata){
   family<-object$family
   b<-object$b
 
-  x.matrix<-object.matrix(formula,data)
+  x.matrix<-model.matrix(formula,data)
   fitted<-x.matrix%*%b
   fitted<-as.vector(fitted)
   if(family=="poisson") fitted<-exp(fitted)

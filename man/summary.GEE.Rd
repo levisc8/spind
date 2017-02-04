@@ -4,14 +4,14 @@
 \alias{summary.GEE}
 \title{Summarize the output from\code{GEE}}
 \usage{
-\method{summary}{GEE}(object, ..., printAutoCorPars)
+\method{summary}{GEE}(object, ..., printAutoCorPars = TRUE)
 }
 \arguments{
 \item{object}{An object of class \code{GEE}}
 
-\item{...}{Additional parameters to be passed summary. Currently, only option is}
+\item{...}{Additional parameters to be passed summary.}
 
-\item{printAutoCorPars}{- A logical indicating whether to print the
+\item{printAutoCorPars}{A logical indicating whether to print the
 autocorrelation matrix}
 }
 \value{
@@ -22,4 +22,7 @@ prints autocorrelation parameters used in the model.
 \description{
 Returns summary of GEE parameter estimates and autocorrelations
 of the residuals.
+}
+\author{
+Sam Levin
 }

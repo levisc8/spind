@@ -3,12 +3,12 @@
 #'@description Provides \code{summary} methods for WRM model objects
 #'
 #'@param object A model of class \code{WRM}
-#'
+#'@param ... Other arguments passed to \code{summary}
 #'@return Prints results of model
 
 #'@export
 
-summary.WRM<-function (object) {
+summary.WRM<-function (object,...) {
   cat("\n","Call:","\n")
   print(object$call)
   cat("\n","Pearson Residuals:","\n")
