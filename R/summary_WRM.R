@@ -34,7 +34,7 @@ summary.WRM<-function (object,...) {
   cat("\n","Number of iterations: ",it,"\n")
   cat("---","\n")
   ac0<-object$ac.glm
-  acw<-object$ac
+  acw<-object$ac.wrm
   cat("Autocorrelation of glm.residuals","\n")
   print(ac0)
   cat("Autocorrelation of wavelet.residuals","\n")
