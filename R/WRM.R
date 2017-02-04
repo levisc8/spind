@@ -18,13 +18,14 @@
 #' coordinates. Currently only supports integer coordinates.
 #' @param level    An integer specifying the depth of wavelet decomposition
 #'      \itemize{
-#'           \item{0} Without autocorrelation removal (equivalent to a GLM)
-#'           \item{1} For best autocorrelation removal
-#'           \item{...} Higher integers possible. The limit depends on sample size # We should expand on this. How does one determin the limit?
+#'           \item{0} - Without autocorrelation removal (equivalent to a GLM)
+#'           \item{1} - For best autocorrelation removal
+#'           \item{...} - Higher integers possible. The limit depends on sample size
 #'        }
-#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}
-#' are possible.
-#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt} # briefly explain differences?
+#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+#' are possible. \code{haar} is the default.
+#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+#' \code{dwt} is the default.
 #' @param b.ini     Initial parameter estimates. Default is NULL.
 #' @param pad       A list of parameters for padding wavelet coefficients.
 #' \itemize{
@@ -33,55 +34,61 @@
 #'     zero when either \code{level}=0 or
 #'     a \code{formula} including an intercept and a non-gaussian family
 #'    \itemize{
-#'      \item{0} Padding with 0s.
-#'      \item{1} Padding with mean values.
-#'      \item{2} Padding with mirror values.
+#'      \item{0} - Padding with 0s.
+#'      \item{1} - Padding with mean values.
+#'      \item{2} - Padding with mirror values.
 #'  }
 #'    \item{padzone} Factor for expanding the padding zone
 #'}
 #' @param control 	a list of parameters for controlling the fitting process.
 #'    \itemize{
-#'       \item{eps} Positive convergence tolerance
-#'       \item{denom.eps} The iterations converge when
-#'            \eqn{max(|coeff.new-coeff.old|)/(|coeff.old|+denom.eps) <= eps}
-#'       \item{itmax} Integer giving the maximum number of iterations
+#'       \item{\code{eps}} - Positive convergence tolerance
+#'       \item{\code{denom.eps}} - Default is 10^-20. See Notes for details
+#'       \item{\code{itmax}} - Integer giving the maximum number of iterations
 #'}
 #' @param moran.params    A list of parameters for calculating Moran's I.
 #'   \itemize{
-#'     \item\code{lim1} Lower limit for first bin. Default is 0.
-#'     \item\code{increment} Step size for calculating I. Default is 1.
+#'     \item\code{lim1} - Lower limit for first bin. Default is 0.
+#'     \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 #'   }
-#' @param plot      a logical value indicating whether results should be plotted
-#' @param graph     a logical value indicating whether results should be displayed
+#' @param graph     A logical value indicating whether to plot autocorrelation of
+#' residuals by distance bin
 #'
-#' @return
-#' An object of class "wrm" is a list containing the following components:
-#'          call       call
-#'          formula    formula
-#'          family     family
-#'          b          estimate of regression parameters
-#'          s.e.       standard errors
-#'          z          z values (or corresponding values for statistic)
-#'          p          probabilities
-#'          fitted     fitted values
-#'          resid      Pearson residuals
-#'          b.sm       estimate of regression parameters of neglected smooth part
-#'          fitted.sm  fitted values of neglected smooth part
-#'          level      level
-#'          wavelet    wavelet
-#'          wtrafo     wtrafo
-#'          padzone    padzone
-#'          padform    padform
-#'          n.eff      effective number of observations
-#'          AIC        Akaike information criterion
-#'          if plot or graph is true:
-#'          ac.glm     autocorrelation of glm.residuals
-#'          ac         autocorrelation of wavelet.residuals
+#' @return An object of class \code{WRM}. This consists of a list with the
+#' following elements:
+#' \describe{
+#'       \item{\code{call}}{Call}
+#'       \item{\code{formula}}{Model formula}
+#'       \item{\code{family}}{Family}
+#'       \item{\code{b}}{Estimate of regression parameters}
+#'       \item{\code{s.e.}}{Standard errors}
+#'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
+#'       \item{\code{p}}{p-values}
+#'       \item{\code{fitted}}{Fitted values}
+#'       \item{\code{resid}}{Normalized Pearson residuals}
+#'       \item{\code{b.sm}}{Parameter estimates of neglected smooth part}
+#'       \item{\code{fitted.sm}}{Fitted values of neglected smooth part}
+#'       \item{\code{level}}{Selected level of wavelet decomposition}
+#'       \item{\code{wavelet}}{Selected wavelet}
+#'       \item{\code{wtrafo}}{Selected wavelet transformation}
+#'       \item{\code{padzone}}{Selected padding zone expansion factor}
+#'       \item{\code{padform}}{Selected matrix padding type}
+#'       \item{\code{n.eff}}{Effective number of observations}
+#'       \item{\code{AIC}}{Akaike information criterion}
+#'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
+#'       \item{\code{ac.wrm}}{Autocorrelation of WRM residuals}
+#'}
 #' @references
 #' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
 #' linear models to remove the effect of spatial autocorrelation.
 #' Geographical Analysis 42 (3), 323 - 337
 #'
+# @note The iterations for the WRM function converge when
+#       \deqn{
+#            \frac{\max( | coef_new - coef_old | )}{( | coef_old | + denom.eps )}\left\
+#             \le eps \right.
+#            }
+#
 #' @author Gudrun Carl
 #' @export
 
@@ -89,7 +96,7 @@
 WRM<-function(formula,family,data,coord,
               level=1,wavelet="haar",wtrafo="dwt",
               b.ini=NULL,pad=list(),control=list(),moran.params=list(),
-              plot=FALSE,graph=FALSE){
+              graph=FALSE){
 
   n<-dim(data)[1]
   l<-dim(data)[2]
@@ -373,26 +380,6 @@ WRM<-function(formula,family,data,coord,
     }
   }
 
-  if(plot){
-    beta<-cbind(glm.beta,wavelet.beta,s.e.,z.value,pr)
-    beta<-beta[,2:5]
-    if(family=="gaussian")
-      colnames(beta) <- c("Estimate", "Std.Err", "t value", "Pr(>|t|)")
-    if(family=="binomial" | family=="poisson")
-      colnames(beta) <- c("Estimate", "Std.Err", "z value", "Pr(>|z|)")
-    cat("---","\n","Coefficients:","\n")
-    printCoefmat(beta)
-    cat("---","\n","n.eff: ",n.eff,",  AIC: ",AIC,"\n" )
-  }
-
-  if(plot){
-    cat("---","\n")
-    cat("Autocorrelation of glm.residuals","\n")
-    print(ac0)
-    cat("Autocorrelation of wavelet.residuals","\n")
-    print(acw)
-  }
-
   if(graph & !is.na(acw[1])){
     y1<-min(min(ac0),min(acw))-.1
     y2<-max(max(ac0),max(acw))+.1
@@ -434,7 +421,7 @@ WRM<-function(formula,family,data,coord,
             n.eff=n.eff,
             AIC=AIC,
             ac.glm=ac0,
-            ac=acw)
+            ac.wrm=acw)
 
   class(fit)<-"WRM"
   return(fit)
