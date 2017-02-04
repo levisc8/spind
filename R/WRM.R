@@ -40,12 +40,17 @@
 #'    \item{padzone} Factor for expanding the padding zone
 #'}
 #' @param control 	a list of parameters for controlling the fitting process.
-#'             # eps ---- positive convergence tolerance
-#'                denom.eps ---- the iterations converge when
-#'                 max(abs(coeff.new-coeff.old)/(abs(coeff.old)+denom.eps)) <= eps
-#'                itmax ---- integer giving the maximum number of iterations
-#' @param moran.params     a list of parameters for calculating Moran's I.
-#'           This is passed to wrm.moran.
+#'    \itemize{
+#'       \item{eps} Positive convergence tolerance
+#'       \item{denom.eps} The iterations converge when
+#'            \eqn{max(|coeff.new-coeff.old|)/(|coeff.old|+denom.eps) <= eps}
+#'       \item{itmax} Integer giving the maximum number of iterations
+#'}
+#' @param moran.params    A list of parameters for calculating Moran's I.
+#'   \itemize{
+#'     \item\code{lim1} Lower limit for first bin. Default is 0.
+#'     \item\code{increment} Step size for calculating I. Default is 1.
+#'   }
 #' @param plot      a logical value indicating whether results should be plotted
 #' @param graph     a logical value indicating whether results should be displayed
 #'
