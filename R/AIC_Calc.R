@@ -1,25 +1,36 @@
+#'Aikake Information Criterion with correction for sample size
 #'
+#'@description Calculates AIC and AICc
 #'
+#'@param formula A model formula
+#'@param family \code{gaussian}, \code{binomial}, or \code{poisson}
+#'@param data A data frame
+#'@param mu Fitted values from a model
+#'@param n.eff Effective number of observations. Default is NULL
+#'
+#'@return A list with the following components
+#'\describe{
+#'  \code{\item{loglik}}{Log likelihood of the model}
+#'  \code{\item{df}}{Degrees of freedom}
+#'  \code{\item{AIC}}{AIC score for the specified model}
+#'  \code{\item}{AIC score corrected for the sample size}
+#'}
+#'
+#'@author Gudrun Carl
+#'
+#'@examples
+#' data(musdata)
+#' coords<- musdata[,4:5]
+#' mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
+#'
+#' aic<-aic.calc(musculus ~ pollution + exposure, "poisson", musdata,
+#'              mglm$fitted)
+#' aic$AIC
 #'
 #'
 #'
 
 aic.calc<-function(formula,family,data,mu,n.eff=NULL){
-  ###############################################################################
-  # Description
-  # A function for calculating log likelihood and AIC values.
-  # Arguments:
-  # formula  with specified notation according to names in data frame
-  # family   "gaussian", "binomial"(binary) or "poisson"
-  # data     data frame
-  # mu       fitted values
-  # n.eff    effective number of observations
-  #
-  # value:   loglik     log likelihood
-  #          df         degrees of freedom
-  #          AIC        Akaike information criterion
-  #          AICc       AIC with a correction for finite sample sizes
-  ###############################################################################
 
   X<-model.matrix(formula,data)
   if(is.vector(model.frame(formula,data)[[1]])){
