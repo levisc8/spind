@@ -10,10 +10,10 @@
 #'
 #'@return A list with the following components
 #'\describe{
-#'  \code{\item{loglik}}{Log likelihood of the model}
-#'  \code{\item{df}}{Degrees of freedom}
-#'  \code{\item{AIC}}{AIC score for the specified model}
-#'  \code{\item}{AIC score corrected for the sample size}
+#'  \item{\code{loglik}}{Log likelihood of the model}
+#'  \item{\code{df}}{Degrees of freedom}
+#'  \item{\code{AIC}}{AIC score for the specified model}
+#'  \item{\code{AICc}}{AIC score corrected for the sample size}
 #'}
 #'
 #'@author Gudrun Carl
@@ -28,7 +28,7 @@
 #' aic$AIC
 #'
 #'
-#'
+#'@export
 
 aic.calc<-function(formula,family,data,mu,n.eff=NULL){
 
