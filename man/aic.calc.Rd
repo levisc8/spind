@@ -23,7 +23,7 @@ A list with the following components
  \item{\code{loglik}}{Log likelihood of the model}
  \item{\code{df}}{Degrees of freedom}
  \item{\code{AIC}}{AIC score for the specified model}
- \item\code{AICc}{AIC score corrected for the sample size}
+ \item{\code{AICc}}{AIC score corrected for the sample size}
 }
 }
 \description{

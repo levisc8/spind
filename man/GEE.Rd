@@ -17,29 +17,29 @@ GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
 \item{coord}{A matrix of two columns with corresponding cartesian
 coordinates. Currently only supports integer coordinates.}
 
-\item{corstr}{Expected autocorrelation structure: "independence", "fixed",
-"exchangeable", "quadratic"  are possible.
+\item{corstr}{Expected autocorrelation structure: \code{independence}, \code{fixed},
+\code{exchangeable}, and \code{quadratic}  are possible.
 
  \itemize{
-   \item\emph{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
+   \item\code{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
 
-   \item\emph{fixed} for best autocorrelation removal by means of an adapted
+   \item\code{fixed} for best autocorrelation removal by means of an adapted
    isotropic power function specifying all correlation
    coefficients
 
-   \item\emph{exchangeable} and \emph{quadratic} for clustering, i.e.
+   \item\code{exchangeable} and \code{quadratic} for clustering, i.e.
    the correlation matrix has a block diagonal form:
 
    \itemize{
-      \item\emph{exchangeable}: all intra-block correlation coefficients are equal
+      \item\code{exchangeable}: all intra-block correlation coefficients are equal
 
-      \item\emph{quadratic}: intra-block correlation coefficients for different
+      \item\code{quadratic}: intra-block correlation coefficients for different
          distances can be different.
          }
        }}
 
-\item{cluster}{Cluster size for cluster models \emph{exchangeable}
- and \emph{quadratic}. values of 2, 3, and 4 are allowed
+\item{cluster}{Cluster size for cluster models \code{exchangeable}
+ and \code{quadratic}. values of 2, 3, and 4 are allowed
  \itemize{
    \item 2 - a 2*2 cluster
 
