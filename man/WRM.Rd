@@ -18,7 +18,7 @@ WRM(formula, family, data, coord, level = 1, wavelet = "haar",
 \item{coord}{A matrix of two columns with corresponding cartesian
 coordinates. Currently only supports integer coordinates.}
 
-\item{level}{An integer specifying the depth of wavelet decomposition
+\item{level}{An integer specifying the degree of wavelet decomposition
 \itemize{
      \item{0} - Without autocorrelation removal (equivalent to a GLM)
      \item{1} - For best autocorrelation removal
@@ -35,7 +35,7 @@ are possible. \code{haar} is the default.}
 
 \item{pad}{A list of parameters for padding wavelet coefficients.
 \itemize{
-   \item{padform} 0, 1, and 2 are possible.
+   \item{padform} - 0, 1, and 2 are possible.
     \code{padform} is automatically set to
     zero when either \code{level}=0 or
     a \code{formula} including an intercept and a non-gaussian family
@@ -44,14 +44,14 @@ are possible. \code{haar} is the default.}
      \item{1} - Padding with mean values.
      \item{2} - Padding with mirror values.
  }
-   \item{padzone} Factor for expanding the padding zone
+   \item{padzone} - Factor for expanding the padding zone
 }}
 
-\item{control}{a list of parameters for controlling the fitting process.
+\item{control}{a list of parameters for controlling the fitting process. Changes to defaults are not recommended.
    \itemize{
-      \item{\code{eps}} - Positive convergence tolerance
-      \item{\code{denom.eps}} - Default is 10^-20. See Notes for details
-      \item{\code{itmax}} - Integer giving the maximum number of iterations
+      \item{\code{eps}} - Positive convergence tolerance. Default is 0.001.
+      \item{\code{denom.eps}} - Default is 10^-20.
+      \item{\code{itmax}} - Integer giving the maximum number of iterations. Default is 200.
 }}
 
 \item{moran.params}{A list of parameters for calculating Moran's I.

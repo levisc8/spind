@@ -19,10 +19,12 @@ consecutively numbered coordinates for each occurence and prediction in
 Default is FALSE.}
 }
 \value{
-a vector of adjusted actual values
+a vector of adjusted actual presence/absence values.
 }
 \description{
-ASK GUDRUN WHAT THIS ACTUALLY DOES
+Adjusts actual presence/absence data based on the autocorrelation
+in the predictions of a model. Additionally, will optionally plot results of
+model predictions, un-modified actual presence/absence, and adjusted  presence/absence.
 }
 \examples{
 data(hook)
