@@ -29,7 +29,7 @@
 #' @param b.ini     Initial parameter estimates. Default is NULL.
 #' @param pad       A list of parameters for padding wavelet coefficients.
 #' \itemize{
-#'    \item{padform} 0, 1, and 2 are possible.
+#'    \item{padform} - 0, 1, and 2 are possible.
 #'     \code{padform} is automatically set to
 #'     zero when either \code{level}=0 or
 #'     a \code{formula} including an intercept and a non-gaussian family
@@ -38,13 +38,13 @@
 #'      \item{1} - Padding with mean values.
 #'      \item{2} - Padding with mirror values.
 #'  }
-#'    \item{padzone} Factor for expanding the padding zone
+#'    \item{padzone} - Factor for expanding the padding zone
 #'}
-#' @param control 	a list of parameters for controlling the fitting process.
+#' @param control 	a list of parameters for controlling the fitting process. Changes to defaults are not recommended.
 #'    \itemize{
-#'       \item{\code{eps}} - Positive convergence tolerance
-#'       \item{\code{denom.eps}} - Default is 10^-20. See Notes for details
-#'       \item{\code{itmax}} - Integer giving the maximum number of iterations
+#'       \item{\code{eps}} - Positive convergence tolerance. Default is 0.001.
+#'       \item{\code{denom.eps}} - Default is 10^-20.
+#'       \item{\code{itmax}} - Integer giving the maximum number of iterations. Default is 200.
 #'}
 #' @param moran.params    A list of parameters for calculating Moran's I.
 #'   \itemize{
