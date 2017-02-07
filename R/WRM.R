@@ -16,7 +16,7 @@
 #' @param data     A data frame with variable names that match the variables specified in \code{formula}.
 #' @param coord    A matrix of two columns with corresponding cartesian
 #' coordinates. Currently only supports integer coordinates.
-#' @param level    An integer specifying the depth of wavelet decomposition
+#' @param level    An integer specifying the degree of wavelet decomposition
 #'      \itemize{
 #'           \item{0} - Without autocorrelation removal (equivalent to a GLM)
 #'           \item{1} - For best autocorrelation removal
