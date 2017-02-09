@@ -7,7 +7,7 @@
 #'
 #'@description Adjusts actual presence/absence data based on the autocorrelation
 #'in the predictions of a model. Additionally, will optionally plot results of
-#'model predictions, un-modified actual presence/absence, and adjusted  presence/absence.
+#'model predictions, un-modified actual presence/absence, and adjusted  values.
 #'
 #'@param data a dataframe or matrix containing actual presence/absence (binary,
 #'0 or 1) values in 1st column and predicted values (numeric between 0 and 1)
@@ -18,7 +18,7 @@
 #'@param plot.maps A logical indicating whether maps should be plotted.
 #'Default is FALSE.
 #'
-#'@return a vector of adjusted actual presence/absence values.
+#'@return A vector of adjusted actual values.
 #'
 #'@author Gudrun Carl
 #'
