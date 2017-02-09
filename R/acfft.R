@@ -3,15 +3,15 @@
 #' @description
 #' A function for calculating spatial autocorrelation (i.e. Moran’s I values).
 #'
-#' @param x 	    a vector of length n representing the x coordinates
+#' @param x 	    A vector of length n representing the x coordinates
 #'         (integer, consecutively numbered cells).
-#' @param y 	    a vector of length n representing the y coordinates
+#' @param y 	    A vector of length n representing the y coordinates
 #'         (integer, consecutively numbered cells)
-#' @param f       residuals from independent regression
-#' @param lim1    lower bound for first bin. Default is 1
-#' @param lim2    upper bound for first bin. Default is 2
-#' @param dmax    number of distance bins to examine. Bins are assumed to be
-#' of uniform size. Default is 10.
+#' @param f       A vector which is the same length as \code{x} and \code{y}
+#' @param lim1    Lower bound for first bin. Default is 1
+#' @param lim2    Upper bound for first bin. Default is 2
+#' @param dmax    Number of distance bins to examine. Bins are formed by annuli of gradually
+#' increasing radii. Default is 10.
 #'
 #' @return A vector of Moran’s I values for each distance bin.
 #'
