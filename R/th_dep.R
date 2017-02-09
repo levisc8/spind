@@ -16,7 +16,7 @@
 #'integer and consecutively numbered.
 #'@param thresh A cutoff value for classifying predictions as modeled
 #'presences or modeled absences. Default is 0.5.
-#'@param spatial A logical indcating whether spatially corrected indices
+#'@param spatial A logical indicating whether spatially corrected indices
 #'(rather than classical indices) should be computed.
 #'
 #'@return A list with the following components:
@@ -33,6 +33,12 @@
 #'}
 #'
 #'@author Gudrun Carl
+#'
+#'@references Carl G, Kühn I (2016)
+#' Spind: a package for computing spatially corrected accuracy measures.
+#' Ecography. DOI: 10.1111/ecog.02593
+
+#'
 #'@examples
 #'data(hook)
 #'data<-hook[,1:2]
