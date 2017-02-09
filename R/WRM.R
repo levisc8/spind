@@ -2,7 +2,8 @@
 #' Wavelet-revised models (WRMs)
 #'
 #' @description A wavelet-based method to remove spatial autocorrelation
-#' in multiple linear regressions.
+#' in multiple linear regressions. Wavelet transforms are implemented using
+#' \pkg{waveslim} (Whitcher, 2005).
 #' @details
 #' WRM can be used to fit linear models for response vectors of different
 #' distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
@@ -65,7 +66,7 @@
 #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
 #'       \item{\code{p}}{p-values}
 #'       \item{\code{fitted}}{Fitted values}
-#'       \item{\code{resid}}{Normalized Pearson residuals}
+#'       \item{\code{resid}}{Pearson residuals}
 #'       \item{\code{b.sm}}{Parameter estimates of neglected smooth part}
 #'       \item{\code{fitted.sm}}{Fitted values of neglected smooth part}
 #'       \item{\code{level}}{Selected level of wavelet decomposition}
@@ -82,6 +83,10 @@
 #' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
 #' linear models to remove the effect of spatial autocorrelation.
 #' Geographical Analysis 42 (3), 323 - 337
+#'
+#' Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
+#' and three-dimensional signal processing. R package version 1.5.
+
 #'
 # @note The iterations for the WRM function converge when
 #       \deqn{
