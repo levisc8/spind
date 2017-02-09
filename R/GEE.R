@@ -5,8 +5,8 @@
 #'
 #' @title  GEE (Generalized Estimating Equations)
 #' @description
-#' \code{GEE} provides a GEE-based method to account for spatial
-#' autocorrelation in multiple linear regressions
+#' \code{GEE} provides a GEE-based method based on \pkg{gee} and \pkg{geepack}
+#' to account for spatial autocorrelation in multiple linear regressions
 #' @details
 #' GEE can be used to fit linear models for response variables with
 #' different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
@@ -101,6 +101,14 @@
 #'@references
 #' Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
 #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
+#'
+#' Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,
+#' 4.4, version 4.13)., B. R. gee: Generalized Estimation Equation
+#' solver. R package version 4.13-11.
+#'
+#' Yan, J., 2004. geepack: Generalized Estimating Equation Package.
+#' R package version 0.2–10.
+#'
 #' @export
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
