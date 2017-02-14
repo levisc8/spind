@@ -7,20 +7,20 @@
 acfft(x, y, f, lim1 = 1, lim2 = 2, dmax = 10)
 }
 \arguments{
-\item{x}{a vector of length n representing the x coordinates
+\item{x}{A vector of length n representing the x coordinates
 (integer, consecutively numbered cells).}
 
-\item{y}{a vector of length n representing the y coordinates
+\item{y}{A vector of length n representing the y coordinates
 (integer, consecutively numbered cells)}
 
-\item{f}{residuals from independent regression}
+\item{f}{A vector which is the same length as \code{x} and \code{y}}
 
-\item{lim1}{lower bound for first bin. Default is 1}
+\item{lim1}{Lower bound for first bin. Default is 1}
 
-\item{lim2}{upper bound for first bin. Default is 2}
+\item{lim2}{Upper bound for first bin. Default is 2}
 
-\item{dmax}{number of distance bins to examine. Bins are assumed to be
-of uniform size. Default is 10.}
+\item{dmax}{Number of distance bins to examine. Bins are formed by annuli of gradually
+increasing radii. Default is 10.}
 }
 \value{
 A vector of Moran’s I values for each distance bin.
