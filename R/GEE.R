@@ -132,8 +132,9 @@ GEE <- function(formula,family,data,coord,
   res0 <- resid(m0,type="pearson")
   id <- rep(1,nn)
   dato <- data.frame(data,id)
-  suppressMessages(capture.output({mgee <- gee::gee(formula=formula,family=family,data=dato,id=id,
-            corstr="independence")}))
+  suppressMessages(capture.output({mgee <- gee::gee(formula=formula,family=family,
+                                                    data=dato,id=id,
+                                                    corstr="independence")}))
   var.indep.naive <- mgee$naive.variance
 
   if(corstr=="independence"){
@@ -146,7 +147,8 @@ GEE <- function(formula,family,data,coord,
     z <- summary(m0)$coefficients[,3]
     p <- summary(m0)$coefficients[,4]
     scale <- summary(m0)$dispersion
-    Icrit <- qic.calc(formula,data,family,fitted,var.indep.naive,var.indep.naive)
+    Icrit <- qic.calc(formula,family=family,data=data,
+                      fitted,var.indep.naive,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -184,7 +186,7 @@ GEE <- function(formula,family,data,coord,
       if(z[ii]<0) p[ii] <- 2*(pnorm(z[ii]))
     }
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.calc(formula,data,family,fitted,var.naive,var.indep.naive)
+    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.naive,var.indep.naive)
     QIC <- Icrit$QIC
    }
 
@@ -218,7 +220,7 @@ GEE <- function(formula,family,data,coord,
     }
 
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.calc(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
 
    }
@@ -249,7 +251,7 @@ GEE <- function(formula,family,data,coord,
     p <- summary(mgeese)$mean[,4]
 
     scale <- as.numeric(summary(mgeese)$scale[1])
-    Icrit <- qic.calc(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -316,10 +318,7 @@ GEE <- function(formula,family,data,coord,
 #'
 #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
 #' @export
-qic.calc <- function(formula,data,family,mu,var.robust,var.indep.naive){
-  ###############################################################################
-
-  ###############################################################################
+qic.calc <- function(formula,family,data,mu,var.robust,var.indep.naive){
 
   X <- model.matrix(formula,data)
   if(is.vector(model.frame(formula,data)[[1]])){
