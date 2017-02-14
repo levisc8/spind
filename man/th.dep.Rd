@@ -19,7 +19,7 @@ integer and consecutively numbered.}
 \item{thresh}{A cutoff value for classifying predictions as modeled
 presences or modeled absences. Default is 0.5.}
 
-\item{spatial}{A logical indcating whether spatially corrected indices
+\item{spatial}{A logical indicating whether spatially corrected indices
 (rather than classical indices) should be computed.}
 }
 \value{
@@ -53,6 +53,11 @@ si1<-th.dep(data,coord,spatial=TRUE)
 si1$kappa
 si1$cm
 
+}
+\references{
+Carl G, Kühn I (2016)
+Spind: a package for computing spatially corrected accuracy measures.
+Ecography. DOI: 10.1111/ecog.02593
 }
 \author{
 Gudrun Carl
