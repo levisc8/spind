@@ -9,7 +9,7 @@
    \item{actuals}{integer - Presence/absence records}
    \item{predictions}{numeric - predicted probabilities of occurence}
    \item{x}{integer - x-coordinates for each grid cell}
-   \item{y}{numeric - y-coordinates for each grid cell}
+   \item{y}{integer - y-coordinates for each grid cell}
 
  }}
 \usage{
