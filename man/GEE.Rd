@@ -74,7 +74,7 @@ following elements:
       \item{\code{resid}}{Normalized Pearson residuals}
       \item{\code{w.ac}}{Working autocorrelation parameters}
       \item{\code{Mat.ac}}{Working autocorrelation matrix}
-      \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic}}
+      \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic.calc}}
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
@@ -86,8 +86,8 @@ Elements can be viewed using the \code{\link{summary.GEE}} function included in
 the package
 }
 \description{
-\code{GEE} provides a GEE-based method to account for spatial
-autocorrelation in multiple linear regressions
+\code{GEE} provides a GEE-based method based on \pkg{gee} and \pkg{geepack}
+to account for spatial autocorrelation in multiple linear regressions
 }
 \details{
 GEE can be used to fit linear models for response variables with
@@ -110,7 +110,14 @@ summary(x,printAutoCorPars=TRUE)
 \references{
 Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
 Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
+
+Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,
+4.4, version 4.13)., B. R. gee: Generalized Estimation Equation
+solver. R package version 4.13-11.
+
+Yan, J., 2004. geepack: Generalized Estimating Equation Package.
+R package version 0.2–10.
 }
 \seealso{
-\code{\link{qic}}, \code{\link{summary.GEE}}
+\code{\link{qic.calc}}, \code{\link{summary.GEE}}
 }
