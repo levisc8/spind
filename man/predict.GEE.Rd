@@ -18,7 +18,7 @@ for making predictions}
 A vector of predicted values
 }
 \description{
-Predicts values using a \code{GEE} model.
+Predicts values based on a user-specified \code{GEE} model.
 }
 \examples{
 data(musdata)
@@ -27,4 +27,8 @@ mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
           coord=coords,corstr="fixed",plot=TRUE)
 pred<-predict(mgee,newdata=musdata)
 
+}
+\author{
+Gudrun Carl
+       Sam Levin
 }

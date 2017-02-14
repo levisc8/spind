@@ -1,7 +1,7 @@
 #' predict.GEE
 #'
 #' @description
-#' Predicts values using a \code{GEE} model.
+#' Predicts values based on a user-specified \code{GEE} model.
 #'
 #' @param object   A model object of class \code{GEE} to be used
 #' for making predictions
@@ -15,6 +15,9 @@
 #' mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
 #'           coord=coords,corstr="fixed",plot=TRUE)
 #' pred<-predict(mgee,newdata=musdata)
+#'
+#'@author Gudrun Carl
+#'        Sam Levin
 #'
 #'@export
 predict.GEE<-function(object,...,newdata){
