@@ -76,7 +76,7 @@
 #'       \item{\code{resid}}{Normalized Pearson residuals}
 #'       \item{\code{w.ac}}{Working autocorrelation parameters}
 #'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
-#'       \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic}}
+#'       \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic.calc}}
 #'        for further details}
 #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
 #'       be plotted}
@@ -87,7 +87,7 @@
 #' Elements can be viewed using the \code{\link{summary.GEE}} function included in
 #' the package
 #'
-#' @seealso \code{\link{qic}}, \code{\link{summary.GEE}}
+#' @seealso \code{\link{qic.calc}}, \code{\link{summary.GEE}}
 #'
 #'@examples
 #' data(musdata)
@@ -146,7 +146,7 @@ GEE <- function(formula,family,data,coord,
     z <- summary(m0)$coefficients[,3]
     p <- summary(m0)$coefficients[,4]
     scale <- summary(m0)$dispersion
-    Icrit <- qic(formula,data,family,fitted,var.indep.naive,var.indep.naive)
+    Icrit <- qic.calc(formula,data,family,fitted,var.indep.naive,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -184,7 +184,7 @@ GEE <- function(formula,family,data,coord,
       if(z[ii]<0) p[ii] <- 2*(pnorm(z[ii]))
     }
     scale <- summary(mgee)[[9]]
-    Icrit <- qic(formula,data,family,fitted,var.naive,var.indep.naive)
+    Icrit <- qic.calc(formula,data,family,fitted,var.naive,var.indep.naive)
     QIC <- Icrit$QIC
    }
 
@@ -218,7 +218,7 @@ GEE <- function(formula,family,data,coord,
     }
 
     scale <- summary(mgee)[[9]]
-    Icrit <- qic(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula,data,family,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
 
    }
@@ -249,7 +249,7 @@ GEE <- function(formula,family,data,coord,
     p <- summary(mgeese)$mean[,4]
 
     scale <- as.numeric(summary(mgeese)$scale[1])
-    Icrit <- qic(formula,data,family,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula,data,family,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
   }
 
@@ -316,7 +316,7 @@ GEE <- function(formula,family,data,coord,
 #'
 #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
 #' @export
-qic <- function(formula,data,family,mu,var.robust,var.indep.naive){
+qic.calc <- function(formula,data,family,mu,var.robust,var.indep.naive){
   ###############################################################################
 
   ###############################################################################
