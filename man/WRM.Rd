@@ -6,7 +6,7 @@
 \usage{
 WRM(formula, family, data, coord, level = 1, wavelet = "haar",
   wtrafo = "dwt", b.ini = NULL, pad = list(), control = list(),
-  moran.params = list(), graph = FALSE)
+  moran.params = list(), plot = FALSE)
 }
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
@@ -60,7 +60,7 @@ are possible. \code{haar} is the default.}
   \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 }}
 
-\item{graph}{A logical value indicating whether to plot autocorrelation of
+\item{plot}{A logical value indicating whether to plot autocorrelation of
 residuals by distance bin}
 }
 \value{

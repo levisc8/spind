@@ -52,7 +52,7 @@
 #'     \item\code{lim1} - Lower limit for first bin. Default is 0.
 #'     \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 #'   }
-#' @param graph     A logical value indicating whether to plot autocorrelation of
+#' @param plot     A logical value indicating whether to plot autocorrelation of
 #' residuals by distance bin
 #'
 #' @return An object of class \code{WRM}. This consists of a list with the
@@ -101,7 +101,7 @@
 WRM<-function(formula,family,data,coord,
               level=1,wavelet="haar",wtrafo="dwt",
               b.ini=NULL,pad=list(),control=list(),moran.params=list(),
-              graph=FALSE){
+              plot=FALSE){
 
   n<-dim(data)[1]
   l<-dim(data)[2]
@@ -317,11 +317,11 @@ WRM<-function(formula,family,data,coord,
       Resmdwt<-matrix(resid(mdwt),2^power,2^power)
       resmdwt<-rep(0,n)
       for(i in 1:n) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
-      if(plot | graph) {
+      if(plot) {
         acw<-acfft(x,y,resmdwt,lim1,lim2)
       }
 
-      if(!plot & !graph) {
+      if(!plot) {
         acw<-NA
         acpw<-NA
       }
@@ -354,8 +354,8 @@ WRM<-function(formula,family,data,coord,
   glm.beta<-beta0
   wavelet.beta<-apply(beta,2,mean,na.rm=TRUE)
   if(level!=0) wavelet.beta.smooth<-apply(beta.smooth,2,mean,na.rm=TRUE)
-  if(plot | graph) ac0<-acfft(x,y,res0,lim1,lim2)
-  if(!plot & !graph) ac0<-NA
+  if(plot) ac0<-acfft(x,y,res0,lim1,lim2)
+  if(!plot) ac0<-NA
   acw<-apply(ac,2,mean,na.rm=TRUE)
   resw<-apply(resi,2,mean,na.rm=TRUE)
   s.e.<-apply(se,2,mean,na.rm=TRUE)
@@ -385,7 +385,7 @@ WRM<-function(formula,family,data,coord,
     }
   }
 
-  if(graph & !is.na(acw[1])){
+  if(plot & !is.na(acw[1])){
     y1<-min(min(ac0),min(acw))-.1
     y2<-max(max(ac0),max(acw))+.1
     plot(ac0,type="b",ylim=c(y1,y2),
