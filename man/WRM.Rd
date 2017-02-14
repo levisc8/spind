@@ -75,7 +75,7 @@ following elements:
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
       \item{\code{p}}{p-values}
       \item{\code{fitted}}{Fitted values}
-      \item{\code{resid}}{Normalized Pearson residuals}
+      \item{\code{resid}}{Pearson residuals}
       \item{\code{b.sm}}{Parameter estimates of neglected smooth part}
       \item{\code{fitted.sm}}{Fitted values of neglected smooth part}
       \item{\code{level}}{Selected level of wavelet decomposition}
@@ -91,7 +91,8 @@ following elements:
 }
 \description{
 A wavelet-based method to remove spatial autocorrelation
-in multiple linear regressions.
+in multiple linear regressions. Wavelet transforms are implemented using
+\pkg{waveslim} (Whitcher, 2005).
 }
 \details{
 WRM can be used to fit linear models for response vectors of different
@@ -105,6 +106,9 @@ decomposition technique. The grid cells are assumed to be square.
 Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
 linear models to remove the effect of spatial autocorrelation.
 Geographical Analysis 42 (3), 323 - 337
+
+Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
+and three-dimensional signal processing. R package version 1.5.
 }
 \author{
 Gudrun Carl
