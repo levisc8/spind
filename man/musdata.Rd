@@ -7,15 +7,15 @@
 \format{A data frame with 400 rows and 5 columns
  \describe{
    \item{musculus}{integer - Presence/absence records of Mus musculus}
-   \item{pollution}{numberic - describes degree of pollution in corresponding grid cell}
+   \item{pollution}{numeric - describes degree of pollution in corresponding grid cell}
    \item{exposure}{numeric - describes degree of exposure for each grid cell}
    \item{x}{integer - x-coordinates for each grid cell}
-   \item{y}{numeric - y-coordinates for each grid cell}
+   \item{y}{integer - y-coordinates for each grid cell}
  }}
 \usage{
 musdata
 }
 \description{
-A data frame containing presence absence records of Mus musculus (a house mouse)
+A data frame containing simulated presence/absence records of a hypothetical house mouse
 }
 \keyword{datasets}
