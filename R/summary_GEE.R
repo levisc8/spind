@@ -1,8 +1,8 @@
-#' @title Summarize the output from\code{GEE}
+#' @title Summarize the output from \code{GEE}
 #' @description Returns summary of GEE parameter estimates and autocorrelations
 #' of the residuals.
 #' @param object An object of class \code{GEE}
-#' @param ... Additional parameters to be passed summary.
+#' @param ... Additional parameters to be passed \code{summary}.
 #' @param printAutoCorPars A logical indicating whether to print the
 #' autocorrelation matrix
 #'

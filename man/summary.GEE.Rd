@@ -2,14 +2,14 @@
 % Please edit documentation in R/summary_GEE.R
 \name{summary.GEE}
 \alias{summary.GEE}
-\title{Summarize the output from\code{GEE}}
+\title{Summarize the output from \code{GEE}}
 \usage{
 \method{summary}{GEE}(object, ..., printAutoCorPars = TRUE)
 }
 \arguments{
 \item{object}{An object of class \code{GEE}}
 
-\item{...}{Additional parameters to be passed summary.}
+\item{...}{Additional parameters to be passed \code{summary}.}
 
 \item{printAutoCorPars}{A logical indicating whether to print the
 autocorrelation matrix}
