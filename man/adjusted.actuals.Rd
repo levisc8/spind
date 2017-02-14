@@ -19,12 +19,12 @@ consecutively numbered coordinates for each occurence and prediction in
 Default is FALSE.}
 }
 \value{
-a vector of adjusted actual presence/absence values.
+A vector of adjusted actual values.
 }
 \description{
 Adjusts actual presence/absence data based on the autocorrelation
 in the predictions of a model. Additionally, will optionally plot results of
-model predictions, un-modified actual presence/absence, and adjusted  presence/absence.
+model predictions, un-modified actual presence/absence, and adjusted  values.
 }
 \examples{
 data(hook)
