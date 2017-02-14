@@ -8,7 +8,7 @@
 #'    \item{pollution}{numeric - describes degree of pollution in corresponding grid cell}
 #'    \item{exposure}{numeric - describes degree of exposure for each grid cell}
 #'    \item{x}{integer - x-coordinates for each grid cell}
-#'    \item{y}{numeric - y-coordinates for each grid cell}
+#'    \item{y}{integer - y-coordinates for each grid cell}
 #'  }
 #'
 "musdata"
@@ -23,7 +23,7 @@
 #'    \item{actuals}{integer - Presence/absence records}
 #'    \item{predictions}{numeric - predicted probabilities of occurence}
 #'    \item{x}{integer - x-coordinates for each grid cell}
-#'    \item{y}{numeric - y-coordinates for each grid cell}
+#'    \item{y}{integer - y-coordinates for each grid cell}
 #'
 #'  }
 "hook"
