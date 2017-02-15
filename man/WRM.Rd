@@ -47,11 +47,15 @@ are possible. \code{haar} is the default.}
    \item{padzone} - Factor for expanding the padding zone
 }}
 
-\item{control}{a list of parameters for controlling the fitting process. Changes to defaults are not recommended.
+\item{control}{a list of parameters for controlling the fitting process.
    \itemize{
-      \item{\code{eps}} - Positive convergence tolerance. Default is 0.001.
+      \item{\code{eps}} - Positive convergence tolerance. Smaller values of
+      \code{eps} provide better parameter estimates, but also reduce the probability
+      of the iterations converging. In case of issues with convergence, test larger
+      values of \code{eps}. Default is 10^-5.
       \item{\code{denom.eps}} - Default is 10^-20.
-      \item{\code{itmax}} - Integer giving the maximum number of iterations. Default is 200.
+      \item{\code{itmax}} - Integer giving the maximum number of iterations.
+      Default is 200.
 }}
 
 \item{moran.params}{A list of parameters for calculating Moran's I.
