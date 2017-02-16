@@ -36,7 +36,7 @@
 #'   \item{\code{fitted}}{fitted values}
 #'   \item{\code{resid}}{Pearson residuals}
 #'   \item{\code{converged}}{logical value whether the procedure converged}
-#'   \item{if plot is true:}
+#'   \item{if plot is true}
 #'     \itemize{
 #'       \item{\code{ac.glm}}{autocorrelation of glm.residuals}
 #'       \item{\code{ac}}{autocorrelation of wavelet.residuals}
@@ -62,7 +62,6 @@ scaleWMRR<-function(formula,family,data,coord,
                     b.ini=NULL,pad=list(),control=list(),moran=list(),
                     plot=FALSE){
 
-  require(MASS)
   n<-dim(data)[1]
   l<-dim(data)[2]
   x<-coord[,1]

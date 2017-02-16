@@ -39,7 +39,7 @@ scaleWMRR returns a list containing the following elements
   \item{\code{fitted}}{fitted values}
   \item{\code{resid}}{Pearson residuals}
   \item{\code{converged}}{logical value whether the procedure converged}
-  \item{if plot is true:}
+  \item{if plot is true}
     \itemize{
       \item{\code{ac.glm}}{autocorrelation of glm.residuals}
       \item{\code{ac}}{autocorrelation of wavelet.residuals}
