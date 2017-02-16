@@ -32,7 +32,7 @@
 #' \itemize{
 #'    \item{padform} - 0, 1, and 2 are possible.
 #'     \code{padform} is automatically set to
-#'     zero when either \code{level}=0 or
+#'     0 when either \code{level}=0 or
 #'     a \code{formula} including an intercept and a non-gaussian family
 #'    \itemize{
 #'      \item{0} - Padding with 0s.
