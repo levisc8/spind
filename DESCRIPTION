@@ -11,7 +11,8 @@ Imports: gee,
 	 MASS,
 	 splancs,
 	 lattice,
-	 waveslim
+	 waveslim,
+	 rje
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
