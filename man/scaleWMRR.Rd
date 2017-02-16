@@ -6,7 +6,7 @@
 \usage{
 scaleWMRR(formula, family, data, coord, scale = 1, detail = TRUE,
   wavelet = "haar", wtrafo = "dwt", b.ini = NULL, pad = list(),
-  control = list(), moran = list(), plot = FALSE)
+  control = list(), moran.params = list(), plot = FALSE)
 }
 \arguments{
 \item{formula}{with specified notation according to names in data frame}
@@ -26,6 +26,42 @@ i.e. smooth wavelet components are removed in this case}
 \item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
 
 \item{wtrafo}{type of wavelet transform: "dwt" or "modwt"}
+
+\item{b.ini}{Initial parameter estimates. Default is NULL.}
+
+\item{pad}{A list of parameters for padding wavelet coefficients.
+\itemize{
+   \item{padform} - 0, 1, and 2 are possible.
+    \code{padform} is automatically set to
+    0 when either \code{level}=0 or
+    a \code{formula} including an intercept and a non-gaussian family
+   \itemize{
+     \item{0} - Padding with 0s.
+     \item{1} - Padding with mean values.
+     \item{2} - Padding with mirror values.
+ }
+   \item{padzone} - Factor for expanding the padding zone
+}}
+
+\item{control}{a list of parameters for controlling the fitting process.
+   \itemize{
+      \item{\code{eps}} - Positive convergence tolerance. Smaller values of
+      \code{eps} provide better parameter estimates, but also reduce the probability
+      of the iterations converging. In case of issues with convergence, test larger
+      values of \code{eps}. Default is 10^-5.
+      \item{\code{denom.eps}} - Default is 10^-20.
+      \item{\code{itmax}} - Integer giving the maximum number of iterations.
+      Default is 200.
+}}
+
+\item{moran.params}{A list of parameters for calculating Moran's I.
+\itemize{
+  \item\code{lim1} - Lower limit for first bin. Default is 0.
+  \item\code{increment} - Step size for calculating Moran's I. Default is 1.
+}}
+
+\item{plot}{A logical value indicating whether to print parameter estimates
+to the console}
 }
 \value{
 scaleWMRR returns a list containing the following elements
@@ -39,10 +75,12 @@ scaleWMRR returns a list containing the following elements
   \item{\code{fitted}}{fitted values}
   \item{\code{resid}}{Pearson residuals}
   \item{\code{converged}}{logical value whether the procedure converged}
-  \item{if plot is true}
+  \item{\code{plot}}{Logical. If TRUE:}
+
     \itemize{
-      \item{\code{ac.glm}}{autocorrelation of glm.residuals}
-      \item{\code{ac}}{autocorrelation of wavelet.residuals}
+      \item\code{ac.glm} autocorrelation of glm.residuals
+
+      \item\code{ac} autocorrelation of wavelet.residuals
   }
 
 }
@@ -60,7 +98,7 @@ assumed to be square. For the wavelet transforms, a function
 of package 'waveslim' is used (Whitcher, 2005).
 }
 \references{
-Carl G, Doktor D, Schweiger O, K?hn I (2016)
+Carl G, Doktor D, Schweiger O, Kuhn I (2016)
 Assessing relative variable importance across different spatial
 scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502?2512.
