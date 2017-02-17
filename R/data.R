@@ -27,3 +27,19 @@
 #'
 #'  }
 "hook"
+
+#' carlina data set
+#'
+#' A data frame containing simulated presence/absence data for a hypothetical species
+#' named Carlina horrida
+#'
+#' @format A data frame with 961 rows and 5 columns
+#' \describe{
+#'   \item{carlina.horrida}{integer - Presence/absence records}
+#'   \item{aridity}{numeric - aridity index values. This variable has high spatial autocorrelation
+#'   values.}
+#'   \item{land.use}{numeric - land use intensity. This variable has no spatial autocorrelation.}
+#'   \item{x}{integer - x-coordinates for each grid cell}
+#'   \item{y}{integer - y-coordinates for each grid cell}
+#' }
+"carlinadata"
