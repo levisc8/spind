@@ -32,6 +32,25 @@
 #'}
 #' @seealso  AIC, \pkg{MuMIn}.
 #'
+#' @examples
+#'
+#' data(carlinadata)
+#' coord<- carlinadata[,4:5]
+#'
+#' # scale-specific regressions for detail components
+#' # ranked by multimodel inference
+#' A<-array(NA,c(4,8,4))
+#' level<-rep(NA,4)
+#' for (i in 1:4) {
+#'   mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+#'                 carlinadata,coord,scale=i,detail=TRUE,wavelet="d4")
+#'   A[,,i]<-mmi$result
+#'   level[i]<-mmi$level
+#' }
+#'
+#' # Plot: scale-dependent relative variable importance
+#' plot.rvi(A,level)
+#'
 #' @references
 #' Burnham, K.P. & Anderson, D.R. (2002) Model selection and
 #' multimodel inference. Springer, New York.
