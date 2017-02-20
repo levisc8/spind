@@ -97,6 +97,22 @@ dataset is assumed to be regular gridded and the grid cells are
 assumed to be square. For the wavelet transforms, a function
 of package 'waveslim' is used (Whitcher, 2005).
 }
+\examples{
+data(carlinadata)
+coord<- carlinadata[,4:5]
+
+# scaleWMRR at scale=0 is equivalent to GLM
+ms0<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+               carlinadata,coord,scale=0,plot=TRUE)
+# scale-specific regressions for detail components
+ms1<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+               carlinadata,coord,scale=1,plot=TRUE)
+ms2<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+               carlinadata,coord,scale=2,plot=TRUE)
+ms3<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+               carlinadata,coord,scale=3,plot=TRUE)
+
+}
 \references{
 Carl G, Doktor D, Schweiger O, Kuhn I (2016)
 Assessing relative variable importance across different spatial
