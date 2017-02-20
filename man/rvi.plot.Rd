@@ -2,8 +2,7 @@
 % Please edit documentation in R/rvi_plot.R
 \name{rvi.plot}
 \alias{rvi.plot}
-\title{Model selection tables and relative variable importance
-in terms of scale levels}
+\title{Relative Variable Importance}
 \usage{
 rvi.plot(formula, family, data, coord, maxlevel, detail = TRUE,
   wavelet = "haar", wtrafo = "dwt", n.eff = NULL)
@@ -11,7 +10,7 @@ rvi.plot(formula, family, data, coord, maxlevel, detail = TRUE,
 \arguments{
 \item{formula}{A model formula}
 
-\item{family}{Error structure. \code{Gaussian}, \code{binomial}, and \code{Poisson}
+\item{family}{\code{gaussian}, \code{binomial}, and \code{poisson}
 are supported.}
 
 \item{data}{A data frame or set of vectors of equal length.}
@@ -29,10 +28,32 @@ consecutive integers.}
 
 \item{n.eff}{A numeric value of effective sample size}
 }
+\value{
+A matrix containing the relative importance of each variable
+in the regression at each value of the scale level.
+}
 \description{
+Creates model selection tables, calculates and plots relative
+variable importance based on the scale level of a given model.
+}
+\details{
+Calculates the relative importance of each variable
+using multi-model inference methods in a wavelet multi-resolution regression
+framework implemented in \code{mmiWMRR}. The scale level dependent
+results are then graphically displayed.
+
+
 The summary is based on the results provided by
-multi-model inference for wavelet multiresolution regression (mmiWMRR).
+multi-model inference for wavelet multiresolution regression (\code{mmiWMRR}).
 Based on the results of this approach, the relative
 importance of predictors are calculated. The scale-dependent results
 are graphically displayed.
+}
+\examples{
+data(carlinadata)
+coords<- carlinadata[,4:5]
+
+rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
+carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+
 }

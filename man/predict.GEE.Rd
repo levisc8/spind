@@ -12,7 +12,7 @@ for making predictions}
 
 \item{...}{Other arguments to be passed to \code{predict}}
 
-\item{newdata}{A data frame containing variables with which to predict}
+\item{newdata}{A data frame containing variables to base the predictions on.}
 }
 \value{
 A vector of predicted values
@@ -29,6 +29,6 @@ pred<-predict(mgee,newdata=musdata)
 
 }
 \author{
-Gudrun Carl
+Gudrun Carl,
        Sam Levin
 }

@@ -8,25 +8,44 @@ covar.plot(formula, data, coord, wavelet = "haar", wtrafo = "dwt",
   plot = "covar")
 }
 \arguments{
-\item{formula}{With specified notation according to names in data frame}
+\item{formula}{With specified notation according to names in data frame.}
 
-\item{data}{Data frame}
+\item{data}{Data frame.}
 
 \item{coord}{A matrix of 2 columns with
-corresponding x,y-coordinates which have to be integer}
+corresponding x,y-coordinates which have to be integer.}
 
-\item{wavelet}{Type of wavelet: \code{haar}, \code{d4}, or \code{la8}}
+\item{wavelet}{Type of wavelet: \code{haar}, \code{d4}, or \code{la8}.}
 
-\item{wtrafo}{Type of wavelet transform: \code{dwt} or \code{modwt}}
+\item{wtrafo}{Type of wavelet transform: \code{dwt} or \code{modwt}.}
 
 \item{plot}{Either \code{var} for wavelet variance analysis
-or \code{covar} for wavelet covariance analysis}
+or \code{covar} for wavelet covariance analysis.}
 }
 \value{
-A list containing a vector of results
+A list containing a vector of results.
 }
 \description{
-The plot is based on a wavelet variance or covariance analysis
-and will work where \code{\link{wavevar}} or \code{\link{wavecovar}} as function
-is supported. The scale-dependent results are graphically displayed.
+Plots the wavelet variance or covariance for the specified model.
+The scale-dependent results are graphically displayed.
+}
+\details{
+Each variable or pair of variables in \code{formula} is passed to \code{wavevar} or
+\code{wavecovar} internally, and the result is plotted as a function of \code{level}.
+}
+\examples{
+data(carlinadata)
+coords<- carlinadata[,4:5]
+
+covar.plot(carlina.horrida ~ aridity + land.use,
+carlinadata,coord=coords,wavelet="d4",
+wtrafo='dwt',plot='covar')
+
+covar.plot(carlina.horrida ~ aridity + land.use,
+           carlinadata,coord=coords,wavelet="d4",
+           wtrafo='dwt',plot='var')
+
+}
+\seealso{
+\code{\link{wavevar}}, \code{\link{wavecovar}}
 }

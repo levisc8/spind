@@ -3,7 +3,7 @@
 \docType{data}
 \name{carlinadata}
 \alias{carlinadata}
-\title{carlina data set}
+\title{Carlina data set}
 \format{A data frame with 961 rows and 5 columns
 \describe{
   \item{carlina.horrida}{integer - Presence/absence records}

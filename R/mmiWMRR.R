@@ -3,34 +3,35 @@
 #'
 #' @description
 #' mmiWMRR is a multimodel inference approach evaluating the relative
-#' importance of predictors used in scaleWMRR. It performs automatically
+#' importance of predictors used in \code{\link{scaleWMRR}}. It performs automatically
 #' generated model selection and creates a model
 #' selection table according to the approach of multi-model inference
 #' (Burnham & Anderson, 2002). The analysis is carried out for scale-specific
-#' regressions, i.e. where scaleWMRR as
-#' modelling function is supported. AIC is used to obtain model
+#' regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is used to obtain model
 #' selection weights and to rank the models.
 #'
 #'
-#' @param formula  with specified notation according to names in data frame
-#' @param family   "gaussian", "binomial"(binary) or "poisson"
-#' @param data     data frame
-#' @param coord    corresponding coordinates which have to be integer
+#' @param formula  With specified notation according to names in data frame.
+#' @param family   \code{gaussian}, \code{binomial}, or \code{poisson}.
+#' @param data     Data frame
+#' @param coord    Corresponding coordinates which have to be integer
 #' @param scale    0 or higher integers possible (limit depends on sample size)
-#' @param detail   By detail components only
-#' @param wavelet  type of wavelet: "haar" or "d4" or "la8"
-#' @param wtrafo   type of wavelet transform: "dwt" or "modwt"
-#' @param n.eff    a numeric value of effective sample size
+#' @param detail   Remove non-smooth wavelets? Default is \code{TRUE}
+#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+#' are possible. \code{haar} is the default.
+#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+#' \code{dwt} is the default.
+#' @param n.eff    A numeric value of effective sample size
 #'
-#' @return  mmiWMRR returns a list containing the following elements
+#' @return  \code{mmiWMRR} returns a list containing the following elements
 #' \describe{
-#'   \item{\code{result}}{a matrix containing slopes, degrees of freedom, Likelihood,
-#'          AIC, delta and weight values for the set of candidate models.
+#'   \item{\code{result}}{A matrix containing slopes, degrees of freedom, likelihood,
+#'          AIC, delta, and weight values for the set of candidate models.
 #'          The models are ranked by Akaike weights.}
-#'   \item{\code{level}}{an integer corresponding to scale}
+#'   \item{\code{level}}{An integer corresponding to scale}
 #'
 #'}
-#' @seealso  AIC, \pkg{MuMIn}.
+#' @seealso  \code{\link{aic.calc}}, \pkg{MuMIn}.
 #'
 #' @examples
 #'
@@ -48,7 +49,7 @@
 #'   level[i]<-mmi$level
 #' }
 #'
-#' # Plot: scale-dependent relative variable importance
+#' # Plot scale-dependent relative variable importance
 #' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 #'          carlinadata,coord,maxlevel=4,detail=TRUE,wavelet="d4")
 #'

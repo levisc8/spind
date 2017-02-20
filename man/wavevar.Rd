@@ -7,27 +7,29 @@
 wavevar(f, x, y, wavelet = "haar", wtrafo = "dwt")
 }
 \arguments{
-\item{f}{a vector}
+\item{f}{A vector}
 
-\item{x}{corresponding x-coordinates which have to be integer}
+\item{x}{Corresponding x-coordinates which have to be integer}
 
-\item{y}{corresponding y-coordinates which have to be integer}
+\item{y}{Corresponding y-coordinates which have to be integer}
 
-\item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
+\item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+are possible. \code{haar} is the default.}
 
-\item{wtrafo}{type of wavelet transform: "dwt" or "modwt"}
+\item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+\code{dwt} is the default.}
 }
 \value{
-Wavelet variance
+Wavelet variance for \code{f}.
 }
 \description{
-The analysis is based a wavelet multiresolution analysis.
-It is a 2D analysis taking the grid structure of datasets into
-account, i.e. the analysis provides scale-specific
+Calculates the variance of parameters in a wavelet
+multiresolution analysis. This is a 2D analysis taking the grid
+structure of datasets into account and provides scale-specific
 results for data sampled on a contiguous geographical area. The
 dataset is assumed to be regular gridded and the grid cells are
 assumed to be square.
 }
 \seealso{
-\pkg{waveslim},\code{\link{WRM}}
+\pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
 }

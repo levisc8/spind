@@ -11,11 +11,11 @@
 
 \item{...}{Other arguments passed to \code{predict}}
 
-\item{newdata}{New data frame}
+\item{newdata}{A data frame containing variables used to make predictions.}
 
 \item{sm}{Logical. Should part of smooth components be included?}
 
-\item{newcoord}{New corresponding coordinates}
+\item{newcoord}{New coordinates corresponding to observations in \code{newdata}.}
 }
 \value{
 A vector of predictions based on a user-specified model
@@ -33,6 +33,6 @@ pred<-predict(mwrm,newdata=musdata)
 
 }
 \author{
-Gudrun Carl
+Gudrun Carl,
         Sam Levin
 }

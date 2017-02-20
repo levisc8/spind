@@ -7,10 +7,10 @@
 acfft(x, y, f, lim1 = 1, lim2 = 2, dmax = 10)
 }
 \arguments{
-\item{x}{A vector of length n representing the x coordinates
+\item{x}{A vector of length \emph{n} representing the x coordinates
 (integer, consecutively numbered cells).}
 
-\item{y}{A vector of length n representing the y coordinates
+\item{y}{A vector of length \emph{n} representing the y coordinates
 (integer, consecutively numbered cells)}
 
 \item{f}{A vector which is the same length as \code{x} and \code{y}}
@@ -23,10 +23,10 @@ acfft(x, y, f, lim1 = 1, lim2 = 2, dmax = 10)
 increasing radii. Default is 10.}
 }
 \value{
-A vector of Moran’s I values for each distance bin.
+A vector of \emph{Moran’s I} values for each distance bin.
 }
 \description{
-A function for calculating spatial autocorrelation (i.e. Moran’s I values).
+A function for calculating spatial autocorrelation (i.e. \emph{Moran’s I} values).
 }
 \examples{
 data(musdata)

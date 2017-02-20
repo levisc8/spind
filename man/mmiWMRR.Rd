@@ -8,42 +8,43 @@ mmiWMRR(formula, family, data, coord, scale, detail = TRUE,
   wavelet = "haar", wtrafo = "dwt", n.eff = NULL)
 }
 \arguments{
-\item{formula}{with specified notation according to names in data frame}
+\item{formula}{With specified notation according to names in data frame.}
 
-\item{family}{"gaussian", "binomial"(binary) or "poisson"}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}.}
 
-\item{data}{data frame}
+\item{data}{Data frame}
 
-\item{coord}{corresponding coordinates which have to be integer}
+\item{coord}{Corresponding coordinates which have to be integer}
 
 \item{scale}{0 or higher integers possible (limit depends on sample size)}
 
-\item{detail}{By detail components only}
+\item{detail}{Remove non-smooth wavelets? Default is \code{TRUE}}
 
-\item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
+\item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+are possible. \code{haar} is the default.}
 
-\item{wtrafo}{type of wavelet transform: "dwt" or "modwt"}
+\item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+\code{dwt} is the default.}
 
-\item{n.eff}{a numeric value of effective sample size}
+\item{n.eff}{A numeric value of effective sample size}
 }
 \value{
-mmiWMRR returns a list containing the following elements
+\code{mmiWMRR} returns a list containing the following elements
 \describe{
-  \item{\code{result}}{a matrix containing slopes, degrees of freedom, Likelihood,
-         AIC, delta and weight values for the set of candidate models.
+  \item{\code{result}}{A matrix containing slopes, degrees of freedom, likelihood,
+         AIC, delta, and weight values for the set of candidate models.
          The models are ranked by Akaike weights.}
-  \item{\code{level}}{an integer corresponding to scale}
+  \item{\code{level}}{An integer corresponding to scale}
 
 }
 }
 \description{
 mmiWMRR is a multimodel inference approach evaluating the relative
-importance of predictors used in scaleWMRR. It performs automatically
+importance of predictors used in \code{\link{scaleWMRR}}. It performs automatically
 generated model selection and creates a model
 selection table according to the approach of multi-model inference
 (Burnham & Anderson, 2002). The analysis is carried out for scale-specific
-regressions, i.e. where scaleWMRR as
-modelling function is supported. AIC is used to obtain model
+regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is used to obtain model
 selection weights and to rank the models.
 }
 \examples{
@@ -62,7 +63,7 @@ for (i in 1:4) {
   level[i]<-mmi$level
 }
 
-# Plot: scale-dependent relative variable importance
+# Plot scale-dependent relative variable importance
 rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
          carlinadata,coord,maxlevel=4,detail=TRUE,wavelet="d4")
 
@@ -77,5 +78,5 @@ scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
 }
 \seealso{
-AIC, \pkg{MuMIn}.
+\code{\link{aic.calc}}, \pkg{MuMIn}.
 }

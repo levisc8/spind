@@ -9,32 +9,32 @@ scaleWMRR(formula, family, data, coord, scale = 1, detail = TRUE,
   control = list(), moran.params = list(), plot = FALSE)
 }
 \arguments{
-\item{formula}{with specified notation according to names in data frame}
+\item{formula}{With specified notation according to names in data frame.}
 
-\item{family}{"gaussian", "binomial"(binary) or "poisson"}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}.}
 
-\item{data}{data frame}
+\item{data}{Data frame.}
 
-\item{coord}{corresponding coordinates which have to be integer}
+\item{coord}{Corresponding coordinates which have to be integer.}
 
 \item{scale}{0 (which is equivalent to GLM) or
-higher integers possible (limit depends on sample size)}
+higher integers possible (limit depends on sample size).}
 
-\item{detail}{by detail components only,
-i.e. smooth wavelet components are removed in this case}
+\item{detail}{Remove non-smooth wavelets? Default is \code{TRUE}.}
 
-\item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
+\item{wavelet}{Type of wavelet: \code{haar} or \code{d4} or \code{la8}}
 
-\item{wtrafo}{type of wavelet transform: "dwt" or "modwt"}
+\item{wtrafo}{Type of wavelet transform: \code{dwt} or \code{modwt}.}
 
-\item{b.ini}{Initial parameter estimates. Default is NULL.}
+\item{b.ini}{Initial parameter estimates. Default is \code{NULL}.}
 
 \item{pad}{A list of parameters for padding wavelet coefficients.
 \itemize{
    \item{padform} - 0, 1, and 2 are possible.
     \code{padform} is automatically set to
     0 when either \code{level}=0 or
-    a \code{formula} including an intercept and a non-gaussian family
+    the \code{formula} includes an intercept and has a non-\code{gaussian}
+     \code{family}.
    \itemize{
      \item{0} - Padding with 0s.
      \item{1} - Padding with mean values.
@@ -43,7 +43,7 @@ i.e. smooth wavelet components are removed in this case}
    \item{padzone} - Factor for expanding the padding zone
 }}
 
-\item{control}{a list of parameters for controlling the fitting process.
+\item{control}{A list of parameters for controlling the fitting process.
    \itemize{
       \item{\code{eps}} - Positive convergence tolerance. Smaller values of
       \code{eps} provide better parameter estimates, but also reduce the probability
@@ -66,32 +66,32 @@ to the console}
 \value{
 scaleWMRR returns a list containing the following elements
 \describe{
-  \item{\code{call}}{call}
-  \item{\code{b}}{estimate of regression parameters}
-  \item{\code{s.e.}}{standard errors}
-  \item{\code{z}}{z values (or corresponding values for statistics)}
-  \item{\code{p}}{probabilities}
-  \item{\code{df}}{degrees of freedom}
-  \item{\code{fitted}}{fitted values}
+  \item{\code{call}}{Model call}
+  \item{\code{b}}{Estimates of regression parameters}
+  \item{\code{s.e.}}{Standard errors of the parameter estimates}
+  \item{\code{z}}{Z values (or corresponding values for statistics)}
+  \item{\code{p}}{p-values for each parameter estimate}
+  \item{\code{df}}{Degrees of freedom}
+  \item{\code{fitted}}{Fitted values}
   \item{\code{resid}}{Pearson residuals}
-  \item{\code{converged}}{logical value whether the procedure converged}
+  \item{\code{converged}}{Logical value whether the procedure converged}
   \item{\code{plot}}{Logical. If TRUE:}
 
     \itemize{
-      \item\code{ac.glm} autocorrelation of glm.residuals
+      \item\code{ac.glm} Autocorrelation of glm.residuals
 
-      \item\code{ac} autocorrelation of wavelet.residuals
+      \item\code{ac} Autocorrelation of wavelet.residuals
   }
 
 }
 }
 \description{
 scaleWMRR performs a scale-specific regression based on a
-wavelet multiresolution analysis. It can be used to fit
-generalized linear models taking the two-dimensional grid structure of
+wavelet multiresolution analysis. It  fits
+generalized linear models while taking the two-dimensional grid structure of
 datasets into account. The following error distributions (in
-conjunction with appropriate link functions) are allowed: "gaussian",
-"binomial"(binary) or "poisson". The model provides scale-specific
+conjunction with appropriate link functions) are allowed: \code{gaussian},
+\code{binomial}, or \code{poisson}. The model provides scale-specific
 results for data sampled on a contiguous geographical area. The
 dataset is assumed to be regular gridded and the grid cells are
 assumed to be square. For the wavelet transforms, a function
@@ -121,4 +121,7 @@ Journal of Biogeography 43: 2502?2512.
 
 Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 and three-dimensional signal processing. R package version 1.5.
+}
+\seealso{
+\pkg{waveslim},\code{\link[waveslim]{mra.2d}}
 }

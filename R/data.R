@@ -1,6 +1,6 @@
 #' Mus musculus data set
 #'
-#' A data frame containing simulated presence/absence records of a hypothetical house mouse
+#' A data frame containing simulated presence/absence records of a hypothetical house mouse.
 #'
 #'@format A data frame with 400 rows and 5 columns
 #'  \describe{
@@ -13,10 +13,10 @@
 #'
 "musdata"
 
-#'hook data set
+#'Hook data set
 #'
 #'A data frame containing actual presence absence data and predicted probability
-#'of occurrence
+#'of occurrence values.
 #'
 #'@format A data frame with 100 rows and 4 columns
 #'  \describe{
@@ -28,7 +28,7 @@
 #'  }
 "hook"
 
-#' carlina data set
+#' Carlina data set
 #'
 #' A data frame containing simulated presence/absence data for a hypothetical species
 #' named Carlina horrida

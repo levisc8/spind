@@ -1,22 +1,27 @@
 #' Wavelet covariance analysis
 #'
-#' @description The analysis is based a wavelet multiresolution analysis.
-#' It is a 2D analysis taking the grid structure of datasets into
-#' account, i.e. the analysis provides scale-specific
+#' @description Calculates the covariance of parameters in a wavelet
+#' multiresolution analysis. This is a 2D analysis taking the grid
+#' structure of datasets into account and provides scale-specific
 #' results for data sampled on a contiguous geographical area. The
 #' dataset is assumed to be regular gridded and the grid cells are
 #' assumed to be square.
 #'
-#' @param f1   a vectors
-#' @param f2   a vectors of same length
-#' @param x    corresponding x-coordinates which have to be integer
-#' @param y    corresponding y-coordinates which have to be integer
-#' @param wavelet  type of wavelet: "haar" or "d4" or "la8"
-#' @param wtrafo   type of wavelet transform: "dwt" or "modwt"
+#' @param f1   A vector of length \emph{n}.
+#' @param f2   A vector of length \emph{n}.
+#' @param x    Corresponding x-coordinates which have to be integer.
+#' @param y    Corresponding y-coordinates which have to be integer.
+#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+#' are possible. \code{haar} is the default.
+#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+#' \code{dwt} is the default.
 #'
-#' @return Wavelet covariance
 #'
-#' @seealso \pkg{waveslim}, \code{\link{WRM}}
+#' @return Wavelet covariance for \code{f1} and \code{f2}.
+#'
+#' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
+#'
+#' @export
 
 
 wavecovar<-function(f1,f2,x,y,wavelet="haar",wtrafo="dwt"){
@@ -57,7 +62,7 @@ wavecovar<-function(f1,f2,x,y,wavelet="haar",wtrafo="dwt"){
     CVar[ik]<-FS1+FS2+FS3 # all 3 components
   }
   CVar
-  plot(CVar)
+  plot(CVar,ylab='Covariance')
   iiende<-level*3+1
   CVarende <- (1/n) * sum(abs(F1.dwt[[iiende]]*F2.dwt[[iiende]]))
   CVartotal<-sum(CVar)+CVarende

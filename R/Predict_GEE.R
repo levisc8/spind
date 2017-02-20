@@ -6,7 +6,7 @@
 #' @param object   A model object of class \code{GEE} to be used
 #' for making predictions
 #' @param ... Other arguments to be passed to \code{predict}
-#' @param newdata  A data frame containing variables with which to predict
+#' @param newdata  A data frame containing variables to base the predictions on.
 #'
 #' @return   A vector of predicted values
 #' @examples
@@ -16,7 +16,7 @@
 #'           coord=coords,corstr="fixed",plot=TRUE)
 #' pred<-predict(mgee,newdata=musdata)
 #'
-#'@author Gudrun Carl
+#'@author Gudrun Carl,
 #'        Sam Levin
 #'
 #'@export

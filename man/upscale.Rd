@@ -7,25 +7,29 @@
 upscale(f, x, y, wavelet = "haar", wtrafo = "dwt", pad = mean(f))
 }
 \arguments{
-\item{f}{a vector}
+\item{f}{A vector.}
 
-\item{x}{corresponding x-coordinates which have to be integer}
+\item{x}{Corresponding x-coordinates which have to be integer.}
 
-\item{y}{corresponding y-coordinates which have to be integer}
+\item{y}{Corresponding y-coordinates which have to be integer.}
 
-\item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
+\item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+are possible. \code{haar} is the default.}
 
-\item{wtrafo}{type of wavelet transform: "dwt" or "modwt"}
+\item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+\code{dwt} is the default.}
 
-\item{pad}{a numeric value for padding into a bigger square.
-Mostly the mean of f values is useful.
-Default is set to mean(f).}
+\item{pad}{A numeric value for padding the matrix
+into a bigger square. Default is set to mean(f).}
+}
+\value{
+A set of plots showing the matrix image at each value for
+\code{level}.
 }
 \description{
 The analysis is based a wavelet multiresolution analysis
 using only smooth wavelet components.
-It is a 2D analysis taking the grid structure of datasets into
-account, i.e. the analysis provides scale-specific
+It is a 2D analysis taking the grid structure and provides scale-specific
 results for data sampled on a contiguous geographical area. The
 dataset is assumed to be regular gridded and the grid cells are
 assumed to be square.

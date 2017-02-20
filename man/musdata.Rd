@@ -16,6 +16,6 @@
 musdata
 }
 \description{
-A data frame containing simulated presence/absence records of a hypothetical house mouse
+A data frame containing simulated presence/absence records of a hypothetical house mouse.
 }
 \keyword{datasets}

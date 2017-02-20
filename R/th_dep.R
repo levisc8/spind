@@ -1,6 +1,4 @@
-#'th.dep
-#'
-#'Kappa and confusion matrix for spatial models
+#'@title Kappa and confusion matrix for species distribution models
 #'
 #'@description Calculates threshold-dependent metrics for an observational
 #'data set and model predictions. It is a 2-dimensional analysis that takes

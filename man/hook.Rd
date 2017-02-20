@@ -3,7 +3,7 @@
 \docType{data}
 \name{hook}
 \alias{hook}
-\title{hook data set}
+\title{Hook data set}
 \format{A data frame with 100 rows and 4 columns
  \describe{
    \item{actuals}{integer - Presence/absence records}
@@ -17,6 +17,6 @@ hook
 }
 \description{
 A data frame containing actual presence absence data and predicted probability
-of occurrence
+of occurrence values.
 }
 \keyword{datasets}

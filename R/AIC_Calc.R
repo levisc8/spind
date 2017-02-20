@@ -1,24 +1,25 @@
 #'Aikake Information Criterion with correction for sample size
 #'
-#'@description Calculates AIC and AICc
+#' @description Calculates AIC and AICc
 #'
-#'@param formula A model formula
-#'@param family \code{gaussian}, \code{binomial}, or \code{poisson}
-#'@param data A data frame
-#'@param mu Fitted values from a model
-#'@param n.eff Effective number of observations. Default is NULL
+#' @param formula A model formula
+#' @param family \code{gaussian}, \code{binomial}, or \code{poisson}
+#' @param data A data frame
+#' @param mu Fitted values from a model
+#' @param n.eff Effective number of observations for calculating
+#'   AICc. Default is NULL
 #'
-#'@return A list with the following components
-#'\describe{
-#'  \item{\code{loglik}}{Log likelihood of the model}
-#'  \item{\code{df}}{Degrees of freedom}
-#'  \item{\code{AIC}}{AIC score for the specified model}
-#'  \item{\code{AICc}}{AIC score corrected for the sample size}
-#'}
+#' @return A list with the following components
+#' \describe{
+#'   \item{\code{loglik}}{Log likelihood of the model}
+#'   \item{\code{df}}{Degrees of freedom}
+#'   \item{\code{AIC}}{AIC score for the specified model}
+#'   \item{\code{AICc}}{AIC score corrected for the sample size}
+#' }
 #'
-#'@author Gudrun Carl
+#' @author Gudrun Carl
 #'
-#'@examples
+#' @examples
 #' data(musdata)
 #' coords<- musdata[,4:5]
 #' mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
@@ -28,7 +29,7 @@
 #' aic$AIC
 #'
 #'
-#'@export
+#' @export
 
 aic.calc<-function(formula,family,data,mu,n.eff=NULL){
 

@@ -5,13 +5,13 @@
 #'
 #' @param object   A model object of class \code{WRM}
 #' @param ... Other arguments passed to \code{predict}
-#' @param newdata  New data frame
+#' @param newdata  A data frame containing variables used to make predictions.
 #' @param sm       Logical. Should part of smooth components be included?
-#' @param newcoord New corresponding coordinates
+#' @param newcoord New coordinates corresponding to observations in \code{newdata}.
 #'
 #' @return   A vector of predictions based on a user-specified model
 #'
-#' @author Gudrun Carl
+#' @author Gudrun Carl,
 #'         Sam Levin
 #'
 #' @examples

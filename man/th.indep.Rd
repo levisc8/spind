@@ -2,7 +2,7 @@
 % Please edit documentation in R/th_indep.R
 \name{th.indep}
 \alias{th.indep}
-\title{th.indep}
+\title{Threshold-independent metrics for species distribution models}
 \usage{
 th.indep(data, coord, spatial = TRUE, plot.ROC = TRUE)
 }
@@ -35,9 +35,6 @@ Calculates threshold-independent metrics for spatial models
 (AUC,ROC,max-TSS). It is a 2-dimensional analysis taking the grid
 structure of data set into account. Grid cells are assumed to be square.
 }
-\details{
-Threshold-independent metrics
-}
 \examples{
 data(hook)
 data<-hook[,1:2]
@@ -48,7 +45,7 @@ si2$TSS
 
 }
 \references{
-Carl G, Kühn I (2016)
+Carl G, Kuhn I (2016)
 Spind: a package for computing spatially corrected accuracy measures.
 Ecography. DOI: 10.1111/ecog.02593
 }

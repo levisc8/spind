@@ -1,19 +1,38 @@
 #' Plot wavelet variance/covariance
 #'
-#' @description The plot is based on a wavelet variance or covariance analysis
-#' and will work where \code{\link{wavevar}} or \code{\link{wavecovar}} as function
-#' is supported. The scale-dependent results are graphically displayed.
+#' @description Plots the wavelet variance or covariance for the specified model.
+#' The scale-dependent results are graphically displayed.
 #'
-#' @param formula   With specified notation according to names in data frame
-#' @param data      Data frame
+#' @param formula   With specified notation according to names in data frame.
+#' @param data      Data frame.
 #' @param coord     A matrix of 2 columns with
-#'  corresponding x,y-coordinates which have to be integer
-#' @param wavelet  Type of wavelet: \code{haar}, \code{d4}, or \code{la8}
-#' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}
+#'  corresponding x,y-coordinates which have to be integer.
+#' @param wavelet  Type of wavelet: \code{haar}, \code{d4}, or \code{la8}.
+#' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}.
 #' @param plot      Either \code{var} for wavelet variance analysis
-#'           or \code{covar} for wavelet covariance analysis
+#'           or \code{covar} for wavelet covariance analysis.
 #'
-#' @return    A list containing a vector of results
+#' @details Each variable or pair of variables in \code{formula} is passed to \code{wavevar} or
+#' \code{wavecovar} internally, and the result is plotted as a function of \code{level}.
+#'
+#' @return    A list containing a vector of results.
+#'
+#' @examples
+#' data(carlinadata)
+#' coords<- carlinadata[,4:5]
+#'
+#' covar.plot(carlina.horrida ~ aridity + land.use,
+#' carlinadata,coord=coords,wavelet="d4",
+#' wtrafo='dwt',plot='covar')
+#'
+#' covar.plot(carlina.horrida ~ aridity + land.use,
+#'            carlinadata,coord=coords,wavelet="d4",
+#'            wtrafo='dwt',plot='var')
+#'
+#' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
+#'
+#' @export
+#'
 
 
 covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",

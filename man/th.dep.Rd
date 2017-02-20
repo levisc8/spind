@@ -2,7 +2,7 @@
 % Please edit documentation in R/th_dep.R
 \name{th.dep}
 \alias{th.dep}
-\title{th.dep}
+\title{Kappa and confusion matrix for species distribution models}
 \usage{
 th.dep(data, coord, thresh = 0.5, spatial = TRUE)
 }
@@ -41,9 +41,6 @@ Calculates threshold-dependent metrics for an observational
 data set and model predictions. It is a 2-dimensional analysis that takes
 the grid structure of the data into account. Grid cells are assumed to be
 square
-}
-\details{
-Kappa and confusion matrix for spatial models
 }
 \examples{
 data(hook)

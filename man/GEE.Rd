@@ -10,7 +10,8 @@ GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
 
-\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported.}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported. Called using
+a quoted character string (i.e. \code{family} = "gaussian").}
 
 \item{data}{A data frame with variable names that match the variables specified in \code{formula}.}
 
@@ -21,25 +22,24 @@ coordinates. Currently only supports integer coordinates.}
 \code{exchangeable}, and \code{quadratic}  are possible.
 
  \itemize{
-   \item\code{independence} is the same as a GLM, i.e. correlation matrix = identity matrix;
+   \item\code{independence} - This is the same as a GLM, i.e. correlation matrix = identity matrix.
 
-   \item\code{fixed} for best autocorrelation removal by means of an adapted
-   isotropic power function specifying all correlation
-   coefficients
+   \item\code{fixed} - Uses an adapted isotropic power function specifying all correlation
+   coefficients.
 
    \item\code{exchangeable} and \code{quadratic} for clustering, i.e.
    the correlation matrix has a block diagonal form:
 
    \itemize{
-      \item\code{exchangeable}: all intra-block correlation coefficients are equal
+      \item\code{exchangeable} - All intra-block correlation coefficients are equal.
 
-      \item\code{quadratic}: intra-block correlation coefficients for different
+      \item\code{quadratic} - Intra-block correlation coefficients for different
          distances can be different.
          }
        }}
 
 \item{cluster}{Cluster size for cluster models \code{exchangeable}
- and \code{quadratic}. values of 2, 3, and 4 are allowed
+ and \code{quadratic}. Values of 2, 3, and 4 are allowed.
  \itemize{
    \item 2 - a 2*2 cluster
 
@@ -68,13 +68,13 @@ following elements:
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors of the estimates}
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
-      \item{\code{p}}{p-values}
-      \item{\code{scale}}{scale parameter (dispersion parameter)}
+      \item{\code{p}}{p-values for each parameter estimate}
+      \item{\code{scale}}{Scale parameter (dispersion parameter) of the distribution's variance}
       \item{\code{fitted}}{Fitted values}
       \item{\code{resid}}{Normalized Pearson residuals}
       \item{\code{w.ac}}{Working autocorrelation parameters}
       \item{\code{Mat.ac}}{Working autocorrelation matrix}
-      \item{\code{QIC}}{Quasi-information criterion. See \code{\link{qic.calc}}
+      \item{\code{QIC}}{Quasi Information Criterion. See \code{\link{qic.calc}}
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
@@ -82,7 +82,7 @@ following elements:
       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 }
 
-Elements can be viewed using the \code{\link{summary.GEE}} function included in
+Elements can be viewed using the \code{\link{summary.GEE}} methods included in
 the package
 }
 \description{
@@ -93,9 +93,9 @@ to account for spatial autocorrelation in multiple linear regressions
 GEE can be used to fit linear models for response variables with
 different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
 As a spatial model, it is a generalized linear model in which the residuals
-may be autocorrelated. It accounts for spatial (2-dimensional) residual
-autocorrelation in cases of regular gridded datasets. The grid cells
-are assumed to be square.
+may be autocorrelated. It accounts for spatial (2-dimensional)
+autocorrelation of the residuals in cases of regular gridded datasets and returns corrected
+parameter estimates. The grid cells are assumed to be square.
 }
 \examples{
 data(musdata)
@@ -108,7 +108,7 @@ summary(x,printAutoCorPars=TRUE)
 
 }
 \references{
-Carl & Kühn (2007): Analyzing Spatial Autocorrelation in Species
+Carl & Kuhn (2007): Analyzing Spatial Autocorrelation in Species
 Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 
 Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,

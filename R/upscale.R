@@ -2,22 +2,25 @@
 #'
 #' @description The analysis is based a wavelet multiresolution analysis
 #' using only smooth wavelet components.
-#' It is a 2D analysis taking the grid structure of datasets into
-#' account, i.e. the analysis provides scale-specific
+#' It is a 2D analysis taking the grid structure and provides scale-specific
 #' results for data sampled on a contiguous geographical area. The
 #' dataset is assumed to be regular gridded and the grid cells are
 #' assumed to be square.
 #' The scale-dependent results are graphically displayed.
 #'
 #'
-#' @param f     a vector
-#' @param x     corresponding x-coordinates which have to be integer
-#' @param y     corresponding y-coordinates which have to be integer
-#' @param wavelet  type of wavelet: "haar" or "d4" or "la8"
-#' @param wtrafo   type of wavelet transform: "dwt" or "modwt"
-#' @param pad       a numeric value for padding into a bigger square.
-#'           Mostly the mean of f values is useful.
-#'           Default is set to mean(f).
+#' @param f     A vector.
+#' @param x     Corresponding x-coordinates which have to be integer.
+#' @param y     Corresponding y-coordinates which have to be integer.
+#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
+#' are possible. \code{haar} is the default.
+#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
+#' \code{dwt} is the default.
+#' @param pad       A numeric value for padding the matrix
+#' into a bigger square. Default is set to mean(f).
+#'
+#' @return A set of plots showing the matrix image at each value for
+#' \code{level}.
 #'
 #' @examples
 #' data(carlinadata)
