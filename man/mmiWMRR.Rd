@@ -18,7 +18,7 @@ mmiWMRR(formula, family, data, coord, scale, detail = TRUE,
 
 \item{scale}{0 or higher integers possible (limit depends on sample size)}
 
-\item{detail}{by detail components only}
+\item{detail}{By detail components only}
 
 \item{wavelet}{type of wavelet: "haar" or "d4" or "la8"}
 
@@ -45,6 +45,27 @@ selection table according to the approach of multi-model inference
 regressions, i.e. where scaleWMRR as
 modelling function is supported. AIC is used to obtain model
 selection weights and to rank the models.
+}
+\examples{
+
+data(carlinadata)
+coord<- carlinadata[,4:5]
+
+# scale-specific regressions for detail components
+# ranked by multimodel inference
+A<-array(NA,c(4,8,4))
+level<-rep(NA,4)
+for (i in 1:4) {
+  mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+                carlinadata,coord,scale=i,detail=TRUE,wavelet="d4")
+  A[,,i]<-mmi$result
+  level[i]<-mmi$level
+}
+
+# Plot: scale-dependent relative variable importance
+rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
+         carlinadata,coord,maxlevel=4,detail=TRUE,wavelet="d4")
+
 }
 \references{
 Burnham, K.P. & Anderson, D.R. (2002) Model selection and

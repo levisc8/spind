@@ -17,7 +17,7 @@
 #' @param data     data frame
 #' @param coord    corresponding coordinates which have to be integer
 #' @param scale    0 or higher integers possible (limit depends on sample size)
-#' @param detail   by detail components only
+#' @param detail   By detail components only
 #' @param wavelet  type of wavelet: "haar" or "d4" or "la8"
 #' @param wtrafo   type of wavelet transform: "dwt" or "modwt"
 #' @param n.eff    a numeric value of effective sample size
@@ -49,7 +49,8 @@
 #' }
 #'
 #' # Plot: scale-dependent relative variable importance
-#' plot.rvi(A,level)
+#' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
+#'          carlinadata,coord,maxlevel=4,detail=TRUE,wavelet="d4")
 #'
 #' @references
 #' Burnham, K.P. & Anderson, D.R. (2002) Model selection and
