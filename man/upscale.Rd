@@ -31,3 +31,11 @@ dataset is assumed to be regular gridded and the grid cells are
 assumed to be square.
 The scale-dependent results are graphically displayed.
 }
+\examples{
+data(carlinadata)
+
+# Upscaling of smooth components
+upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
+upscale(carlinadata$aridity,carlinadata$x,carlinadata$y,pad=0)
+
+}

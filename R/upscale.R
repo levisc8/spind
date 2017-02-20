@@ -18,6 +18,15 @@
 #' @param pad       a numeric value for padding into a bigger square.
 #'           Mostly the mean of f values is useful.
 #'           Default is set to mean(f).
+#'
+#' @examples
+#' data(carlinadata)
+#'
+#' # Upscaling of smooth components
+#' upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
+#' upscale(carlinadata$aridity,carlinadata$x,carlinadata$y,pad=0)
+#'
+#' @export
 
 upscale<-function(f,x,y,wavelet="haar",wtrafo="dwt",pad=mean(f)){
 
