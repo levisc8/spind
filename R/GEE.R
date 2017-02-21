@@ -70,17 +70,22 @@
 #'       \item{\code{call}}{Call}
 #'       \item{\code{formula}}{Model formula}
 #'       \item{\code{family}}{Family}
+#'       \item{\code{coord}}{Coordinates used for the model}
 #'       \item{\code{corstr}}{User-selected correlaton structure}
 #'       \item{\code{b}}{Estimate of regression parameters}
 #'       \item{\code{s.e.}}{Standard errors of the estimates}
 #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
 #'       \item{\code{p}}{p-values for each parameter estimate}
 #'       \item{\code{scale}}{Scale parameter (dispersion parameter) of the distribution's variance}
+#'       \item{\code{scale.fix}}{Logical indicating whether \code{scale} has fixed value}
+#'       \item{\code{cluster}}{User-specified cluster size for clustered models}
 #'       \item{\code{fitted}}{Fitted values}
 #'       \item{\code{resid}}{Normalized Pearson residuals}
 #'       \item{\code{w.ac}}{Working autocorrelation parameters}
 #'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
 #'       \item{\code{QIC}}{Quasi Information Criterion. See \code{\link{qic.calc}}
+#'        for further details}
+#'       \item{\code{QLik}}{Quasi-likelihood. See \code{\link{qic.calc}}
 #'        for further details}
 #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
 #'       be plotted}
@@ -156,6 +161,8 @@ GEE <- function(formula,family,data,coord,
     Icrit <- qic.calc(formula,family=family,data=data,
                       fitted,var.indep.naive,var.indep.naive)
     QIC <- Icrit$QIC
+    logLik<-Icrit$loglik
+
   }
 
   if(corstr=="fixed"){
@@ -194,6 +201,7 @@ GEE <- function(formula,family,data,coord,
     scale <- summary(mgee)[[9]]
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.naive,var.indep.naive)
     QIC <- Icrit$QIC
+    logLik<-Icrit$loglik
    }
 
 
@@ -228,7 +236,7 @@ GEE <- function(formula,family,data,coord,
     scale <- summary(mgee)[[9]]
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
-
+    logLik<-Icrit$loglik
    }
 
 
@@ -259,6 +267,8 @@ GEE <- function(formula,family,data,coord,
     scale <- as.numeric(summary(mgeese)$scale[1])
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
+    logLik<-Icrit$loglik
+
   }
 
   x <- coord[,1]
@@ -282,17 +292,20 @@ GEE <- function(formula,family,data,coord,
   fit <- list(call=call,
               formula=formula,
               family=family,
+              coords=coord
               corstr=corstr,
               b=b,
               s.e.=s.e.,
               z=z,p=p,
               scale=scale,
               scale.fix=scale.fix,
+              cluster=cluster,
               fitted=fitted,
               resid=resid,
               w.ac=ashort,
               Mat.ac=A,
               QIC=QIC,
+              QLik=logLik,
               ac.glm=ac0,
               ac.gee=ac)
   class(fit) <- "GEE"
