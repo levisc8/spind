@@ -59,6 +59,10 @@
 #' @param plot    A logical value indicating whether autocorrelation of
 #' residuals should be plotted.
 #'
+#' @param scale.fix A logical indicating whether or not the scale parameter should
+#' be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
+#' stepwise model selection procedures in step.spind.
+#'
 #'
 #' @return An object of class \code{GEE}. This consists of a list with the
 #' following elements:
@@ -110,6 +114,8 @@
 #' R package version 0.2–10.
 #'
 #' @export
+#'
+#'
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE){
@@ -134,7 +140,7 @@ GEE <- function(formula,family,data,coord,
   dato <- data.frame(data,id)
   suppressMessages(capture.output({mgee <- gee::gee(formula=formula,family=family,
                                                     data=dato,id=id,
-                                                    corstr="independence")}))
+                                                    corstr="independence",scale.fix=scale.fix)}))
   var.indep.naive <- mgee$naive.variance
 
   if(corstr=="independence"){
@@ -169,7 +175,7 @@ GEE <- function(formula,family,data,coord,
     data <- data.frame(data,id)
     suppressMessages(capture.output({
       mgee <- gee::gee(formula=formula,family=family,
-                       data=data,id=id,R=R,corstr="fixed")}))
+                       data=data,id=id,R=R,corstr="fixed",scale.fix=scale.fix)}))
     var.naive <- mgee$naive.variance
     para3 <- "a=alpha^(d^v) "
     ashort <- c(alpha,v)
@@ -202,7 +208,7 @@ GEE <- function(formula,family,data,coord,
     zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
     suppressMessages(capture.output({
       mgee <- gee::gee(formula=formula,family=family,
-                     data=dato,id=id,corstr="exchangeable")}))
+                     data=dato,id=id,corstr="exchangeable",scale.fix=scale.fix)}))
     var.robust <- mgee$robust.variance
     ashort <- mgee$w[1,2]
     a <- a.gee(mgee$w,cluster,type="gee",corstr="exchangeable")
@@ -237,7 +243,7 @@ GEE <- function(formula,family,data,coord,
     zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
     zcorq <- zcor.quad(zcor,cluster,quad=T)
     mgeese <- geepack::geese(formula=formula,family=family,data=dato,id=id,corstr=
-                    "userdefined",zcor=zcorq)
+                    "userdefined",zcor=zcorq,scale.fix=scale.fix)
     var.robust <- mgeese$vbeta
     ashort <- mgeese$a
     a <- a.gee(mgeese$a,cluster,type="geese",corstr="userdefined",quad=T)
@@ -281,6 +287,7 @@ GEE <- function(formula,family,data,coord,
               s.e.=s.e.,
               z=z,p=p,
               scale=scale,
+              scale.fix=scale.fix,
               fitted=fitted,
               resid=resid,
               w.ac=ashort,
