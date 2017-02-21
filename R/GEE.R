@@ -292,7 +292,7 @@ GEE <- function(formula,family,data,coord,
   fit <- list(call=call,
               formula=formula,
               family=family,
-              coords=coord
+              coords=coord,
               corstr=corstr,
               b=b,
               s.e.=s.e.,

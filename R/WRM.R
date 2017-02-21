@@ -65,6 +65,7 @@
 #'       \item{\code{call}}{Call}
 #'       \item{\code{formula}}{Model formula}
 #'       \item{\code{family}}{Family}
+#'       \item{\code{coord}}{Coordinates used in the model}
 #'       \item{\code{b}}{Estimate of regression parameters}
 #'       \item{\code{s.e.}}{Standard errors}
 #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
@@ -412,6 +413,7 @@ WRM<-function(formula,family,data,coord,
   fit<-list(call=call,
             formula=formula,
             family=family,
+            coord=coord,
             b=coef,
             s.e.=s.e.,
             z=z.value,
