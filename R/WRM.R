@@ -27,7 +27,7 @@
 #' are possible. \code{haar} is the default.
 #' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
 #' \code{dwt} is the default.
-#' @param b.ini     Initial parameter estimates. Default is NULL.
+#' @param b.ini     Initial parameter values. Default is NULL.
 #' @param pad       A list of parameters for padding wavelet coefficients.
 #' \itemize{
 #'    \item{padform} - 0, 1, and 2 are possible.

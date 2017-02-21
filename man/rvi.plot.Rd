@@ -20,7 +20,8 @@ consecutive integers.}
 
 \item{maxlevel}{An integer for maximum scale level}
 
-\item{detail}{By detail components only}
+\item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
+If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.}
 
 \item{wavelet}{Type of wavelet: \code{haar}, \code{d4}, or \code{la8}}
 
@@ -53,7 +54,12 @@ are graphically displayed.
 data(carlinadata)
 coords<- carlinadata[,4:5]
 
+mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+              carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+
+
+# Plot scale-dependent relative variable importance
 rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+         carlinadata,coords,maxlevel=1,detail=TRUE,wavelet="d4")
 
 }

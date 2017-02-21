@@ -1,6 +1,6 @@
 #' Plot wavelet variance/covariance
 #'
-#' @description Plots the wavelet variance or covariance for the specified model.
+#' @description Plots the wavelet variance or covariance for the specified formula.
 #' The scale-dependent results are graphically displayed.
 #'
 #' @param formula   With specified notation according to names in data frame.
@@ -23,11 +23,11 @@
 #'
 #' covar.plot(carlina.horrida ~ aridity + land.use,
 #' carlinadata,coord=coords,wavelet="d4",
-#' wtrafo='dwt',plot='covar')
+#' wtrafo='modwt',plot='covar')
 #'
 #' covar.plot(carlina.horrida ~ aridity + land.use,
 #'            carlinadata,coord=coords,wavelet="d4",
-#'            wtrafo='dwt',plot='var')
+#'            wtrafo='modwt',plot='var')
 #'
 #' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
 #'

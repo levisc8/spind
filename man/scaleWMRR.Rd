@@ -20,13 +20,14 @@ scaleWMRR(formula, family, data, coord, scale = 1, detail = TRUE,
 \item{scale}{0 (which is equivalent to GLM) or
 higher integers possible (limit depends on sample size).}
 
-\item{detail}{Remove non-smooth wavelets? Default is \code{TRUE}.}
+\item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
+If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.}
 
 \item{wavelet}{Type of wavelet: \code{haar} or \code{d4} or \code{la8}}
 
 \item{wtrafo}{Type of wavelet transform: \code{dwt} or \code{modwt}.}
 
-\item{b.ini}{Initial parameter estimates. Default is \code{NULL}.}
+\item{b.ini}{Initial parameter values. Default is \code{NULL}.}
 
 \item{pad}{A list of parameters for padding wavelet coefficients.
 \itemize{
@@ -99,18 +100,18 @@ of package 'waveslim' is used (Whitcher, 2005).
 }
 \examples{
 data(carlinadata)
-coord<- carlinadata[,4:5]
+coords<- carlinadata[,4:5]
 
 # scaleWMRR at scale=0 is equivalent to GLM
 ms0<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coord,scale=0,plot=TRUE)
+               carlinadata,coords,scale=0,plot=TRUE)
 # scale-specific regressions for detail components
 ms1<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coord,scale=1,plot=TRUE)
+               carlinadata,coords,scale=1,plot=TRUE)
 ms2<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coord,scale=2,plot=TRUE)
+               carlinadata,coords,scale=2,plot=TRUE)
 ms3<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coord,scale=3,plot=TRUE)
+               carlinadata,coords,scale=3,plot=TRUE)
 
 }
 \references{

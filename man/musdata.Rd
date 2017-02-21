@@ -6,7 +6,7 @@
 \title{Mus musculus data set}
 \format{A data frame with 400 rows and 5 columns
  \describe{
-   \item{musculus}{integer - Presence/absence records of Mus musculus}
+   \item{musculus}{integer - Count data for Mus musculus}
    \item{pollution}{numeric - describes degree of pollution in corresponding grid cell}
    \item{exposure}{numeric - describes degree of exposure for each grid cell}
    \item{x}{integer - x-coordinates for each grid cell}
@@ -16,6 +16,6 @@
 musdata
 }
 \description{
-A data frame containing simulated presence/absence records of a hypothetical house mouse.
+A data frame containing simulated count data of a hypothetical house mouse.
 }
 \keyword{datasets}

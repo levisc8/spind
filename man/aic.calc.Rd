@@ -15,8 +15,7 @@ aic.calc(formula, family, data, mu, n.eff = NULL)
 
 \item{mu}{Fitted values from a model}
 
-\item{n.eff}{Effective number of observations for calculating
-AICc. Default is NULL}
+\item{n.eff}{Effective number of observations. Default is NULL}
 }
 \value{
 A list with the following components
@@ -24,7 +23,7 @@ A list with the following components
   \item{\code{loglik}}{Log likelihood of the model}
   \item{\code{df}}{Degrees of freedom}
   \item{\code{AIC}}{AIC score for the specified model}
-  \item{\code{AICc}}{AIC score corrected for the sample size}
+  \item{\code{AICc}}{AIC score corrected for small sample sizes}
 }
 }
 \description{

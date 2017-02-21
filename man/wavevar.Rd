@@ -23,12 +23,8 @@ are possible. \code{haar} is the default.}
 Wavelet variance for \code{f}.
 }
 \description{
-Calculates the variance of parameters in a wavelet
-multiresolution analysis. This is a 2D analysis taking the grid
-structure of datasets into account and provides scale-specific
-results for data sampled on a contiguous geographical area. The
-dataset is assumed to be regular gridded and the grid cells are
-assumed to be square.
+Calculates the wavelet variance based on a wavelet
+multiresolution analysis.
 }
 \seealso{
 \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}

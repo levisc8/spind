@@ -23,7 +23,8 @@
 #' @param coord X,Y coordinates for each observation. Coordinates should be
 #' consecutive integers.
 #' @param maxlevel   An integer for maximum scale level
-#' @param detail   By detail components only
+#' @param detail   Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
+#' If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.
 #' @param wavelet  Type of wavelet: \code{haar}, \code{d4}, or \code{la8}
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}
 #' @param n.eff    A numeric value of effective sample size
@@ -35,8 +36,13 @@
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
 #'
+#' mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+#'               carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+#'
+#'
+#' # Plot scale-dependent relative variable importance
 #' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-#' carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+#'          carlinadata,coords,maxlevel=1,detail=TRUE,wavelet="d4")
 #'
 #' @export
 

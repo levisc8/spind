@@ -6,15 +6,14 @@
 #' @param family \code{gaussian}, \code{binomial}, or \code{poisson}
 #' @param data A data frame
 #' @param mu Fitted values from a model
-#' @param n.eff Effective number of observations for calculating
-#'   AICc. Default is NULL
+#' @param n.eff Effective number of observations. Default is NULL
 #'
 #' @return A list with the following components
 #' \describe{
 #'   \item{\code{loglik}}{Log likelihood of the model}
 #'   \item{\code{df}}{Degrees of freedom}
 #'   \item{\code{AIC}}{AIC score for the specified model}
-#'   \item{\code{AICc}}{AIC score corrected for the sample size}
+#'   \item{\code{AICc}}{AIC score corrected for small sample sizes}
 #' }
 #'
 #' @author Gudrun Carl

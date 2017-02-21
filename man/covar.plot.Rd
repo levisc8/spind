@@ -26,7 +26,7 @@ or \code{covar} for wavelet covariance analysis.}
 A list containing a vector of results.
 }
 \description{
-Plots the wavelet variance or covariance for the specified model.
+Plots the wavelet variance or covariance for the specified formula.
 The scale-dependent results are graphically displayed.
 }
 \details{
@@ -39,11 +39,11 @@ coords<- carlinadata[,4:5]
 
 covar.plot(carlina.horrida ~ aridity + land.use,
 carlinadata,coord=coords,wavelet="d4",
-wtrafo='dwt',plot='covar')
+wtrafo='modwt',plot='covar')
 
 covar.plot(carlina.horrida ~ aridity + land.use,
            carlinadata,coord=coords,wavelet="d4",
-           wtrafo='dwt',plot='var')
+           wtrafo='modwt',plot='var')
 
 }
 \seealso{

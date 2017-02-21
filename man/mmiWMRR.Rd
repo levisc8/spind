@@ -12,13 +12,14 @@ mmiWMRR(formula, family, data, coord, scale, detail = TRUE,
 
 \item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}.}
 
-\item{data}{Data frame}
+\item{data}{Data frame.}
 
-\item{coord}{Corresponding coordinates which have to be integer}
+\item{coord}{Corresponding coordinates which have to be integer.}
 
-\item{scale}{0 or higher integers possible (limit depends on sample size)}
+\item{scale}{0 or higher integers possible (limit depends on sample size).}
 
-\item{detail}{Remove non-smooth wavelets? Default is \code{TRUE}}
+\item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
+If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.}
 
 \item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
 are possible. \code{haar} is the default.}
@@ -26,14 +27,14 @@ are possible. \code{haar} is the default.}
 \item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
 \code{dwt} is the default.}
 
-\item{n.eff}{A numeric value of effective sample size}
+\item{n.eff}{A numeric value of effective sample size.}
 }
 \value{
 \code{mmiWMRR} returns a list containing the following elements
 \describe{
   \item{\code{result}}{A matrix containing slopes, degrees of freedom, likelihood,
          AIC, delta, and weight values for the set of candidate models.
-         The models are ranked by Akaike weights.}
+         The models are ranked by AIC.}
   \item{\code{level}}{An integer corresponding to scale}
 
 }
@@ -50,22 +51,15 @@ selection weights and to rank the models.
 \examples{
 
 data(carlinadata)
-coord<- carlinadata[,4:5]
+coords<- carlinadata[,4:5]
 
-# scale-specific regressions for detail components
-# ranked by multimodel inference
-A<-array(NA,c(4,8,4))
-level<-rep(NA,4)
-for (i in 1:4) {
-  mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-                carlinadata,coord,scale=i,detail=TRUE,wavelet="d4")
-  A[,,i]<-mmi$result
-  level[i]<-mmi$level
-}
+mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
+              carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+
 
 # Plot scale-dependent relative variable importance
 rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-         carlinadata,coord,maxlevel=4,detail=TRUE,wavelet="d4")
+         carlinadata,coords,maxlevel=1,detail=TRUE,wavelet="d4")
 
 }
 \references{
@@ -78,5 +72,5 @@ scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
 }
 \seealso{
-\code{\link{aic.calc}}, \pkg{MuMIn}.
+\code{\link{aic.calc}},\code{\link{rvi.plot}} \pkg{MuMIn}.
 }

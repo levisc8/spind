@@ -1,11 +1,7 @@
 #' Wavelet covariance analysis
 #'
-#' @description Calculates the covariance of parameters in a wavelet
-#' multiresolution analysis. This is a 2D analysis taking the grid
-#' structure of datasets into account and provides scale-specific
-#' results for data sampled on a contiguous geographical area. The
-#' dataset is assumed to be regular gridded and the grid cells are
-#' assumed to be square.
+#' @description Calculates the wavelet covariance based on a wavelet
+#' multiresolution analysis.
 #'
 #' @param f1   A vector of length \emph{n}.
 #' @param f2   A vector of length \emph{n}.
@@ -20,6 +16,12 @@
 #' @return Wavelet covariance for \code{f1} and \code{f2}.
 #'
 #' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
+#'
+#' @example
+#' data(carlinadata)
+#' coords<-carlinadata[,4:5]
+#' pc<-plot.covar(carlina.horrida~aridity+land.use,carlinadata,coords,
+#'                wavelet='d4',wtrafo='modwt',plot='covar')
 #'
 #' @export
 

@@ -1,11 +1,7 @@
 #' Wavelet variance analysis
 #'
-#' @description Calculates the variance of parameters in a wavelet
-#' multiresolution analysis. This is a 2D analysis taking the grid
-#' structure of datasets into account and provides scale-specific
-#' results for data sampled on a contiguous geographical area. The
-#' dataset is assumed to be regular gridded and the grid cells are
-#' assumed to be square.
+#' @description Calculates the wavelet variance based on a wavelet
+#' multiresolution analysis.
 #'
 #' @param f    A vector
 #' @param x    Corresponding x-coordinates which have to be integer
@@ -19,6 +15,11 @@
 #'
 #' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
 #'
+#' @example
+#' data(carlinadata)
+#' coords<-carlinadata[,4:5]
+#' pc<-plot.covar(carlina.horrida~aridity+land.use,carlinadata,coords,
+#'                wavelet='d4',wtrafo='modwt',plot='covar')
 #' @export
 
 wavevar<-function(f,x,y,wavelet="haar",wtrafo="dwt"){
