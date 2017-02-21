@@ -103,7 +103,7 @@
 #' coords<- musdata[,4:5]
 #'
 #' x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-#'       coord=coords, corstr="exchangeable", plot=TRUE)
+#'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
 #'
 #' summary(x,printAutoCorPars=TRUE)
 #'
@@ -123,7 +123,7 @@
 #'
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
-              plot=FALSE){
+              plot=FALSE,scale.fix=FALSE){
 
   at <- intersect(names(data),all.vars(formula))
   if(length(at)==0) stop("formula: specified notation is missing")

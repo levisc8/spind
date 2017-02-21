@@ -5,7 +5,7 @@
 \title{GEE (Generalized Estimating Equations)}
 \usage{
 GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
-  moran.params = list(), plot = FALSE)
+  moran.params = list(), plot = FALSE, scale.fix = FALSE)
 }
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
@@ -56,6 +56,10 @@ coordinates. Currently only supports integer coordinates.}
 
 \item{plot}{A logical value indicating whether autocorrelation of
 residuals should be plotted.}
+
+\item{scale.fix}{A logical indicating whether or not the scale parameter should
+be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
+stepwise model selection procedures in step.spind.}
 }
 \value{
 An object of class \code{GEE}. This consists of a list with the
@@ -64,17 +68,22 @@ following elements:
       \item{\code{call}}{Call}
       \item{\code{formula}}{Model formula}
       \item{\code{family}}{Family}
+      \item{\code{coord}}{Coordinates used for the model}
       \item{\code{corstr}}{User-selected correlaton structure}
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors of the estimates}
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
       \item{\code{p}}{p-values for each parameter estimate}
       \item{\code{scale}}{Scale parameter (dispersion parameter) of the distribution's variance}
+      \item{\code{scale.fix}}{Logical indicating whether \code{scale} has fixed value}
+      \item{\code{cluster}}{User-specified cluster size for clustered models}
       \item{\code{fitted}}{Fitted values}
       \item{\code{resid}}{Normalized Pearson residuals}
       \item{\code{w.ac}}{Working autocorrelation parameters}
       \item{\code{Mat.ac}}{Working autocorrelation matrix}
       \item{\code{QIC}}{Quasi Information Criterion. See \code{\link{qic.calc}}
+       for further details}
+      \item{\code{QLik}}{Quasi-likelihood. See \code{\link{qic.calc}}
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
@@ -102,7 +111,7 @@ data(musdata)
 coords<- musdata[,4:5]
 
 x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-      coord=coords, corstr="exchangeable", plot=TRUE)
+      coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
 
 summary(x,printAutoCorPars=TRUE)
 
