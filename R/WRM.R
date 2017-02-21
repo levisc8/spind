@@ -91,7 +91,19 @@
 #'
 #' Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 #' and three-dimensional signal processing. R package version 1.5.
-
+#' @examples
+#' data(musdata)
+#' coords<- musdata[,4:5]
+#'
+#' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
+#' coord=coords, level=1, plot=TRUE)
+#'
+#' # padding with mean values
+#' mwrm1<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
+#'            coord=coords, level=1, pad=list(padform=1), plot=TRUE)
+#'
+#' summary(mwrm)
+#' summary(mwrm1)
 #'
 # @note The iterations for the WRM function converge when
 #       \deqn{

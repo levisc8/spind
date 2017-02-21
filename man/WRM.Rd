@@ -74,6 +74,7 @@ following elements:
       \item{\code{call}}{Call}
       \item{\code{formula}}{Model formula}
       \item{\code{family}}{Family}
+      \item{\code{coord}}{Coordinates used in the model}
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors}
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
@@ -105,6 +106,21 @@ As a spatial model, it is a generalized linear model in which the residuals
 may be autocorrelated. It corrects for  2-dimensional residual
 autocorrelation for regular gridded data sets using the wavelet
 decomposition technique. The grid cells are assumed to be square.
+}
+\examples{
+data(musdata)
+coords<- musdata[,4:5]
+
+mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
+coord=coords, level=1, plot=TRUE)
+
+# padding with mean values
+mwrm1<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
+           coord=coords, level=1, pad=list(padform=1), plot=TRUE)
+
+summary(mwrm)
+summary(mwrm1)
+
 }
 \references{
 Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
