@@ -280,7 +280,7 @@ GEE <- function(formula,family,data,coord,
     y1 <- min(min(ac0),min(ac))-.1
     y2 <- max(max(ac0),max(ac))+.1
     plot(ac0,type="b",ylim=c(y1,y2),
-         ylab="Autocorrelation of residuals", xlab="Distance between points",
+         ylab="Autocorrelation of residuals", xlab="Lag Distance",
          main=paste("Autocorrelation for correlation structure: ", corstr))
     points(ac,pch=2,type="b")
     v <- 1:2

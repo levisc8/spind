@@ -406,7 +406,7 @@ WRM<-function(formula,family,data,coord,
     y1<-min(min(ac0),min(acw))-.1
     y2<-max(max(ac0),max(acw))+.1
     plot(ac0,type="b",ylim=c(y1,y2),
-         ylab="Autocorrelation of residuals", xlab="Lag distance",
+         ylab="Autocorrelation of residuals", xlab="Lag Distance",
          main=paste("Autocorrelation for level = ", level))
     points(acw,pch=2,type="b")
     v<-1:2
