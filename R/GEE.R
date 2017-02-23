@@ -89,6 +89,8 @@
 #'        for further details}
 #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
 #'       be plotted}
+#'       \item{\code{v2}}{Parameter variance of the \code{GEE} model}
+#'       \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
 #'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
 #'       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 #' }
@@ -162,7 +164,7 @@ GEE <- function(formula,family,data,coord,
                       fitted,var.indep.naive,var.indep.naive)
     QIC <- Icrit$QIC
     logLik<-Icrit$loglik
-
+    v2<-var.indep.naive
   }
 
   if(corstr=="fixed"){
@@ -202,6 +204,7 @@ GEE <- function(formula,family,data,coord,
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.naive,var.indep.naive)
     QIC <- Icrit$QIC
     logLik<-Icrit$loglik
+    v2<-var.naive
    }
 
 
@@ -237,6 +240,7 @@ GEE <- function(formula,family,data,coord,
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
     logLik<-Icrit$loglik
+    v2<-var.robust
    }
 
 
@@ -268,7 +272,7 @@ GEE <- function(formula,family,data,coord,
     Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
     QIC <- Icrit$QIC
     logLik<-Icrit$loglik
-
+    v2<-var.robust
   }
 
   x <- coord[,1]
@@ -307,7 +311,9 @@ GEE <- function(formula,family,data,coord,
               QIC=QIC,
               QLik=logLik,
               ac.glm=ac0,
-              ac.gee=ac)
+              ac.gee=ac,
+              var.gee=v2,
+              var.naive=var.indep.naive)
   class(fit) <- "GEE"
   return(fit)
 

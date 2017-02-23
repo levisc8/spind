@@ -87,6 +87,8 @@ following elements:
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
+      \item{\code{v2}}{Parameter variance of the \code{GEE} model}
+      \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
 }
