@@ -85,6 +85,10 @@
 #'       \item{\code{LogLik}}{Log likelihood of the model}
 #'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
 #'       \item{\code{ac.wrm}}{Autocorrelation of WRM residuals}
+#'       \item{\code{b.ini}}{Initial parameter values}
+#'       \item{\code{control}}{Control parameters for the fitting process}
+#'       \item{\code{moran.params}}{Parameters for calculating Moran's I}
+#'       \item{\code{pad}}{List of parameters for padding wavelet coefficients}
 #'}
 #' @references
 #' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
@@ -450,7 +454,11 @@ WRM<-function(formula,family,data,coord,
             AICc=AICc,
             LogLik=LogLik,
             ac.glm=ac0,
-            ac.wrm=acw)
+            ac.wrm=acw,
+            b.ini=b.ini,
+            control=control,
+            pad=pad,
+            moran.params=moran.params)
 
   class(fit)<-"WRM"
   return(fit)

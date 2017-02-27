@@ -69,7 +69,7 @@ following elements:
       \item{\code{formula}}{Model formula}
       \item{\code{family}}{Family}
       \item{\code{coord}}{Coordinates used for the model}
-      \item{\code{corstr}}{User-selected correlaton structure}
+      \item{\code{corstr}}{User-selected correlation structure}
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors of the estimates}
       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
@@ -87,6 +87,7 @@ following elements:
        for further details}
       \item{\code{plot}}{Logical value indicating whether autocorrelation should
       be plotted}
+      \item{\code{moran.params}}{Parameters for calculating Moran's I}
       \item{\code{v2}}{Parameter variance of the \code{GEE} model}
       \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}

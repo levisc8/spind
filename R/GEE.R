@@ -71,7 +71,7 @@
 #'       \item{\code{formula}}{Model formula}
 #'       \item{\code{family}}{Family}
 #'       \item{\code{coord}}{Coordinates used for the model}
-#'       \item{\code{corstr}}{User-selected correlaton structure}
+#'       \item{\code{corstr}}{User-selected correlation structure}
 #'       \item{\code{b}}{Estimate of regression parameters}
 #'       \item{\code{s.e.}}{Standard errors of the estimates}
 #'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
@@ -89,6 +89,7 @@
 #'        for further details}
 #'       \item{\code{plot}}{Logical value indicating whether autocorrelation should
 #'       be plotted}
+#'       \item{\code{moran.params}}{Parameters for calculating Moran's I}
 #'       \item{\code{v2}}{Parameter variance of the \code{GEE} model}
 #'       \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
 #'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
@@ -313,7 +314,8 @@ GEE <- function(formula,family,data,coord,
               ac.glm=ac0,
               ac.gee=ac,
               var.gee=v2,
-              var.naive=var.indep.naive)
+              var.naive=var.indep.naive,
+              moran.params=moran.params)
   class(fit) <- "GEE"
   return(fit)
 

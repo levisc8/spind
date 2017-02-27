@@ -94,6 +94,10 @@ following elements:
       \item{\code{LogLik}}{Log likelihood of the model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
       \item{\code{ac.wrm}}{Autocorrelation of WRM residuals}
+      \item{\code{b.ini}}{Initial parameter values}
+      \item{\code{control}}{Control parameters for the fitting process}
+      \item{\code{moran.params}}{Parameters for calculating Moran's I}
+      \item{\code{pad}}{List of parameters for padding wavelet coefficients}
 }
 }
 \description{

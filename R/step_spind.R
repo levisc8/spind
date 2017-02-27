@@ -57,13 +57,25 @@
 
 step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
+  scope <- attr(terms(object$formula),
+                "term.labels")
   model<-class(object)
   family<-object$family
+
+
   coord<-object$coord
   scale.fix<-object$scale.fix
-  scope <- attr(terms(object$formula),
-                    "term.labels")
   corstr<-object$corstr
+  cluster<-object$cluster
+
+  level<-object$level
+  wavelet<-object$wavelet
+  wtrafo<-object$wtrafo
+  b.ini<-object$b.ini
+  pad<-object$pad
+  control<-object$control
+
+  moran.params<-object$moran.params
 
 
   it<-1
@@ -100,7 +112,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       tt <- scope[i]
 
       nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-      newmod<-WRM(nfit,family,data,coord)
+      newmod<-WRM(nfit,family,data,coord,level=level,
+                  wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
+                  pad=pad,control=control,moran.params=moran.params)
       ans[i + 1, ] <-c(newmod$LogLik,newmod$AIC,newmod$AICc)
     }
     aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -132,7 +146,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       tt <- scope[i]
 
       nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-      newmod<-GEE(nfit,family,data,coord,corstr=corstr,scale.fix=scale.fix,)
+      newmod<-GEE(nfit,family,data,coord,corstr=corstr,
+                  cluster=cluster,moran.params=moran.params,
+                  scale.fix=scale.fix)
       ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
     }
     aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -219,7 +235,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       ns<-length(newvars)
 
       if(model=="WRM"){
-        newwrm<-WRM(newstart,family,data,coord)
+        newwrm<-WRM(newstart,family,data,coord,level=level,
+                    wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
+                    pad=pad,control=control,moran.params=moran.params)
         ans <- matrix(nrow = ns + 1L, ncol = 3L,
                       dimnames = list(c("<none>", vars),
                                       c("loglik","inf.crit1","inf.crit2")))
@@ -230,7 +248,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
         for (i in seq_len(ns)) {
           tt <- newvars[i]
           nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-          newmod<-WRM(nfit,family,data,coord)
+          newmod<-WRM(nfit,family,data,coord,level=level,
+                      wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
+                      pad=pad,control=control,moran.params=moran.params)
           ans[i + 1, ] <-c(newmod$LogLik,newmod$AIC,newmod$AICc)
         }
         aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -255,14 +275,18 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
                       dimnames = list(c("<none>", vars),
                                       c("inf.crit1","qlik")))
 
-        newGEE<-GEE(newstart,family,data,coord,corstr=corstr,scale.fix=scale.fix)
+        newGEE<-GEE(newstart,family,data,coord,corstr=corstr,
+                    cluster=cluster,moran.params=moran.params,
+                    scale.fix=scale.fix)
         ans[1, ] <- c(newGEE$QIC,newGEE$QLik)
 
         for (i in seq_len(ns)) {
           tt <- newvars[i]
 
           nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
-          newmod<-GEE(nfit,family,data,coord,scale.fix=scale.fix)
+          newmod<-GEE(nfit,family,data,coord,corstr=corstr,
+                      cluster=cluster,moran.params=moran.params,
+                      scale.fix=scale.fix)
           ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
         }
         aod <- data.frame(Deleted.Vars=rownames(ans),
