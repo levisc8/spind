@@ -1,106 +1,302 @@
-#' Stepwise model selection for WRMs and GEEs
+#' Stepwise AIC, AICc, and QIC for GEEs and WRMs
 #'
-#' @description A function that provides stepwise model selection using
-#' AIC for Wavelet revised models (WRMs) and QIC for Generalized estimating
-#' equations (GEEs).
+#' @param object A model of class \code{WRM} or \code{GEE}.
+#' @param data The data used to fit that model.
+#' @param steps Number of iterations the procedure should
+#' go through before concluding. The default is to use the number of
+#' variables as the number of iterations.
+#' @param trace Should R print progress updates to the console? Default
+#' is \code{TRUE}.
+#' @param AICc Logical. In the case of model selection with \code{WRM}s,
+#' should AICc be used to determine which model is best rather than AIC?
+#' This argument is ignored for \code{GEE}s. Default is \code{FALSE}.
 #'
-#' @param object A model fit of class \code{WRM} or \code{GEE}.
-#' @param data The data used to fit the specified model.
-#' @param scope A list with components \code{upper} and \code{lower}
-#' that specify the upper and lower boundaries of the stepwise
-#' model selection procedure. Default is NULL, which will step backwards through
-#' all predictor variables.
-#' @param direction Only \code{backward} is supported right now. The operation
-#' will begin with the parameter \code{upper} and work backwards until it reaches
-#' parameter \code{lower} (specified in \code{scope}). \code{forward} or \code{both} may be added later.
+#' @return A data frame containing the results of the final iteration
+#' of the stepwise model selection process. For \code{WRM}'s, the columns
+#' returned are
+#' \itemize{
+#'   \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+#'   \item\code{LogLik} Log-likelihood of the model.
+#'   \item\code{AIC} AIC score for the model.
+#'   \item\code{AICc} AICc score for the model.
+#' }
 #'
-#' @return A data frame containing model formulae. WRM models will have AIC
-#' Log-likelihood, and delta-AIC information. GEE models will have QIC,
-#' Quasi-likelihood, and delta-QIC information.
+#' For \code{GEE}s:
+#' \itemize{
+#'   \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+#'   \item\code{QIC} Quasi-information criterion of the model.
+#'   \item\code{Quasi.Lik} Quasi-likelihood of the model.
+#' }
 #'
-#' @seealso \code{\link{aic.calc}},\code{\link{qic.calc}}
+#' @details This function performs stepwise variable elimination
+#' for model comparison. Each iteration will try to find the best
+#' combination of variables for a given number of variables and
+#' scope based on AIC, AICc, or QIC, and then use that as the base model
+#' for the next iteration until there are no more variables to eliminate.
+#' Alternatively, it will terminate when reducing the number of variables
+#' while respecting the model heirarchy no longer produces lower
+#' information criterion values.
+#'
+#'
+#'
+#' @note Currently, the function only supports backwards model selection
+#' (i.e. one must start with a full model and subtract variables).
+#' Forward selection and both options may be added later.
+#'
+#' @references
+#' Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
+#'
+#' @seealso \code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{drop1}}
+#' \code{\link[stats]{step}}, \code{\link[MASS]{stepAIC}}
 #'
 #' @author Sam Levin
-#'@examples
-#' data(musdata)
-#' coords<- musdata[,4:5]
-#'
-#' xgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-#'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
-#'
-#' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#' coord=coords, level=1, plot=TRUE)
-#'
-#' mod.select.gee<-step.spind(xgee,musdata)
-#' mod.select.wrm<-step.spind(mwrm,musdata)
 #'
 #' @export
 #'
 
-step.spind<-function(object,data,scope=NULL,direction="backward"){
+
+step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
   model<-class(object)
   family<-object$family
-  formula<-terms(object$formula)
-  vars<-all.vars(object$formula)
   coord<-object$coord
   scale.fix<-object$scale.fix
-  upper<-scope$upper
-  lower<-scope$lower
-  if(!is.null(scope)){
-    upper.int<-match(upper,vars)
-    lower.int<-match(lower,vars)
-  }else{
-   upper.int<-length(vars)
-   lower.int<-2
+  scope <- attr(terms(object$formula),
+                    "term.labels")
+
+
+  it<-1
+  ns <- length(scope)
+  polynomial.pattern<-'([I(])'
+  interaction.pattern<-'([:])'
+  poly.terms<-scope[stringr::str_detect(scope,polynomial.pattern)]
+  inter.terms<-scope[stringr::str_detect(scope,interaction.pattern)]
+  base.terms<-setdiff(scope,c(inter.terms,poly.terms))
+
+  if(length(poly.terms)>0 & length(inter.terms)>0){
+    term.col<-3
+  } else if((length(poly.terms)|length(inter.terms))>0){
+    term.col<-2
+  } else if(length(poly.terms)==0 & length(inter.terms)==0){
+    term.col<-1
   }
 
+  terms<-matrix(nrow=length(base.terms),ncol=term.col)
 
-
-  ic<-list(formula=rep(NA,upper.int),
-           inf.crit=rep(NA,upper.int),
-           log.lik=rep(NA,upper.int))
+  for(i in 1:length(base.terms)){
+    fill<-scope[stringr::str_detect(scope,stringr::fixed(base.terms[i]))]
+    terms[i,1:length(fill)]<-fill
+  }
 
   if(model=="WRM"){
-    for(i in upper.int:lower.int){
+    ans <- matrix(nrow = ns + 1L, ncol = 3L,
+                  dimnames = list(c("<none>", scope),
+                                  c("loglik","inf.crit1","inf.crit2")))
 
-      newmodel<-drop.terms(formula,i:upper.int,keep.response = TRUE)
-      mwrm<-WRM(newmodel,family,data,coord,object$level,
-                object$wavelet,object$wtrafo,pad=list(object$padform,
-                                                      object$padzone))
+    ans[1, ] <- c(object$LogLik,object$AIC,object$AICc)
 
-      aic<-aic.calc(mwrm$formula,mwrm$family,data,mwrm$fitted,mwrm$n.eff)
+    for (i in seq_len(ns)) {
+      tt <- scope[i]
 
-      ic$formula[i]<-deparse(newmodel)
-      ic$inf.crit[i]<-aic$AIC
-      ic$log.lik[i]<-aic$loglik
-
+      nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
+      newmod<-WRM(nfit,family,data,coord)
+      ans[i + 1, ] <-c(newmod$LogLik,newmod$AIC,newmod$AICc)
     }
-    ic$delta<-ic$inf.crit-min(ic$inf.crit,na.rm=TRUE)
-    names(ic)<-c("Formula","AIC","logLik","Delta.AIC")
+    aod <- data.frame(Deleted.Vars=rownames(ans),
+                      LogLik=ans[, 1],
+                      AIC = ans[, 2],
+                      AICc=ans[, 3],
+                      stringsAsFactors = F)
+
+    rownames(aod)<-1:dim(aod)[1]
+    if(AICc){
+      best.mod<-aod$Deleted.Vars[which(aod$AICc==min(aod$AICc))]
+    }else{
+      best.mod<-aod$Deleted.Vars[which(aod$AIC==min(aod$AIC))]
+    }
   }
+
   if(model=="GEE"){
     if(!scale.fix){
       scale.fix<-TRUE
-      warning("Warning: scale parameter is now fixed")
+      message("Scale parameter is now fixed")
     }
-    for(i in upper.int:lower.int){
-      newmodel<-drop.terms(formula,i:upper.int,keep.response = TRUE)
-      mgee<-GEE(newmodel,family,data,coord,object$corstr,object$cluster)
+    ans <- matrix(nrow = ns + 1L, ncol = 2L,
+                  dimnames = list(c("<none>", scope),
+                                  c("inf.crit1","qlik")))
 
-      ic$formula[i]<-deparse(newmodel)
-      ic$inf.crit[i]<-mgee$QIC
-      ic$log.lik[i]<-mgee$QLik
+    ans[1, ] <- c(object$QIC,object$QLik)
+
+    for (i in seq_len(ns)) {
+      tt <- scope[i]
+
+      nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
+      newmod<-GEE(nfit,family,data,coord,scale.fix=scale.fix)
+      ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
     }
-    ic$delta<-ic$inf.crit-min(ic$inf.crit,na.rm=T)
-    names(ic)<-c("Formula","QIC","Quasi.Lik","Delta")
+    aod <- data.frame(Deleted.Vars=rownames(ans),
+                      QIC=ans[, 1],
+                      Quasi.Lik = ans[, 2],
+                      stringsAsFactors = F)
+
+    rownames(aod)<-1:dim(aod)[1]
+    best.mod<-aod$Deleted.Vars[which(aod$QIC==min(aod$QIC))]
+  }
+  if(trace){
+    cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+    '\n -------------------- \n')
+    print(aod)
+    cat('\n')
+  }
+  newvars<-setdiff(scope,best.mod)
+  use.formula<-object$formula
+  aod1<-aod
+
+  if(!is.null(steps)){
+    steps<-steps
+  } else{
+    steps<-length(scope)
+  }
+  if(best.mod!='<none>'){
+    while(it<=steps){
+      usevars<-newvars
+      aod1<-aod
+      it<-it+1
+      newstart<-update.formula(use.formula, as.formula(paste("~ . -", best.mod)))
+      vars<-setdiff(usevars,best.mod)
+      if(dim(terms)[2]==3){
+        for(j in 1:dim(terms)[1]){
+          if((terms[j,] %in% vars)[1]==FALSE &
+             ((terms[j,] %in% vars)[2]|
+              (terms[j,] %in% vars)[3])==TRUE){
+
+            if(model=="GEE") aod1<-aod1[order(aod1$QIC),]
+            if(model=="WRM" & !AICc) aod1<-aod1[order(aod1$AIC),]
+            if(model=="WRM" & AICc) aod1<-aod1[order(aod1$AICc),]
+
+            add.back<-best.mod
+
+            aod1<-aod1[-c(1),]
+
+            new.best.mod<-aod1[1,"Deleted.Vars"]
+
+            vars<-c(setdiff(usevars,new.best.mod),add.back)
+            newstart<-update.formula(use.formula,paste("~ . -",new.best.mod))
+            cat('-----\nModel heirarchy violated by last removal\nNew Deleted Term: ',
+                new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
+          }
+        }
+      }
+
+      if(dim(terms)[2]==2){
+        for(j in 1:dim(terms)[1]){
+          if((terms[j,] %in% vars)[1]==FALSE &
+             ((terms[j,] %in% vars)[2])==TRUE){
+
+            if(model=="GEE") aod1<-aod1[order(aod1$QIC),]
+            if(model=="WRM" & !AICc) aod1<-aod1[order(aod1$AIC),]
+            if(model=="WRM" & AICc) aod1<-aod1[order(aod1$AICc),]
+
+            add.back<-best.mod
+
+            aod1<-aod1[-c(1),]
+
+            new.best.mod<-aod1[1,"Deleted.Vars"]
+
+            vars<-c(setdiff(usevars,new.best.mod),add.back)
+            newstart<-update.formula(use.formula,paste("~ . -",new.best.mod))
+            cat('-----\nModel heirarchy violated by last removal\nNew Deleted Term: ',
+                new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
+          }
+        }
+      }
+
+      if(best.mod=='<none>'){
+        break
+      }
+
+      ns<-length(newvars)
+
+      if(model=="WRM"){
+        newwrm<-WRM(newstart,family,data,coord)
+        ans <- matrix(nrow = ns + 1L, ncol = 3L,
+                      dimnames = list(c("<none>", vars),
+                                      c("loglik","inf.crit1","inf.crit2")))
+
+        ans[1, ] <- c(newwrm$LogLik,newwrm$AIC,newwrm$AICc)
+
+
+        for (i in seq_len(ns)) {
+          tt <- newvars[i]
+          nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
+          newmod<-WRM(nfit,family,data,coord)
+          ans[i + 1, ] <-c(newmod$LogLik,newmod$AIC,newmod$AICc)
+        }
+        aod <- data.frame(Deleted.Vars=rownames(ans),
+                          LogLik=ans[, 1],
+                          AIC = ans[, 2],
+                          AICc=ans[, 3],
+                          stringsAsFactors = F)
+
+        rownames(aod)<-1:dim(aod)[1]
+        if(AICc){
+          best.mod<-aod$Deleted.Vars[which(aod$AICc==min(aod$AICc))]
+        }else{
+          best.mod<-aod$Deleted.Vars[which(aod$AIC==min(aod$AIC))]
+        }
+      }
+
+      if(model=="GEE"){
+        if(!scale.fix){
+          scale.fix<-TRUE
+        }
+        ans <- matrix(nrow = ns + 1L, ncol = 2L,
+                      dimnames = list(c("<none>", vars),
+                                      c("inf.crit1","qlik")))
+
+        newGEE<-GEE(newstart,family,data,coord,scale.fix=scale.fix)
+        ans[1, ] <- c(newGEE$QIC,newGEE$QLik)
+
+        for (i in seq_len(ns)) {
+          tt <- newvars[i]
+
+          nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
+          newmod<-GEE(nfit,family,data,coord,scale.fix=scale.fix)
+          ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
+        }
+        aod <- data.frame(Deleted.Vars=rownames(ans),
+                          QIC=ans[, 1],
+                          Quasi.Lik = ans[, 2],
+                          stringsAsFactors = F)
+
+        rownames(aod)<-1:dim(aod)[1]
+        best.mod<-aod$Deleted.Vars[which(aod$QIC==min(aod$QIC))]
+
+      }
+
+      if(length(best.mod)>1){
+        warning('Multiple equally parsimonious models')
+      }
+
+
+      aod1<-aod
+      newvars<-setdiff(vars,best.mod)
+
+      if(trace){
+        cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+            '\n -------------------- \n')
+        print(aod)
+        cat('\n')
+      }
+
+      suppressWarnings(if(best.mod!='<none>') use.formula<-newstart)
+
+      suppressWarnings(if(best.mod=='<none>') break)
+
+
+
+    }
   }
 
-  ic<-data.frame(ic,stringsAsFactors = FALSE)
-  ic<-ic[complete.cases(ic),]
-  ic<-ic[order(ic$Delta),]
-  return(ic)
+  if(!trace) aod
 }
-
-
-

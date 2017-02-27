@@ -2,50 +2,68 @@
 % Please edit documentation in R/step_spind.R
 \name{step.spind}
 \alias{step.spind}
-\title{Stepwise model selection for WRMs and GEEs}
+\title{Stepwise AIC, AICc, and QIC for GEEs and WRMs}
 \usage{
-step.spind(object, data, scope = NULL, direction = "backward")
+step.spind(object, data, steps = NULL, trace = TRUE, AICc = FALSE)
 }
 \arguments{
-\item{object}{A model fit of class \code{WRM} or \code{GEE}.}
+\item{object}{A model of class \code{WRM} or \code{GEE}.}
 
-\item{data}{The data used to fit the specified model.}
+\item{data}{The data used to fit that model.}
 
-\item{scope}{A list with components \code{upper} and \code{lower}
-that specify the upper and lower boundaries of the stepwise
-model selection procedure. Default is NULL, which will step backwards through
-all predictor variables.}
+\item{steps}{Number of iterations the procedure should
+go through before concluding. The default is to use the number of
+variables as the number of iterations.}
 
-\item{direction}{Only \code{backward} is supported right now. The operation
-will begin with the parameter \code{upper} and work backwards until it reaches
-parameter \code{lower} (specified in \code{scope}). \code{forward} or \code{both} may be added later.}
+\item{trace}{Should R print progress updates to the console? Default
+is \code{TRUE}.}
+
+\item{AICc}{Logical. In the case of model selection with \code{WRM}s,
+should AICc be used to determine which model is best rather than AIC?
+This argument is ignored for \code{GEE}s. Default is \code{FALSE}.}
 }
 \value{
-A data frame containing model formulae. WRM models will have AIC
-Log-likelihood, and delta-AIC information. GEE models will have QIC,
-Quasi-likelihood, and delta-QIC information.
+A data frame containing the results of the final iteration
+of the stepwise model selection process. For \code{WRM}'s, the columns
+returned are
+\itemize{
+  \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+  \item\code{LogLik} Log-likelihood of the model.
+  \item\code{AIC} AIC score for the model.
+  \item\code{AICc} AICc score for the model.
+}
+
+For \code{GEE}s:
+\itemize{
+  \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+  \item\code{QIC} Quasi-information criterion of the model.
+  \item\code{Quasi.Lik} Quasi-likelihood of the model.
+}
 }
 \description{
-A function that provides stepwise model selection using
-AIC for Wavelet revised models (WRMs) and QIC for Generalized estimating
-equations (GEEs).
+Stepwise AIC, AICc, and QIC for GEEs and WRMs
 }
-\examples{
-data(musdata)
-coords<- musdata[,4:5]
-
-xgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-      coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
-
-mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-coord=coords, level=1, plot=TRUE)
-
-mod.select.gee<-step.spind(xgee,musdata)
-mod.select.wrm<-step.spind(mwrm,musdata)
-
+\details{
+This function performs stepwise variable elimination
+for model comparison. Each iteration will try to find the best
+combination of variables for a given number of variables and
+scope based on AIC, AICc, or QIC, and then use that as the base model
+for the next iteration until there are no more variables to eliminate.
+Alternatively, it will terminate when reducing the number of variables
+while respecting the model heirarchy no longer produces lower
+information criterion values.
+}
+\note{
+Currently, the function only supports backwards model selection
+(i.e. one must start with a full model and subtract variables).
+Forward selection and both options may be added later.
+}
+\references{
+Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 }
 \seealso{
-\code{\link{aic.calc}},\code{\link{qic.calc}}
+\code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{drop1}}
+\code{\link[stats]{step}}, \code{\link[MASS]{stepAIC}}
 }
 \author{
 Sam Levin
