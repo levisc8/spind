@@ -63,6 +63,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
   scale.fix<-object$scale.fix
   scope <- attr(terms(object$formula),
                     "term.labels")
+  corstr<-object$corstr
 
 
   it<-1
@@ -131,7 +132,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       tt <- scope[i]
 
       nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-      newmod<-GEE(nfit,family,data,coord,scale.fix=scale.fix)
+      newmod<-GEE(nfit,family,data,coord,corstr=corstr,scale.fix=scale.fix,)
       ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
     }
     aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -254,7 +255,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
                       dimnames = list(c("<none>", vars),
                                       c("inf.crit1","qlik")))
 
-        newGEE<-GEE(newstart,family,data,coord,scale.fix=scale.fix)
+        newGEE<-GEE(newstart,family,data,coord,corstr=corstr,scale.fix=scale.fix)
         ans[1, ] <- c(newGEE$QIC,newGEE$QLik)
 
         for (i in seq_len(ns)) {
@@ -298,5 +299,5 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
     }
   }
 
-  if(!trace) aod
+  return(aod)
 }
