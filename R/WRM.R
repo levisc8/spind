@@ -81,6 +81,8 @@
 #'       \item{\code{padform}}{Selected matrix padding type}
 #'       \item{\code{n.eff}}{Effective number of observations}
 #'       \item{\code{AIC}}{Akaike information criterion}
+#'       \item{\code{AICc}}{AIC score corrected for small sample sizes}
+#'       \item{\code{LogLik}}{Log likelihood of the model}
 #'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
 #'       \item{\code{ac.wrm}}{Autocorrelation of WRM residuals}
 #'}
@@ -384,6 +386,8 @@ WRM<-function(formula,family,data,coord,
   if(level!=0) n.eff<-round(n*(1- 1/(2^level*2^level)  ))
   aic<-aic.calc(formula,family,data,mu=pi,n.eff=n.eff)
   AIC<-round(aic$AIC,1)
+  AICc<-round(aic$AICc,1)
+  LogLik<-aic$loglik
 
 
   z.value<-rep(NA,nvar)
@@ -443,6 +447,8 @@ WRM<-function(formula,family,data,coord,
             n=n,
             n.eff=n.eff,
             AIC=AIC,
+            AICc=AICc,
+            LogLik=LogLik,
             ac.glm=ac0,
             ac.wrm=acw)
 

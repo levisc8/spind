@@ -90,6 +90,8 @@ following elements:
       \item{\code{padform}}{Selected matrix padding type}
       \item{\code{n.eff}}{Effective number of observations}
       \item{\code{AIC}}{Akaike information criterion}
+      \item{\code{AICc}}{AIC score corrected for small sample sizes}
+      \item{\code{LogLik}}{Log likelihood of the model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
       \item{\code{ac.wrm}}{Autocorrelation of WRM residuals}
 }
