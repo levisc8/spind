@@ -60,6 +60,6 @@ mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
 
 # Plot scale-dependent relative variable importance
 rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-         carlinadata,coords,maxlevel=1,detail=TRUE,wavelet="d4")
+         carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
 
 }
