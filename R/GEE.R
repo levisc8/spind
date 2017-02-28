@@ -146,9 +146,11 @@ GEE <- function(formula,family,data,coord,
   res0 <- resid(m0,type="pearson")
   id <- rep(1,nn)
   dato <- data.frame(data,id)
-  suppressMessages(capture.output({mgee <- gee::gee(formula=formula,family=family,
-                                                    data=dato,id=id,
-                                                    corstr="independence",scale.fix=scale.fix)}))
+  suppressMessages(suppressWarnings(capture.output({
+    mgee <- gee::gee(formula=formula,family=family,
+                     data=dato,id=id,
+                     corstr="independence",scale.fix=scale.fix)
+    })))
   var.indep.naive <- mgee$naive.variance
 
   if(corstr=="independence"){
@@ -183,9 +185,10 @@ GEE <- function(formula,family,data,coord,
     D <- as.matrix(dist(coord))
     R <- alpha^(D^v)
     data <- data.frame(data,id)
-    suppressMessages(capture.output({
+    suppressMessages(suppressWarnings(capture.output({
       mgee <- gee::gee(formula=formula,family=family,
-                       data=data,id=id,R=R,corstr="fixed",scale.fix=scale.fix)}))
+                       data=data,id=id,R=R,corstr="fixed",scale.fix=scale.fix)
+      })))
     var.naive <- mgee$naive.variance
     para3 <- "a=alpha^(d^v) "
     ashort <- c(alpha,v)
@@ -218,9 +221,10 @@ GEE <- function(formula,family,data,coord,
 
     clusz <- clus.sz(id)
     zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
-    suppressMessages(capture.output({
+    suppressMessages(suppressWarnings(capture.output({
       mgee <- gee::gee(formula=formula,family=family,
-                     data=dato,id=id,corstr="exchangeable",scale.fix=scale.fix)}))
+                     data=dato,id=id,corstr="exchangeable",scale.fix=scale.fix)
+      })))
     var.robust <- mgee$robust.variance
     ashort <- mgee$w[1,2]
     a <- a.gee(mgee$w,cluster,type="gee",corstr="exchangeable")
