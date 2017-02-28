@@ -378,7 +378,7 @@ qic.calc <- function(formula,family,data,mu,var.robust,var.indep.naive){
     loglik <-  sum(y*log(mu)-mu) - sum(log(factorial(y))) # factorial=Fakultät
   }
 
-  trace <- sum(diag(ginv(var.indep.naive)%*% var.robust))
+  trace <- sum(diag(MASS::ginv(var.indep.naive)%*% var.robust))
 
   QIC <-  -2*loglik + 2*trace
 

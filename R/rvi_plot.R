@@ -104,7 +104,7 @@ wavelet="haar",wtrafo="dwt",n.eff=NULL){
 
   #leg<-dimnames(mmi$res)[[2]][vec+1]
   v<-2:(nvar+1)
-  legend(2,2,leg,pch=v,lty=vec,lwd=2)
+  legend('topright',leg,pch=v,lty=vec,lwd=2)
 
   rownames(WeightSums)<-leg
   colnames(WeightSums)<-paste("level",c(1:klimitscale),sep="=")

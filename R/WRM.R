@@ -1,4 +1,3 @@
-#'
 #' Wavelet-revised models (WRMs)
 #'
 #' @description A wavelet-based method to remove spatial autocorrelation
@@ -349,7 +348,7 @@ WRM<-function(formula,family,data,coord,
         acpw<-NA
       }
 
-      try.solve<-try(ginv(t(tt)%*%tt),silent = TRUE)
+      try.solve<-try(MASS::ginv(t(tt)%*%tt),silent = TRUE)
       if (inherits(try.solve, "try-error"))  var.b<-matrix(NA,nvar,nvar)
       if (!inherits(try.solve, "try-error")) var.b<-try.solve
       if(family=="gaussian"){

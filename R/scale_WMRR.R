@@ -1,5 +1,4 @@
-#'
-#' @title Scaling by wavelet multiresolution regression (WMRR)
+#'@title Scaling by wavelet multiresolution regression (WMRR)
 #'
 #' @description
 #' scaleWMRR performs a scale-specific regression based on a
@@ -337,12 +336,12 @@ scaleWMRR<-function(formula,family,data,coord,
       if(scale!=0) df<-round(n/4^(n.level-1)) -nvar
 
       if(family=="binomial" | family=="poisson"){
-        if(scale==0) var.b<-ginv(t(tt)%*%tt)
-        if(scale!=0) var.b<-ginv(t(tt)%*%tt) * (4^(n.level-1))
+        if(scale==0) var.b<-MASS::ginv(t(tt)%*%tt)
+        if(scale!=0) var.b<-MASS::ginv(t(tt)%*%tt) * (4^(n.level-1))
       }
 
       if(family=="gaussian"){
-        var.b<-ginv(t(tt)%*%tt)
+        var.b<-MASS::ginv(t(tt)%*%tt)
         sigma2<-sum(resmdwt^2)/df
         var.b<-sigma2*var.b
       }
