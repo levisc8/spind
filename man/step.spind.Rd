@@ -15,8 +15,8 @@ step.spind(object, data, steps = NULL, trace = TRUE, AICc = FALSE)
 go through before concluding. The default is to use the number of
 variables as the number of iterations.}
 
-\item{trace}{Should R print progress updates to the console? Default
-is \code{TRUE}.}
+\item{trace}{Should R print progress updates and the final, best model found
+to the console? Default is \code{TRUE}.}
 
 \item{AICc}{Logical. In the case of model selection with \code{WRM}s,
 should AICc be used to determine which model is best rather than AIC?

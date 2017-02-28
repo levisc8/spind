@@ -5,8 +5,8 @@
 #' @param steps Number of iterations the procedure should
 #' go through before concluding. The default is to use the number of
 #' variables as the number of iterations.
-#' @param trace Should R print progress updates to the console? Default
-#' is \code{TRUE}.
+#' @param trace Should R print progress updates and the final, best model found
+#' to the console? Default is \code{TRUE}.
 #' @param AICc Logical. In the case of model selection with \code{WRM}s,
 #' should AICc be used to determine which model is best rather than AIC?
 #' This argument is ignored for \code{GEE}s. Default is \code{FALSE}.
@@ -146,9 +146,11 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       tt <- scope[i]
 
       nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-      newmod<-GEE(nfit,family,data,coord,corstr=corstr,
+      newmod<-suppressWarnings({
+        GEE(nfit,family,data,coord,corstr=corstr,
                   cluster=cluster,moran.params=moran.params,
                   scale.fix=scale.fix)
+      })
       ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
     }
     aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -235,19 +237,24 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       ns<-length(newvars)
 
       if(model=="WRM"){
-        newwrm<-WRM(newstart,family,data,coord,level=level,
-                    wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
-                    pad=pad,control=control,moran.params=moran.params)
+
         ans <- matrix(nrow = ns + 1L, ncol = 3L,
                       dimnames = list(c("<none>", vars),
                                       c("loglik","inf.crit1","inf.crit2")))
+
+        newwrm<-WRM(newstart,family,data,coord,level=level,
+                    wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
+                    pad=pad,control=control,moran.params=moran.params)
+
+
 
         ans[1, ] <- c(newwrm$LogLik,newwrm$AIC,newwrm$AICc)
 
 
         for (i in seq_len(ns)) {
           tt <- newvars[i]
-          nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
+
+          nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
           newmod<-WRM(nfit,family,data,coord,level=level,
                       wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
                       pad=pad,control=control,moran.params=moran.params)
@@ -275,18 +282,22 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
                       dimnames = list(c("<none>", vars),
                                       c("inf.crit1","qlik")))
 
-        newGEE<-GEE(newstart,family,data,coord,corstr=corstr,
+        newGEE<-suppressWarnings({
+          GEE(newstart,family,data,coord,corstr=corstr,
                     cluster=cluster,moran.params=moran.params,
                     scale.fix=scale.fix)
+        })
         ans[1, ] <- c(newGEE$QIC,newGEE$QLik)
 
         for (i in seq_len(ns)) {
           tt <- newvars[i]
 
           nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
-          newmod<-GEE(nfit,family,data,coord,corstr=corstr,
+          newmod<-suppressWarnings({
+            GEE(nfit,family,data,coord,corstr=corstr,
                       cluster=cluster,moran.params=moran.params,
                       scale.fix=scale.fix)
+          })
           ans[i + 1, ] <-c(newmod$QIC,newmod$QLik)
         }
         aod <- data.frame(Deleted.Vars=rownames(ans),
@@ -322,6 +333,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
     }
   }
-
+  if(trace){
+    cat('\n---------------\nBest model found:\n')
+    print(newstart)
+  }
   return(aod)
 }
