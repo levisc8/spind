@@ -51,6 +51,7 @@
 #'
 #' @author Sam Levin
 #'
+#'
 #' @export
 #'
 
@@ -170,7 +171,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
   newvars<-setdiff(scope,best.mod)
   use.formula<-object$formula
   aod1<-aod
-
+  newstart<-object$formula
   if(!is.null(steps)){
     steps<-steps
   } else{
@@ -193,16 +194,15 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
             if(model=="WRM" & !AICc) aod1<-aod1[order(aod1$AIC),]
             if(model=="WRM" & AICc) aod1<-aod1[order(aod1$AICc),]
 
-            add.back<-best.mod
-
             aod1<-aod1[-c(1),]
 
             new.best.mod<-aod1[1,"Deleted.Vars"]
+            best.mod<-new.best.mod
+            if(new.best.mod=='<none>') break
 
-            vars<-c(setdiff(usevars,new.best.mod),add.back)
             newstart<-update.formula(use.formula,paste("~ . -",new.best.mod))
             cat('-----\nModel heirarchy violated by last removal\nNew Deleted Term: ',
-                new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
+            new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
           }
         }
       }
@@ -216,30 +216,28 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
             if(model=="WRM" & !AICc) aod1<-aod1[order(aod1$AIC),]
             if(model=="WRM" & AICc) aod1<-aod1[order(aod1$AICc),]
 
-            add.back<-best.mod
-
             aod1<-aod1[-c(1),]
 
             new.best.mod<-aod1[1,"Deleted.Vars"]
+            best.mod<-new.best.mod
+            if(new.best.mod=='<none>') break
 
-            vars<-c(setdiff(usevars,new.best.mod),add.back)
             newstart<-update.formula(use.formula,paste("~ . -",new.best.mod))
-            cat('-----\nModel heirarchy violated by last removal\nNew Deleted Term: ',
+            cat('-----\nModel heirarchy violated by last removal\nNew deleted term: ',
                 new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
+
           }
         }
       }
 
-      if(best.mod=='<none>'){
-        break
-      }
 
-      ns<-length(newvars)
+
+      ns<-length(attr(terms(newstart),'term.labels'))
 
       if(model=="WRM"){
 
         ans <- matrix(nrow = ns + 1L, ncol = 3L,
-                      dimnames = list(c("<none>", vars),
+                      dimnames = list(c("<none>", attr(terms(newstart),'term.labels')),
                                       c("loglik","inf.crit1","inf.crit2")))
 
         newwrm<-WRM(newstart,family,data,coord,level=level,
@@ -252,7 +250,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
 
         for (i in seq_len(ns)) {
-          tt <- newvars[i]
+          tt <- attr(terms(newstart),'term.labels')[i]
 
           nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
           newmod<-WRM(nfit,family,data,coord,level=level,
@@ -279,7 +277,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
           scale.fix<-TRUE
         }
         ans <- matrix(nrow = ns + 1L, ncol = 2L,
-                      dimnames = list(c("<none>", vars),
+                      dimnames = list(c("<none>", attr(terms(newstart),'term.labels')),
                                       c("inf.crit1","qlik")))
 
         newGEE<-suppressWarnings({
@@ -290,7 +288,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
         ans[1, ] <- c(newGEE$QIC,newGEE$QLik)
 
         for (i in seq_len(ns)) {
-          tt <- newvars[i]
+          tt <- attr(terms(newstart),'term.labels')[i]
 
           nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
           newmod<-suppressWarnings({
@@ -325,7 +323,9 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
         cat('\n')
       }
 
-      suppressWarnings(if(best.mod!='<none>') use.formula<-newstart)
+      suppressWarnings(if(best.mod!='<none>'){
+        use.formula<-newstart
+      })
 
       suppressWarnings(if(best.mod=='<none>') break)
 
@@ -333,9 +333,11 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
     }
   }
-  if(trace){
+  if(trace ){
     cat('\n---------------\nBest model found:\n')
     print(newstart)
   }
-  return(aod)
+
+  return(list(model=newstart,
+                table=aod))
 }

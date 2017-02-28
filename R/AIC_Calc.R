@@ -69,8 +69,7 @@ aic.calc<-function(formula,family,data,mu,n.eff=NULL){
 
   AIC  <- -2* loglik + 2*K              # AIC
   AICc <- -2* loglik + 2*K + 2*K*(K+1)/(n-K-1)    # AICc
-  AIC  <- round(AIC,2)
-  AICc  <- round(AICc,2)
+
 
   return(list(loglik=loglik,df=K,AIC=AIC,AICc=AICc))
 }

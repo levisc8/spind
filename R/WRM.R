@@ -389,8 +389,8 @@ WRM<-function(formula,family,data,coord,
   if(level==0) n.eff<-n
   if(level!=0) n.eff<-round(n*(1- 1/(2^level*2^level)  ))
   aic<-aic.calc(formula,family,data,mu=pi,n.eff=n.eff)
-  AIC<-round(aic$AIC,1)
-  AICc<-round(aic$AICc,1)
+  AIC<-aic$AIC
+  AICc<-aic$AICc
   LogLik<-aic$loglik
 
 
