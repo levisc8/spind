@@ -77,9 +77,9 @@ following elements:
       \item{\code{coord}}{Coordinates used in the model}
       \item{\code{b}}{Estimate of regression parameters}
       \item{\code{s.e.}}{Standard errors}
-      \item{\code{z}}{Depending on the \code{family}, either a z or t value}
-      \item{\code{p}}{p-values}
-      \item{\code{fitted}}{Fitted values}
+      \item{\code{z}}{Depending on the \code{family}, either a \emph{z} or \emph{t} value}
+      \item{\code{p}}{\emph{p}-values}
+      \item{\code{fitted}}{Fitted values from the model}
       \item{\code{resid}}{Pearson residuals}
       \item{\code{b.sm}}{Parameter estimates of neglected smooth part}
       \item{\code{fitted.sm}}{Fitted values of neglected smooth part}
@@ -137,5 +137,5 @@ Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 and three-dimensional signal processing. R package version 1.5.
 }
 \author{
-Gudrun Carl
+Gudrun Carl, Sam Levin
 }

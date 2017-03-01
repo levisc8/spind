@@ -43,3 +43,6 @@ upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
 upscale(carlinadata$aridity,carlinadata$x,carlinadata$y,pad=0)
 
 }
+\author{
+Gudrun Carl
+}

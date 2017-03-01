@@ -17,6 +17,8 @@
 #'
 #' @return    A list containing a vector of results.
 #'
+#' @author Gudrun Carl
+#'
 #' @examples
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]

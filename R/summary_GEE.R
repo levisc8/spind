@@ -4,11 +4,11 @@
 #' @param object An object of class \code{GEE}
 #' @param ... Additional parameters to be passed \code{summary}.
 #' @param printAutoCorPars A logical indicating whether to print the
-#' autocorrelation matrix
+#' working autocorrelation parameters
 #'
 #'@return Prints model details, parameter estimates, and autocorrelation values
 #'for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
-#'prints autocorrelation parameters used in the model.
+#'prints working autocorrelation parameters used in the model.
 #'
 #'@author Sam Levin
 #'

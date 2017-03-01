@@ -5,7 +5,9 @@
 #'@param object A model of class \code{WRM}
 #'@param ... Other arguments passed to \code{summary}
 #'@return Prints results of model
-
+#'
+#' @author Gudrun Carl, Sam Levin
+#'
 #'@export
 
 summary.WRM<-function (object,...) {

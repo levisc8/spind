@@ -29,3 +29,6 @@ multiresolution analysis.
 \seealso{
 \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
 }
+\author{
+Gudrun Carl
+}

@@ -22,6 +22,8 @@
 #' @return A set of plots showing the matrix image at each value for
 #' \code{level}.
 #'
+#' @author Gudrun Carl
+#'
 #' @examples
 #' data(carlinadata)
 #'

@@ -12,12 +12,12 @@
 \item{...}{Additional parameters to be passed \code{summary}.}
 
 \item{printAutoCorPars}{A logical indicating whether to print the
-autocorrelation matrix}
+working autocorrelation parameters}
 }
 \value{
 Prints model details, parameter estimates, and autocorrelation values
 for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
-prints autocorrelation parameters used in the model.
+prints working autocorrelation parameters used in the model.
 }
 \description{
 Returns summary of GEE parameter estimates and autocorrelations

@@ -3,7 +3,7 @@
 #' @description Calculates AIC and AICc
 #'
 #' @param formula A model formula
-#' @param family \code{gaussian}, \code{binomial}, or \code{poisson}
+#' @param family Family used to fit the model. \code{gaussian}, \code{binomial}, or \code{poisson} are supported
 #' @param data A data frame
 #' @param mu Fitted values from a model
 #' @param n.eff Effective number of observations. Default is NULL
@@ -16,7 +16,7 @@
 #'   \item{\code{AICc}}{AIC score corrected for small sample sizes}
 #' }
 #'
-#' @author Gudrun Carl
+#' @author Gudrun Carl, Sam Levin
 #'
 #' @examples
 #' data(musdata)

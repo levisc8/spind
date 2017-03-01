@@ -1,7 +1,7 @@
 #' @title Spatial autocorrelation diagnostics
 #'
 #' @description
-#' A function for calculating spatial autocorrelation (i.e. \emph{Moran’s I} values).
+#' A function for calculating spatial autocorrelation using Moran's I.
 #'
 #' @param x 	    A vector of length \emph{n} representing the x coordinates
 #'         (integer, consecutively numbered cells).
@@ -13,7 +13,7 @@
 #' @param dmax    Number of distance bins to examine. Bins are formed by annuli of gradually
 #' increasing radii. Default is 10.
 #'
-#' @return A vector of \emph{Moran’s I} values for each distance bin.
+#' @return A vector of Moran's I values for each distance bin.
 #'
 #' @examples
 #' data(musdata)

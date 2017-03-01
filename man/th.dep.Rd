@@ -52,7 +52,7 @@ si1$cm
 
 }
 \references{
-Carl G, Kühn I (2016)
+Carl G, Kuhn I (2016)
 Spind: a package for computing spatially corrected accuracy measures.
 Ecography. DOI: 10.1111/ecog.02593
 }

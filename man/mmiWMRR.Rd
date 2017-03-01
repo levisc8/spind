@@ -10,7 +10,8 @@ mmiWMRR(formula, family, data, coord, scale, detail = TRUE,
 \arguments{
 \item{formula}{With specified notation according to names in data frame.}
 
-\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}.}
+\item{family}{Family used to fit model. \code{gaussian}, \code{binomial},
+or \code{poisson} are supported}
 
 \item{data}{Data frame.}
 
@@ -72,5 +73,8 @@ scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
 }
 \seealso{
-\code{\link{aic.calc}},\code{\link{rvi.plot}} \pkg{MuMIn}.
+\code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}.
+}
+\author{
+Gudrun Carl
 }

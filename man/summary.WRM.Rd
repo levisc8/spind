@@ -17,3 +17,6 @@ Prints results of model
 \description{
 Provides \code{summary} methods for WRM model objects
 }
+\author{
+Gudrun Carl, Sam Levin
+}

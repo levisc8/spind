@@ -49,3 +49,6 @@ covar.plot(carlina.horrida ~ aridity + land.use,
 \seealso{
 \code{\link{wavevar}}, \code{\link{wavecovar}}
 }
+\author{
+Gudrun Carl
+}

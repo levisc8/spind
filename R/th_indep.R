@@ -1,7 +1,7 @@
 #'@title Threshold-independent metrics for species distribution models
 #'
 #'@description Calculates threshold-independent metrics for spatial models
-#'(AUC,ROC,max-TSS). It is a 2-dimensional analysis taking the grid
+#'(AUC, ROC, max-TSS). It is a 2-dimensional analysis taking the grid
 #'structure of data set into account. Grid cells are assumed to be square.
 #'
 #'@param data A data frame or matrix with two columns. The first column

@@ -12,7 +12,8 @@
 #'
 #'
 #' @param formula  With specified notation according to names in data frame.
-#' @param family   \code{gaussian}, \code{binomial}, or \code{poisson}.
+#' @param family   Family used to fit model. \code{gaussian}, \code{binomial},
+#' or \code{poisson} are supported
 #' @param data     Data frame.
 #' @param coord    Corresponding coordinates which have to be integer.
 #' @param scale    0 or higher integers possible (limit depends on sample size).
@@ -32,7 +33,9 @@
 #'   \item{\code{level}}{An integer corresponding to scale}
 #'
 #'}
-#' @seealso  \code{\link{aic.calc}},\code{\link{rvi.plot}} \pkg{MuMIn}.
+#' @seealso  \code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}.
+#'
+#' @author Gudrun Carl
 #'
 #' @examples
 #'

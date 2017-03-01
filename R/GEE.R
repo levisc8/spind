@@ -5,7 +5,7 @@
 #'
 #' @title  GEE (Generalized Estimating Equations)
 #' @description
-#' \code{GEE} provides a GEE-based method based on \pkg{gee} and \pkg{geepack}
+#' \code{GEE} provides GEE-based methods from the packages \pkg{gee} and \pkg{geepack}
 #' to account for spatial autocorrelation in multiple linear regressions
 #' @details
 #' GEE can be used to fit linear models for response variables with
@@ -61,7 +61,7 @@
 #'
 #' @param scale.fix A logical indicating whether or not the scale parameter should
 #' be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
-#' stepwise model selection procedures in step.spind.
+#' stepwise model selection procedures in \code{step.spind}.
 #'
 #'
 #' @return An object of class \code{GEE}. This consists of a list with the
@@ -74,12 +74,12 @@
 #'       \item{\code{corstr}}{User-selected correlation structure}
 #'       \item{\code{b}}{Estimate of regression parameters}
 #'       \item{\code{s.e.}}{Standard errors of the estimates}
-#'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
-#'       \item{\code{p}}{p-values for each parameter estimate}
+#'       \item{\code{z}}{Depending on the \code{family}, either a \emph{z} or \emph{t} value}
+#'       \item{\code{p}}{\emph{p}-values for each parameter estimate}
 #'       \item{\code{scale}}{Scale parameter (dispersion parameter) of the distribution's variance}
 #'       \item{\code{scale.fix}}{Logical indicating whether \code{scale} has fixed value}
 #'       \item{\code{cluster}}{User-specified cluster size for clustered models}
-#'       \item{\code{fitted}}{Fitted values}
+#'       \item{\code{fitted}}{Fitted values from the model}
 #'       \item{\code{resid}}{Normalized Pearson residuals}
 #'       \item{\code{w.ac}}{Working autocorrelation parameters}
 #'       \item{\code{Mat.ac}}{Working autocorrelation matrix}
@@ -97,21 +97,23 @@
 #' }
 #'
 #' Elements can be viewed using the \code{\link{summary.GEE}} methods included in
-#' the package
+#' the package.
 #'
 #' @seealso \code{\link{qic.calc}}, \code{\link{summary.GEE}}
+#'
+#' @author Gudrun Carl, Sam Levin
 #'
 #'@examples
 #' data(musdata)
 #' coords<- musdata[,4:5]
 #'
-#' x<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+#' mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
 #'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
 #'
-#' summary(x,printAutoCorPars=TRUE)
+#' summary(mgee,printAutoCorPars=TRUE)
 #'
 #'@references
-#' Carl & Kuhn (2007): Analyzing Spatial Autocorrelation in Species
+#' Carl G & Kuhn I, 2007. Analyzing Spatial Autocorrelation in Species
 #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 #'
 #' Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,

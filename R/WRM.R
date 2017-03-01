@@ -67,9 +67,9 @@
 #'       \item{\code{coord}}{Coordinates used in the model}
 #'       \item{\code{b}}{Estimate of regression parameters}
 #'       \item{\code{s.e.}}{Standard errors}
-#'       \item{\code{z}}{Depending on the \code{family}, either a z or t value}
-#'       \item{\code{p}}{p-values}
-#'       \item{\code{fitted}}{Fitted values}
+#'       \item{\code{z}}{Depending on the \code{family}, either a \emph{z} or \emph{t} value}
+#'       \item{\code{p}}{\emph{p}-values}
+#'       \item{\code{fitted}}{Fitted values from the model}
 #'       \item{\code{resid}}{Pearson residuals}
 #'       \item{\code{b.sm}}{Parameter estimates of neglected smooth part}
 #'       \item{\code{fitted.sm}}{Fitted values of neglected smooth part}
@@ -110,13 +110,7 @@
 #' summary(mwrm)
 #' summary(mwrm1)
 #'
-# @note The iterations for the WRM function converge when
-#       \deqn{
-#            \frac{\max( | coef_new - coef_old | )}{( | coef_old | + denom.eps )}\left\
-#             \le eps \right.
-#            }
-#
-#' @author Gudrun Carl
+#' @author Gudrun Carl, Sam Levin
 #' @export
 
 
@@ -418,7 +412,7 @@ WRM<-function(formula,family,data,coord,
     points(acw,pch=2,type="b")
     v<-1:2
     leg<-c("glm.residuals","wavelet.residuals")
-    legend(6,y2-.1,leg,pch=v)
+    legend('topright',leg,pch=v)
   }
 
   glm.beta<-beta0

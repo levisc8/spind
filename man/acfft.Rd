@@ -23,10 +23,10 @@ acfft(x, y, f, lim1 = 1, lim2 = 2, dmax = 10)
 increasing radii. Default is 10.}
 }
 \value{
-A vector of \emph{Moran’s I} values for each distance bin.
+A vector of Moran's I values for each distance bin.
 }
 \description{
-A function for calculating spatial autocorrelation (i.e. \emph{Moran’s I} values).
+A function for calculating spatial autocorrelation using Moran's I.
 }
 \examples{
 data(musdata)

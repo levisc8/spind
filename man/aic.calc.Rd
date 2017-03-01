@@ -9,7 +9,7 @@ aic.calc(formula, family, data, mu, n.eff = NULL)
 \arguments{
 \item{formula}{A model formula}
 
-\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson}}
+\item{family}{Family used to fit the model. \code{gaussian}, \code{binomial}, or \code{poisson} are supported}
 
 \item{data}{A data frame}
 
@@ -41,5 +41,5 @@ aic$AIC
 
 }
 \author{
-Gudrun Carl
+Gudrun Carl, Sam Levin
 }

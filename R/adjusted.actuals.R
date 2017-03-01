@@ -6,7 +6,7 @@
 #'@title Adjusted actual values
 #'
 #'@description Adjusts actual presence/absence data based on the autocorrelation
-#'in the predictions of a model. Additionally, will optionally plot results of
+#'in the predictions of a model. The function will optionally plot results of
 #'model predictions, un-modified actual presence/absence, and adjusted  values.
 #'
 #'@param data a dataframe or matrix containing actual presence/absence (binary,

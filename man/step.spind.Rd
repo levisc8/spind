@@ -23,11 +23,15 @@ should AICc be used to determine which model is best rather than AIC?
 This argument is ignored for \code{GEE}s. Default is \code{FALSE}.}
 }
 \value{
-A data frame containing the results of the final iteration
-of the stepwise model selection process. For \code{WRM}'s, the columns
+A list with components \code{model} and \code{table}.
+\code{model} is always formula for the best model found by the procedure.
+\code{table} is always a data frame, but the content varies for each type of
+model.
+For \code{WRM}'s, the columns
 returned are
 \itemize{
-  \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+  \item\code{Deleted.Vars} Variables retained from the previous iteration
+  which were tested in the current iteration.
   \item\code{LogLik} Log-likelihood of the model.
   \item\code{AIC} AIC score for the model.
   \item\code{AICc} AICc score for the model.
@@ -35,7 +39,8 @@ returned are
 
 For \code{GEE}s:
 \itemize{
-  \item\code{Deleted.Vars} Variables deleted from the previous iteration.
+  \item\code{Deleted.Vars} Variables retained from the previous iteration
+  which were tested in the current iteration.
   \item\code{QIC} Quasi-information criterion of the model.
   \item\code{Quasi.Lik} Quasi-likelihood of the model.
 }
@@ -46,23 +51,23 @@ Stepwise AIC, AICc, and QIC for GEEs and WRMs
 \details{
 This function performs stepwise variable elimination
 for model comparison. Each iteration will try to find the best
-combination of variables for a given number of variables and
-scope based on AIC, AICc, or QIC, and then use that as the base model
+combination of predictors for a given number of variables based
+on AIC, AICc, or QIC, and then use that as the base model
 for the next iteration until there are no more variables to eliminate.
 Alternatively, it will terminate when reducing the number of variables
-while respecting the model heirarchy no longer produces lower
+while respecting the model hierarchy no longer produces lower
 information criterion values.
 }
 \note{
 Currently, the function only supports backwards model selection
 (i.e. one must start with a full model and subtract variables).
-Forward selection and both options may be added later.
+Forward and both directions options may be added later.
 }
 \references{
 Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 }
 \seealso{
-\code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{drop1}}
+\code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{drop1}},
 \code{\link[stats]{step}}, \code{\link[MASS]{stepAIC}}
 }
 \author{
