@@ -1,10 +1,9 @@
-Package: test2
-Title: Test2
-Version: 0.0.1
-Author: Sam Levin,
-	Gudrun Carl
+Package: spind
+Title: Spatial methods and indices
+Version: 2.0.0
+Author: Gudrun Carl [cre, aut], Ingolf Kühn [aut], Sam Levin [aut]
 Maintainer: Sam Levin <levisc8@gmail.com>
-Description: Wrappers that allow for easily implementation of WRMs and GEEs in species distribution modeling (SDM).
+Description: Functions for spatial methods based on generalized estimating equations (GEE) andwavelet-revised methods (WRM), functions for scaling by wavelet multiresolution regression (WMRR), and functions for spatially corrected accuracy measures.
 Depends: R (>= 3.0.0)
 Imports: gee,
 	 geepack,
@@ -15,7 +14,7 @@ Imports: gee,
 	 rje,
 	 stringr,
 	 sp
-License: GPL-3
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.0
