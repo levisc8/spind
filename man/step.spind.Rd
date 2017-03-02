@@ -63,6 +63,29 @@ Currently, the function only supports backwards model selection
 (i.e. one must start with a full model and subtract variables).
 Forward and both directions options may be added later.
 }
+\examples{
+library(MASS)
+data(birthwt)
+
+
+x<-rep(1:14,14)
+y<-as.integer(gl(14,14))
+coords<-cbind(x[-(190:196)],y[-(190:196)])
+
+formula<-formula(low ~ age+ lwt+ race+ smoke+ ftv+  bwt)
+
+mgee<-GEE(formula, family = "gaussian", data = birthwt,
+          coord=coords, corstr="quadratic",scale.fix=TRUE)
+
+ss<-step.spind(mgee,birthwt)
+
+mgees<-GEE(ss$model, family = "gaussian", data = birthwt,
+           coord=coords, corstr="quadratic",scale.fix=TRUE)
+
+summary(mgees,printAutoCorPars=FALSE)
+
+
+}
 \references{
 Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 }
