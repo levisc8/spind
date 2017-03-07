@@ -1,12 +1,14 @@
 #' Mus musculus data set
 #'
-#' A data frame containing simulated count data of a hypothetical house mouse.
+#' A data frame containing simulated count data of a house mouse.
 #'
 #'@format A data frame with 400 rows and 5 columns
 #'  \describe{
-#'    \item{musculus}{integer - Count data for Mus musculus}
-#'    \item{pollution}{numeric - describes degree of pollution in corresponding grid cell}
-#'    \item{exposure}{numeric - describes degree of exposure for each grid cell}
+#'    \item{musculus}{integer - Simulated count data for Mus musculus}
+#'    \item{pollution}{numeric - Simulated variable that describes degree
+#'     of pollution in corresponding grid cell}
+#'    \item{exposure}{numeric - Simulated variable that describes degree of
+#'     exposure for each grid cell}
 #'    \item{x}{integer - x-coordinates for each grid cell}
 #'    \item{y}{integer - y-coordinates for each grid cell}
 #'  }
@@ -30,15 +32,14 @@
 
 #' Carlina data set
 #'
-#' A data frame containing simulated count data for a hypothetical species
-#' named Carlina horrida.
+#' A data frame containing simulated count data for the thistle, Carlina horrida.
 #'
 #' @format A data frame with 961 rows and 5 columns
 #' \describe{
-#'   \item{carlina.horrida}{integer - Count data}
-#'   \item{aridity}{numeric - aridity index values. This variable has high spatial autocorrelation
+#'   \item{carlina.horrida}{integer - Simulated count data}
+#'   \item{aridity}{numeric - Simulated aridity index values. This variable has high spatial autocorrelation
 #'   values.}
-#'   \item{land.use}{numeric - land use intensity. This variable has no spatial autocorrelation.}
+#'   \item{land.use}{numeric - Simulated land use intensity. This variable has no spatial autocorrelation.}
 #'   \item{x}{integer - x-coordinates for each grid cell}
 #'   \item{y}{integer - y-coordinates for each grid cell}
 #' }

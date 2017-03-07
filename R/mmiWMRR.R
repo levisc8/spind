@@ -16,7 +16,8 @@
 #' or \code{poisson} are supported
 #' @param data     Data frame.
 #' @param coord    Corresponding coordinates which have to be integer.
-#' @param scale    0 or higher integers possible (limit depends on sample size).
+#' @param scale    0 or higher integers possible (limit depends on sample size). \code{scale}=1
+#' is equivalent to \code{WRM} with \code{level}=1.
 #' @param detail   Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
 #' If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.
 #' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
@@ -33,7 +34,7 @@
 #'   \item{\code{level}}{An integer corresponding to scale}
 #'
 #'}
-#' @seealso  \code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}.
+#' @seealso  \code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}, \code{\link{WRM}}
 #'
 #' @author Gudrun Carl
 #'

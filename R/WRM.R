@@ -89,6 +89,14 @@
 #'       \item{\code{moran.params}}{Parameters for calculating Moran's I}
 #'       \item{\code{pad}}{List of parameters for padding wavelet coefficients}
 #'}
+#'
+#' @note For those interested in multimodel inference approaches \code{WRM} with
+#' \code{level}=1 is identical to \code{mmiWMRR} with \code{scale}=1.
+#'
+#' @seealso \code{\link{mmiWMRR}}, \code{\link{predict.WRM}}, \code{\link{summary.WRM}},
+#' \code{\link{aic.calc}}
+#'
+#'
 #' @references
 #' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
 #' linear models to remove the effect of spatial autocorrelation.

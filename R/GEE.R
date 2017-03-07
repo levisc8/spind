@@ -99,7 +99,7 @@
 #' Elements can be viewed using the \code{\link{summary.GEE}} methods included in
 #' the package.
 #'
-#' @seealso \code{\link{qic.calc}}, \code{\link{summary.GEE}}
+#' @seealso \code{\link{qic.calc}}, \code{\link{summary.GEE}}, \code{\link[gee]{gee}}
 #'
 #' @author Gudrun Carl, Sam Levin
 #'

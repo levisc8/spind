@@ -25,6 +25,8 @@
 #'@author
 #'Gudrun Carl
 #'
+#'@seealso \code{\link{th.dep}}
+#'
 #'@examples
 #'data(hook)
 #'data<-hook[,1:2]

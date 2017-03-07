@@ -120,7 +120,7 @@ summary(mgee,printAutoCorPars=TRUE)
 
 }
 \references{
-Carl G & Kuhn I, 2007. Analyzing Spatial Autocorrelation in Species
+Carl G & K&uhn I, 2007. Analyzing Spatial Autocorrelation in Species
 Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 
 Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,
