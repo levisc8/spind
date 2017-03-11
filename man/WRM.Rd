@@ -113,6 +113,10 @@ may be autocorrelated. It corrects for  2-dimensional residual
 autocorrelation for regular gridded data sets using the wavelet
 decomposition technique. The grid cells are assumed to be square.
 }
+\note{
+For those interested in multimodel inference approaches \code{WRM} with
+\code{level}=1 is identical to \code{mmiWMRR} with \code{scale}=1.
+}
 \examples{
 data(musdata)
 coords<- musdata[,4:5]
@@ -135,6 +139,10 @@ Geographical Analysis 42 (3), 323 - 337
 
 Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 and three-dimensional signal processing. R package version 1.5.
+}
+\seealso{
+\code{\link{mmiWMRR}}, \code{\link{predict.WRM}}, \code{\link{summary.WRM}},
+\code{\link{aic.calc}}
 }
 \author{
 Gudrun Carl, Sam Levin
