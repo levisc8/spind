@@ -12,8 +12,8 @@
 #' different distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
 #' As a spatial model, it is a generalized linear model in which the residuals
 #' may be autocorrelated. It accounts for spatial (2-dimensional)
-#' autocorrelation of the residuals in cases of regular gridded datasets and returns corrected
-#' parameter estimates. The grid cells are assumed to be square.
+#' autocorrelation of the residuals in cases of regular gridded datasets
+#' and returns corrected parameter estimates. The grid cells are assumed to be square.
 #'
 #' @param formula  Model formula. Variable names must match variables in \code{data}.
 #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported. Called using
@@ -99,6 +99,11 @@
 #' Elements can be viewed using the \code{\link{summary.GEE}} methods included in
 #' the package.
 #'
+#' @note When using \code{corstr = "fixed"} on large data sets, the function
+#' may return an error, as the resulting variance-covariance matrix is too
+#' large for R to handle. If this happens, one will have to use one of the
+#' cluster models (i.e \code{quadratic, exchangeable}).
+#'
 #' @seealso \code{\link{qic.calc}}, \code{\link{summary.GEE}}, \code{\link[gee]{gee}}
 #'
 #' @author Gudrun Carl, Sam Levin
@@ -113,7 +118,7 @@
 #' summary(mgee,printAutoCorPars=TRUE)
 #'
 #'@references
-#' Carl G & Kuhn I, 2007. Analyzing Spatial Autocorrelation in Species
+#' Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species
 #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 #'
 #' Carey, V. J., 2006. Ported to R by Thomas Lumley (versions 3.13,
@@ -121,7 +126,7 @@
 #' solver. R package version 4.13-11.
 #'
 #' Yan, J., 2004. geepack: Generalized Estimating Equation Package.
-#' R package version 0.2–10.
+#' R package version 0.2.10.
 #'
 #' @export
 #'
