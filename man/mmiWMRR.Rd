@@ -17,7 +17,8 @@ or \code{poisson} are supported}
 
 \item{coord}{Corresponding coordinates which have to be integer.}
 
-\item{scale}{0 or higher integers possible (limit depends on sample size).}
+\item{scale}{0 or higher integers possible (limit depends on sample size). \code{scale}=1
+is equivalent to \code{WRM} with \code{level}=1.}
 
 \item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
 If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.}
@@ -73,7 +74,7 @@ scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
 }
 \seealso{
-\code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}.
+\code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}, \code{\link{WRM}}
 }
 \author{
 Gudrun Carl
