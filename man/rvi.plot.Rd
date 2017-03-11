@@ -42,13 +42,6 @@ Calculates the relative importance of each variable
 using multi-model inference methods in a wavelet multi-resolution regression
 framework implemented in \code{mmiWMRR}. The scale level dependent
 results are then graphically displayed.
-
-
-The summary is based on the results provided by
-multi-model inference for wavelet multiresolution regression (\code{mmiWMRR}).
-Based on the results of this approach, the relative
-importance of predictors are calculated. The scale-dependent results
-are graphically displayed.
 }
 \examples{
 data(carlinadata)

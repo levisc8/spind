@@ -10,12 +10,6 @@
 #' results are then graphically displayed.
 #'
 #'
-#' The summary is based on the results provided by
-#' multi-model inference for wavelet multiresolution regression (\code{mmiWMRR}).
-#' Based on the results of this approach, the relative
-#' importance of predictors are calculated. The scale-dependent results
-#' are graphically displayed.
-#'
 #' @param formula   A model formula
 #' @param family \code{gaussian}, \code{binomial}, and \code{poisson}
 #'  are supported.
