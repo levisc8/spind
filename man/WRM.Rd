@@ -133,7 +133,7 @@ summary(mwrm1)
 
 }
 \references{
-Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
+Carl, G., Kuehn, I. (2010): A wavelet-based extension of generalized
 linear models to remove the effect of spatial autocorrelation.
 Geographical Analysis 42 (3), 323 - 337
 

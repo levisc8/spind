@@ -9,8 +9,8 @@
 #' \code{binomial}, or \code{poisson}. The model provides scale-specific
 #' results for data sampled on a contiguous geographical area. The
 #' dataset is assumed to be regular gridded and the grid cells are
-#' assumed to be square. For the wavelet transforms, a function
-#' of package 'waveslim' is used (Whitcher, 2005).
+#' assumed to be square. A function from the package 'waveslim' is used
+#' for the wavelet transformations (Whitcher, 2005).
 #'
 #'
 #' @param formula  With specified notation according to names in data frame.
@@ -95,7 +95,7 @@
 #'                carlinadata,coords,scale=3,plot=TRUE)
 #'
 #' @references
-#' Carl G, Doktor D, Schweiger O, Kuhn I (2016)
+#' Carl G, Doktor D, Schweiger O, Kuehn I (2016)
 #' Assessing relative variable importance across different spatial
 #' scales: a two-dimensional wavelet analysis.
 #' Journal of Biogeography 43: 2502?2512.

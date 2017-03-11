@@ -3,6 +3,7 @@
 #' @description A wavelet-based method to remove spatial autocorrelation
 #' in multiple linear regressions. Wavelet transforms are implemented using
 #' \pkg{waveslim} (Whitcher, 2005).
+#'
 #' @details
 #' WRM can be used to fit linear models for response vectors of different
 #' distributions: \code{gaussian}, \code{binomial}, or \code{poisson}.
@@ -98,7 +99,7 @@
 #'
 #'
 #' @references
-#' Carl, G., Kuhn, I. (2010): A wavelet-based extension of generalized
+#' Carl, G., Kuehn, I. (2010): A wavelet-based extension of generalized
 #' linear models to remove the effect of spatial autocorrelation.
 #' Geographical Analysis 42 (3), 323 - 337
 #'

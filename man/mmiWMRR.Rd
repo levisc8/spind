@@ -68,7 +68,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 Burnham, K.P. & Anderson, D.R. (2002) Model selection and
 multimodel inference. Springer, New York.
 
-Carl G, Doktor D, Schweiger O, Kuhn I (2016)
+Carl G, Doktor D, Schweiger O, Kuehn I (2016)
 Assessing relative variable importance across different spatial
 scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
