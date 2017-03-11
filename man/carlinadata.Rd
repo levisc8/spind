@@ -6,10 +6,10 @@
 \title{Carlina data set}
 \format{A data frame with 961 rows and 5 columns
 \describe{
-  \item{carlina.horrida}{integer - Count data}
-  \item{aridity}{numeric - aridity index values. This variable has high spatial autocorrelation
+  \item{carlina.horrida}{integer - Simulated count data}
+  \item{aridity}{numeric - Simulated aridity index values. This variable has high spatial autocorrelation
   values.}
-  \item{land.use}{numeric - land use intensity. This variable has no spatial autocorrelation.}
+  \item{land.use}{numeric - Simulated land use intensity. This variable has no spatial autocorrelation.}
   \item{x}{integer - x-coordinates for each grid cell}
   \item{y}{integer - y-coordinates for each grid cell}
 }}
@@ -17,7 +17,6 @@
 carlinadata
 }
 \description{
-A data frame containing simulated count data for a hypothetical species
-named Carlina horrida.
+A data frame containing simulated count data for the thistle, Carlina horrida.
 }
 \keyword{datasets}
