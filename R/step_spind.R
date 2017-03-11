@@ -42,8 +42,6 @@
 #' while respecting the model hierarchy no longer produces lower
 #' information criterion values.
 #'
-#'
-#'
 #' @note Currently, the function only supports backwards model selection
 #' (i.e. one must start with a full model and subtract variables).
 #' Forward and both directions options may be added later.

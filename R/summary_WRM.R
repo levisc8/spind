@@ -6,7 +6,7 @@
 #'@param ... Other arguments passed to \code{summary}
 #'@return Prints results of model
 #'
-#' @author Gudrun Carl, Sam Levin
+#'@author Gudrun Carl, Sam Levin
 #'
 #'@export
 
