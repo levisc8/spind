@@ -67,14 +67,15 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     leg<-c(namvar[nvar1:nvar2],namresp)
     v<-nvar1:nvar2
     v<-c(v,16)
-    legend(2.5,0.8,leg,pch=v)
+    legend('topright',leg,pch=v)
   }
 
   if(plot=="covar"){
     # Covariance
     wcvar<-matrix(NA,nvar2,nscale)
     for (kk in nvar1:nvar2){
-      wcvar[kk,]<-wavecovar(resp,X[,kk],x,y,wavelet=wavelet,wtrafo=wtrafo)
+      wcvar[kk,]<-wavecovar(resp,X[,kk],x,y,wavelet=wavelet,wtrafo=wtrafo,
+                            plot=FALSE)
     }
     plot(wcvar[nvar1,1:nscale],type="b",ylim=c(-.1,.6),pch=nvar1,
          ylab="Covariance", xlab="Level",
@@ -88,7 +89,7 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     }
     if(nvar1==2) leg<-leg[-1]
     v<-nvar1:nvar2
-    legend(2.5,0.5,leg,pch=v)
+    legend('topright',leg,pch=v)
   }
 
   if(plot=="var") {
