@@ -69,14 +69,14 @@
 #' formula<-formula(low ~ age+ lwt+ race+ smoke+ ftv+  bwt)
 #'
 #' mgee<-GEE(formula, family = "gaussian", data = birthwt,
-#'           coord=coords, corstr="quadratic",scale.fix=TRUE)
+#'           coord=coords, corstr="fixed",scale.fix=TRUE)
 #'
 #' ss<-step.spind(mgee,birthwt)
 #'
-#' mgees<-GEE(ss$model, family = "gaussian", data = birthwt,
-#'            coord=coords, corstr="quadratic",scale.fix=TRUE)
+#' best.mgee<-GEE(ss$model, family = "gaussian", data = birthwt,
+#'            coord=coords, corstr="fixed",scale.fix=TRUE)
 #'
-#' summary(mgees,printAutoCorPars=FALSE)
+#' summary(best.mgee,printAutoCorPars=FALSE)
 #'
 #'
 #' @export
