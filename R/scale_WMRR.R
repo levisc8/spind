@@ -98,7 +98,7 @@
 #' Carl G, Doktor D, Schweiger O, Kuehn I (2016)
 #' Assessing relative variable importance across different spatial
 #' scales: a two-dimensional wavelet analysis.
-#' Journal of Biogeography 43: 2502?2512.
+#' Journal of Biogeography 43: 2502-2512.
 #'
 #' Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 #' and three-dimensional signal processing. R package version 1.5.
