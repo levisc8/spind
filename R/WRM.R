@@ -341,15 +341,12 @@ WRM<-function(formula,family,data,coord,
     if(!is.na(mdwt$coeff[1])){
       Resmdwt<-matrix(resid(mdwt),2^power,2^power)
       resmdwt<-rep(0,n)
-      for(i in 1:n) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
-      if(plot) {
-        acw<-acfft(x,y,resmdwt,lim1,lim2)
+
+      for(i in 1:n) {
+        resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
       }
 
-      if(!plot) {
-        acw<-NA
-        acpw<-NA
-      }
+      acw<-acfft(x,y,resmdwt,lim1,lim2)
 
       try.solve<-try(MASS::ginv(t(tt)%*%tt),silent = TRUE)
       if (inherits(try.solve, "try-error"))  var.b<-matrix(NA,nvar,nvar)
@@ -366,7 +363,13 @@ WRM<-function(formula,family,data,coord,
       }
     }
 
-    if(is.na(mdwt$coeff[1])) {acw<-NA; acpw<-NA; resmdwt<-NA; s.e.<-NA}
+    if(is.na(mdwt$coeff[1])) {
+      acw<-NA
+      acpw<-NA
+      resmdwt<-NA
+      s.e.<-NA
+    }
+
     beta[i4,1:nvar]<-mdwt$coeff[1:nvar]
     if(level!=0) beta.smooth[i4,1:nvar]<-mdwt0$coeff[1:nvar]
     resi[i4,1:n ]<-resmdwt[1:n]
@@ -379,8 +382,7 @@ WRM<-function(formula,family,data,coord,
   glm.beta<-beta0
   wavelet.beta<-apply(beta,2,mean,na.rm=TRUE)
   if(level!=0) wavelet.beta.smooth<-apply(beta.smooth,2,mean,na.rm=TRUE)
-  if(plot) ac0<-acfft(x,y,res0,lim1,lim2)
-  if(!plot) ac0<-NA
+  ac0<-acfft(x,y,res0,lim1,lim2)
   acw<-apply(ac,2,mean,na.rm=TRUE)
   resw<-apply(resi,2,mean,na.rm=TRUE)
   s.e.<-apply(se,2,mean,na.rm=TRUE)
