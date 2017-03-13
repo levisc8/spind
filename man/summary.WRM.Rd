@@ -12,7 +12,7 @@
 \item{...}{Other arguments passed to \code{summary}}
 }
 \value{
-Prints results of model
+Prints the results of a WRM
 }
 \description{
 Provides \code{summary} methods for WRM model objects
