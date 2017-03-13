@@ -208,7 +208,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
       aod1<-aod
       it<-it+1
       newstart<-update.formula(use.formula, as.formula(paste("~ . -", best.mod)))
-      vars<-setdiff(usevars,best.mod)
+      vars<-attr(terms(newstart),'term.labels')
       if(dim(terms)[2]==3){
         for(j in 1:dim(terms)[1]){
           if((terms[j,] %in% vars)[1]==FALSE &
