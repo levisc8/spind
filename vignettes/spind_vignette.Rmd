@@ -1,6 +1,6 @@
 ---
 title: "Intro to spind"
-author: "Sam Levin"
+author: "Sam Levin, Gudrun Carl, Ingolf Kuehn"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -10,9 +10,9 @@ vignette: >
 ---
 
 `spind` is a package dedicated to removing the spectre of spatial autocorrelation in your species distribution
-models (hereafter referred to as SDMs). It contains many of the tools you need to calculate probabilities of occurence, assess model performance, and conduct multimodel inference for 2-D gridded datasets using methods that are robust to spatial autocorrelation. 
+models (hereafter referred to as SDMs). It contains many of the tools you need to calculate probabilities of occurence and/or abundances, assess model performance, and conduct multimodel inference for 2-D gridded datasets using methods that are robust to spatial autocorrelation. 
 
-The theory underlying the use of GEEs, WRMs, and many of the other tools in this package is covered elsewhere in the literature, and for the purposes of this vignette, we assume that you have already read those papers. If you haven't, citations are included in the footnotes of this vignette as well as in the documentation of each function. We also assume that you have a working knowledge of how to use _R_. Instead, this vignette will focus on demonstrating how to utilize this package to create an SDM and assess its accuracy. Along the way, we will use a couple different data sets to examine how these functions work and investigate how one might use them to create a robust SDM.
+The theory underlying the use of GEEs, WRMs, and many of the other tools in this package is covered elsewhere in the literature, and for the purposes of this vignette, we assume that you have already read those papers. If you haven't, citations are included in the footnotes of this vignette as well as in the documentation of each function. We also assume that you have a working knowledge of how to use _R_. This vignette will focus on demonstrating how to utilize this package to create an SDM and assess its accuracy. Along the way, we will use a couple different data sets to examine how these functions work and investigate how one might use them to create a robust SDM.
 
 ##Generalized estimating equations (GEEs) for species distribution modeling[^1]
 This package utilizes the functions already written for GEEs from the packages `gee`[^2] and `geepack`[^3] and adapts them for easy use in the context of an SDM. Let's start with a fairly simple GEE using the simulated `musdata` data set included in the package. 
@@ -133,9 +133,11 @@ upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
 
 
 ## Multi-model inference with GEEs and WRMs
-`spind` provides a couple of frameworks for conducting multi-model inference analyses and some helper functions that we hope will make your life easier when examining the results. The first that we'll examine here is the `step.spind` function, which implements step-wise model selection. The process is loosely based on `MASS::stepAIC` and `stats::step`, but is specific to classes `GEE` and `WRM`. Currently, the function only supports backwards model selection. In other words, you have to start with all of the variables in your model formula and remove them in a stepwise fashion. We hope to add forward model selection methods shortly. Additionally, `step.spind` is designed to always respect the heirarchy of variables in the model and the user cannot currently override this. For example, `step.spind` would not remove `age` while retaining `I(age^2)`. However, we are happy to update that feature if a lot of you find it frustrating. We hope you won't :)
+`spind` provides a couple of frameworks for conducting multi-model inference analyses and some helper functions that we hope will make your life easier when examining the results. The first that we'll examine here is the `step.spind` function, which implements step-wise model selection. The process is loosely based on `MASS::stepAIC` and `stats::step`, but is specific to classes `GEE` and `WRM`. For GEEs, `step.spind` uses models with the lowest QIC scores to determine what the next step will be. For WRMs, you have the option of using AIC or AICc (AIC corrected for small sample sizes) using the logical `AICc` argument. 
 
-We'll go through an example of `step.spind` using a GEE on the `birthwt` data set in the `MASS` package below.
+Currently, the function only supports backwards model selection. In other words, you have to start with all of the variables in your model formula and remove them in a stepwise fashion. We hope to add forward model selection methods shortly. Additionally, `step.spind` is written to always respect the heirarchy of variables in the model and the user cannot override this currently. For example, `step.spind` would not remove `race` while retaining `I(race^2)`. However, we are happy to make that feature optional if many of you write us angry letters.
+
+We'll go through an example of `step.spind` using a GEE on the `birthwt` data set in the `MASS` package below. The data in `birthwt` aren't at all related to SDMs, but we hope that in using this data set, we will demonstrate how this function with many types of data sets. 
 
 ```{r Step.spind Example}
 
@@ -149,19 +151,27 @@ coords<-cbind(x[-(190:196)],y[-(190:196)])
 
 formula<-formula(low ~ age + lwt + race + smoke + ftv +  bwt)
 
-mgee<-GEE(formula, family = "gaussian", data = birthwt,
+mgee<-GEE(formula, family="gaussian", data=birthwt,
           coord=coords, corstr="fixed",scale.fix=TRUE)
 
-ss<-step.spind(mgee,birthwt)
+mwrm<-WRM(formula, family="gaussian", data=birthwt,
+          coord=coords, level=1)
 
-best.mgee<-GEE(ss$model, family = "gaussian", data = birthwt,
+ssgee<-step.spind(mgee,birthwt)
+sswrm<-step.spind(mwrm,birthwt, AICc=TRUE)
+
+best.mgee<-GEE(ssgee$model, family = "gaussian", data=birthwt,
            coord=coords, corstr="fixed",scale.fix=TRUE)
 
+best.wrm<-WRM(sswrm$model, family="gaussian", data=birthwt,
+              coord=coords, leve = 1)
+
 summary(best.mgee,printAutoCorPars=FALSE)
+summary(best.wrm)
 
 ```
 
-Additionally, we offer a couple of model selection procedures specific to WRMs. The first is implemented in `mmiWMRR`. This performs a series of Wavelet Multi-Resolution Regressions (which are implemented using `scaleWMRR`) with different values of the `scale` parameter.[^8] It allows one to examine the effect that the `scale` parameter has on the results of their regressions, and then select the appropriate level for subsequent analyses.. 
+Additionally, we offer a couple of model selection procedures specific to WRMs. The first is implemented in `mmiWMRR`. This performs a series of Wavelet Multi-Resolution Regressions (which are implemented using `scaleWMRR`) with different values of the `scale` argument, which controls the size of grid cells in the matrix.[^8] It allows one to examine the effect that the grid resolution has on the results of their regressions, and then select the appropriate level for subsequent analyses. 
 
 [^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
 
@@ -175,7 +185,7 @@ mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
 
 ```
 
-One can then take this a step further and visualize these results as a function of scale using the `rvi.plot`. `rvi.plot` uses `mmiWMRR` and repeats the analysis for each level of `scale`, then plots the relative importance of each explanatory variable as function of `scale`. It will also print the resulting model selection tables to the console. 
+One can then take this a step further and visualize these results as a function of scale using the `rvi.plot`. `rvi.plot` uses `mmiWMRR` and  plots the relative importance of each explanatory variable as function of the resolution of the grid (in other words, as a function of the `scale` argument in `mmiWMRR`). It will also print the resulting model selection tables to the console. 
 
 ```{r RVI.plot Example, fig.width=5, fig.height=5}
 
@@ -187,7 +197,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 
 ## Goodness of fit and model performance
 
-You may also find that a model not included in this package works best for your data (shocking! But it is possible...). Don't despair though! We still have some tools that you can use to assess goodness of model fit without having to find another package!  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold. `th.dep` and `th.indep` are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
+You may also find that a model not included in this package works best for your data (shocking! But we suppose it is possible...). Don't despair though! We still have some tools that you can use to assess goodness of model fit without having to find another package!  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold. `th.dep` and `th.indep` are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
 ```{r GOF data, eval = FALSE}
 data(hook)
@@ -242,7 +252,7 @@ ac
 Note that the output of `acfft` is limited to the first ten distance bins. We felt that clogging your console with a massive vector everytime you ran this function would be annoying. Currently, there is no way for you, the user, to change the length of the output. However, if enough of you write us angry letters, we are happy to change it! 
 
 ## Wrapping up
-Hopefully, you are now ready to utilize GEEs and WRMs to conquer the world of species distribution modeling. However, if this vignette has not served its purpose and you still have questions about how to use these tools (or how to improve this vignette), please let us know. Of course, no package is without bugs and we are always trying to improve our code. If you find any bugs that need squashing, have suggestions for additional functionality or improvements to existing functionality, please don't hesitate to contact us[^9]. 
+Hopefully, you are now ready to utilize GEEs and WRMs to conquer the world of species distribution modeling. However, if this vignette has not served its purpose and you still have questions about how to use these tools (or how to improve this vignette), please let us know. Of course, no package is complete without bugs and we are always trying to improve our code. If you find any bugs that need squashing, have suggestions for additional functionality or improvements to existing functionality, please don't hesitate to contact us[^9]. 
 
 [^9]: Contact email - <levisc8@gmail.com> or visit the Github repo at <http://github.com/levisc8/spind>. 
 
