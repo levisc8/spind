@@ -59,7 +59,7 @@ predictions<-predict(mgee,newdata=musdata)
 
 As you can see, this package includes S3 methods for `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). Additionally, the `plot` argument in `GEE` can be used to visually inspect the autocorrelation of the residuals from each regression. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
 
-Note that trying to fit GEEs with `corstr="fixed"` to large data sets will result in errors, as the resulting variance-covariance matrices will be too large to be handled in _R_. This is where fitting clustered models can come in handy. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
+Note that trying to fit GEEs with `corstr="fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will result in errors, as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point due to memory allocation issues). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
 
 [^4]: Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 
@@ -102,7 +102,7 @@ padded.predictions<-predict(padded.mwrm, newdata=musdata)
 
 ```
 
-`WRM` has many of the same features as `GEE`. Setting `plot=TRUE` allows you to examine the autocorrelation of residuals from a GLM of the same family as your WRM. S3 methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE. If you would prefer to examine
+`WRM` has many of the same features as `GEE`. Setting `plot=TRUE` allows you to examine the autocorrelation of residuals from a GLM of the same family as your WRM. S3 methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
 
 #### Other features specific to WRMs
 
@@ -122,7 +122,10 @@ covar.plot(carlina.horrida ~ aridity + land.use,
 
 ```
 
-You may also want to view the smooth components of your wavelets at different `scale` levels. For this, we offer the `upscale` function, which allows you to visually examine your matrices for a number of different levels of `scale`. It also offers the option to adjust padding settings so you can see how that influences your smooth components as well. The default is mean values of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. A quick example below using `carlinadata` data set.
+You may also want to view the smooth components of your wavelets at different `scale` levels. For this, we offer the `upscale` function, which allows you to visually examine your matrices for a number of different levels of `scale`, which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components as well. The default is mean values of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. A quick example below using `carlinadata` data set.
+
+[^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
+
 
 ```{r Upscale Example, fig.width=7, fig.height=7}
 
@@ -135,9 +138,9 @@ upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
 ## Multi-model inference with GEEs and WRMs
 `spind` provides a couple of frameworks for conducting multi-model inference analyses and some helper functions that we hope will make your life easier when examining the results. The first that we'll examine here is the `step.spind` function, which implements step-wise model selection. The process is loosely based on `MASS::stepAIC` and `stats::step`, but is specific to classes `GEE` and `WRM`. For GEEs, `step.spind` uses models with the lowest QIC scores to determine what the next step will be. For WRMs, you have the option of using AIC or AICc (AIC corrected for small sample sizes) using the logical `AICc` argument. 
 
-Currently, the function only supports backwards model selection. In other words, you have to start with all of the variables in your model formula and remove them in a stepwise fashion. We hope to add forward model selection methods shortly. Additionally, `step.spind` is written to always respect the heirarchy of variables in the model and the user cannot override this currently. For example, `step.spind` would not remove `race` while retaining `I(race^2)`. However, we are happy to make that feature optional if many of you write us angry letters.
+Currently, the function only supports backwards model selection. In other words, you have to start with all of the variables in your model formula and remove them in a stepwise fashion. We hope to add forward model selection methods shortly. Additionally, `step.spind` is written to always respect the heirarchy of variables in the model and the user cannot override this currently. For example, `step.spind` would not remove `race` while retaining `I(race^2)`. However, we are happy to make that feature optional if many of you write us angry letters. If you want to use a higher order variable and are not worried about the variable heirarchy, you can also create a separate variable (i.e. `race2`) and use that in the model. 
 
-We'll go through an example of `step.spind` using a GEE on the `birthwt` data set in the `MASS` package below. The data in `birthwt` aren't at all related to SDMs, but we hope that in using this data set, we will demonstrate how this function with many types of data sets. 
+We'll go through an example of `step.spind` using a GEE on the `birthwt` data set in the `MASS` package below. The data in `birthwt` aren't at all related to SDMs, but we hope that in using this data set, we will demonstrate how this function can work with many types of data sets. 
 
 ```{r Step.spind Example}
 
@@ -149,7 +152,7 @@ x<-rep(1:14,14)
 y<-as.integer(gl(14,14))
 coords<-cbind(x[-(190:196)],y[-(190:196)])
 
-formula<-formula(low ~ age + lwt + race + smoke + ftv +  bwt)
+formula<-formula(low ~ age + lwt + race + smoke + ftv +  bwt + I(race^2))
 
 mgee<-GEE(formula, family="gaussian", data=birthwt,
           coord=coords, corstr="fixed",scale.fix=TRUE)
@@ -171,9 +174,7 @@ summary(best.wrm)
 
 ```
 
-Additionally, we offer a couple of model selection procedures specific to WRMs. The first is implemented in `mmiWMRR`. This performs a series of Wavelet Multi-Resolution Regressions (which are implemented using `scaleWMRR`) with different values of the `scale` argument, which controls the size of grid cells in the matrix.[^8] It allows one to examine the effect that the grid resolution has on the results of their regressions, and then select the appropriate level for subsequent analyses. 
-
-[^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
+Additionally, we offer a couple of model selection procedures specific to WRMs. The first is implemented in `mmiWMRR`, which is loosely based on similar functions from the `MuMIn` package. It enables you to examine the effect that the grid resolution and variable selection have on the resulting regressions, and then select the appropriate model for subsequent analyses. 
 
 ```{r mmiWMRR example}
 
@@ -185,7 +186,7 @@ mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
 
 ```
 
-One can then take this a step further and visualize these results as a function of scale using the `rvi.plot`. `rvi.plot` uses `mmiWMRR` and  plots the relative importance of each explanatory variable as function of the resolution of the grid (in other words, as a function of the `scale` argument in `mmiWMRR`). It will also print the resulting model selection tables to the console. 
+`rvi.plot` uses `mmiWMRR` and creates a plot of the relative importance of each explanatory variable as a function of the resolution of the grid (in other words, as a function of the `scale` argument in `mmiWMRR`). It will also print the resulting model selection tables to the console. 
 
 ```{r RVI.plot Example, fig.width=5, fig.height=5}
 
@@ -197,7 +198,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 
 ## Goodness of fit and model performance
 
-You may also find that a model not included in this package works best for your data (shocking! But we suppose it is possible...). Don't despair though! We still have some tools that you can use to assess goodness of model fit without having to find another package!  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold. `th.dep` and `th.indep` are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
+You may also find that a model not included in this package works best for your data (shocking! But we suppose it is possible...). Don't despair though! We still have some tools that you can use to assess goodness of model fit without having to find another package!  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
 ```{r GOF data, eval = FALSE}
 data(hook)
@@ -249,7 +250,7 @@ ac
 
 ```
 
-Note that the output of `acfft` is limited to the first ten distance bins. We felt that clogging your console with a massive vector everytime you ran this function would be annoying. Currently, there is no way for you, the user, to change the length of the output. However, if enough of you write us angry letters, we are happy to change it! 
+Note that the output of `acfft` is limited to the first ten distance bins. We felt that clogging your console with a massive vector everytime you ran this function would be annoying. Currently, there is no way for you, the user, to change the length of the output. However, we are happy to change it if eneough of you send us angry emails.
 
 ## Wrapping up
 Hopefully, you are now ready to utilize GEEs and WRMs to conquer the world of species distribution modeling. However, if this vignette has not served its purpose and you still have questions about how to use these tools (or how to improve this vignette), please let us know. Of course, no package is complete without bugs and we are always trying to improve our code. If you find any bugs that need squashing, have suggestions for additional functionality or improvements to existing functionality, please don't hesitate to contact us[^9]. 
