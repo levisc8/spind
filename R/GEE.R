@@ -140,7 +140,7 @@ GEE <- function(formula,family,data,coord,
   nn <- nrow(data)
   x <- coord[,1]
   y <- coord[,2]
-  if(length(x)!=nn) stop("error in dimension")
+  if(length(x)!=nn) stop("length of data does not match length of coordinates")
   logic1 <- identical(as.numeric(x),round(x,0))
   logic2 <- identical(as.numeric(y),round(y,0))
   if(!logic1 | !logic2) stop("coordinates not integer")
