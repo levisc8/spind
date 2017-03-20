@@ -227,7 +227,7 @@ step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
             newstart<-update.formula(use.formula,paste("~ . -",new.best.mod))
             cat('-----\nModel hierarchy violated by last removal\nNew Deleted Term: ',
-            new.best.mod,'\nPreviously deleted term added back into model\n','-----\n')
+            new.best.mod,'\nPreviously deleted term added back into model\n-----\n')
           }
         }
       }
