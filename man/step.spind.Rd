@@ -2,7 +2,7 @@
 % Please edit documentation in R/step_spind.R
 \name{step.spind}
 \alias{step.spind}
-\title{Stepwise AIC, AICc, and QIC for GEEs and WRMs}
+\title{Stepwise model selection for GEEs and WRMs}
 \usage{
 step.spind(object, data, steps = NULL, trace = TRUE, AICc = FALSE)
 }
@@ -46,7 +46,8 @@ For \code{GEE}s:
 }
 }
 \description{
-Stepwise AIC, AICc, and QIC for GEEs and WRMs
+Stepwise model selection by AIC or AICc for WRMS
+and QIC for GEEs
 }
 \details{
 This function performs stepwise variable elimination
@@ -64,6 +65,8 @@ Currently, the function only supports backwards model selection
 Forward and both directions options may be added later.
 }
 \examples{
+# For demonstration only. We are artificially imposing a grid structure
+# on data that is not actually spatial data
 library(MASS)
 data(birthwt)
 
@@ -71,7 +74,7 @@ data(birthwt)
 x<-rep(1:14,14)
 y<-as.integer(gl(14,14))
 coords<-cbind(x[-(190:196)],y[-(190:196)])
-
+\dontrun{
 formula<-formula(low ~ age+ lwt+ race+ smoke+ ftv+  bwt)
 
 mgee<-GEE(formula, family = "gaussian", data = birthwt,
@@ -83,7 +86,7 @@ best.mgee<-GEE(ss$model, family = "gaussian", data = birthwt,
            coord=coords, corstr="fixed",scale.fix=TRUE)
 
 summary(best.mgee,printAutoCorPars=FALSE)
-
+}
 
 }
 \references{

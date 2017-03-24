@@ -1,4 +1,7 @@
-#' Stepwise AIC, AICc, and QIC for GEEs and WRMs
+#' Stepwise model selection for GEEs and WRMs
+#'
+#' @description Stepwise model selection by AIC or AICc for WRMS
+#' and QIC for GEEs
 #'
 #' @param object A model of class \code{WRM} or \code{GEE}.
 #' @param data The data used to fit that model.
@@ -56,6 +59,8 @@
 #'
 #'
 #' @examples
+#' # For demonstration only. We are artificially imposing a grid structure
+#' # on data that is not actually spatial data
 #' library(MASS)
 #' data(birthwt)
 #'
@@ -63,7 +68,7 @@
 #' x<-rep(1:14,14)
 #' y<-as.integer(gl(14,14))
 #' coords<-cbind(x[-(190:196)],y[-(190:196)])
-#'
+#' \dontrun{
 #' formula<-formula(low ~ age+ lwt+ race+ smoke+ ftv+  bwt)
 #'
 #' mgee<-GEE(formula, family = "gaussian", data = birthwt,
@@ -75,7 +80,7 @@
 #'            coord=coords, corstr="fixed",scale.fix=TRUE)
 #'
 #' summary(best.mgee,printAutoCorPars=FALSE)
-#'
+#'}
 #'
 #' @export
 #'
