@@ -11,14 +11,14 @@
 #' detailed description of the package and its functions, please see
 #' the vignette \emph{Intro to spind} (\code{browseVignettes('spind')}).
 #'
-#' @section GEEs
+#' @section GEEs:
 #' The \code{GEE} function fits spatial models using a generalized
 #' estimating equation and a set of gridded data. The package
 #' also includes S3 methods for \code{summary} and \code{predict}
 #' so you can interact with these models in the same way you might
 #' interact with a \code{glm} or \code{lm}.
 #'
-#' @section WRMs
+#' @section WRMs:
 #' The \code{WRM} function fits spatial models using a wavelet-revised
 #' model and a set of gridded data. The package
 #' also includes S3 methods for \code{summary} and \code{predict}
@@ -34,7 +34,7 @@
 #' will plot your matrices as a function of \code{level} so you can examine the
 #' effect of cluster resolution on your results.
 #'
-#' @section Multi-model inference and stepwise model selection
+#' @section Multi-model inference and stepwise model selection:
 #' \code{spind} includes a couple of functions to help you find the best fit
 #' for your data. The first two are multimodel inference tools specific to GEEs
 #' and WRMs and are called \code{mmiGEE} and \code{mmiWMRR}. These generate
@@ -49,7 +49,7 @@
 #' from these in that it is specific to classes \code{WRM} and \code{GEE}. It
 #' performs model selection using AIC or AICc for WRMs and QIC for GEEs.
 #'
-#' @section Spatial indices of goodness of fit
+#' @section Spatial indices of goodness of fit:
 #' Finally, \code{spind} has a number of functions that provide spatially
 #' corrected goodness of fit diagnostics for any type of model (i.e. they
 #' are not specific to classes \code{WRM} or \code{GEE}). These first appeared
@@ -63,6 +63,7 @@
 #' like to examine using \code{dmax} argument and the size of those bins
 #' using \code{lim1} and \code{lim2}.
 #'
+#' @section Conclusion:
 #' The vignette titled \emph{Intro to spind} provides more information
 #' on these functions and some example workflows that will demonstrate them
 #' in greater depth than this document. Of course, if you have suggestions on
