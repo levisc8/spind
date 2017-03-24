@@ -1,0 +1,80 @@
+#' spind: a package for computing spatially corrected accuracy measures
+#'
+#' The \code{spind} package provides convenient implementation of Generalized
+#' estimating equations (GEEs) and Wavelet-revised models (WRMs)
+#' in the context of spatial models. It also provides tools for
+#' multi-model inference, stepwise model selection, and spatially
+#' corrected model diagnostics. This help section provides brief descriptions
+#' of each function and is organized by the type of model they apply to
+#' or the scenarios in which you might use them. Of course, these are
+#' recommendations - feel free to use them as you see fit. For a more
+#' detailed description of the package and its functions, please see
+#' the vignette \emph{Intro to spind} (\code{browseVignettes('spind')}).
+#'
+#' @section GEEs
+#' The \code{GEE} function fits spatial models using a generalized
+#' estimating equation and a set of gridded data. The package
+#' also includes S3 methods for \code{summary} and \code{predict}
+#' so you can interact with these models in the same way you might
+#' interact with a \code{glm} or \code{lm}.
+#'
+#' @section WRMs
+#' The \code{WRM} function fits spatial models using a wavelet-revised
+#' model and a set of gridded data. The package
+#' also includes S3 methods for \code{summary} and \code{predict}
+#' so you can interact with these models in the same way you might
+#' interact with a \code{glm} or \code{lm}. There are also a number
+#' of helper functions that help you finetune the fitting process
+#' that are specific to WRMs. Please see the documentation for
+#' \code{WRM} for more details on those.
+#'
+#' \code{WRM} also has a few other features specific to it. For example, if
+#' you are interested in viewing the variance or covariance of your variables
+#' as a function of \code{level}, \code{covar.plot} is useful. \code{upscale}
+#' will plot your matrices as a function of \code{level} so you can examine the
+#' effect of cluster resolution on your results.
+#'
+#' @section Multi-model inference and stepwise model selection
+#' \code{spind} includes a couple of functions to help you find the best fit
+#' for your data. The first two are multimodel inference tools specific to GEEs
+#' and WRMs and are called \code{mmiGEE} and \code{mmiWMRR}. These generate
+#' outputs very similar to those from the \code{MuMIn} package. If you would
+#' like to see how variable importance changes as a function of \code{level} of
+#' the WRM, you can call \code{rvi.plot}. This will generate a model selection
+#' table for each degree of \code{level} (from 1 to \code{maxlevel}) and then
+#' plot the weight of each variable as a function of \code{level}.
+#'
+#' \code{spind} also includes a function for stepwise model selection that is
+#' loosely based on \code{step} and \code{stepAIC}. \code{step.spind} differs
+#' from these in that it is specific to classes \code{WRM} and \code{GEE}. It
+#' performs model selection using AIC or AICc for WRMs and QIC for GEEs.
+#'
+#' @section Spatial indices of goodness of fit
+#' Finally, \code{spind} has a number of functions that provide spatially
+#' corrected goodness of fit diagnostics for any type of model (i.e. they
+#' are not specific to classes \code{WRM} or \code{GEE}). These first appeared
+#' in \code{spind 1.0} and have not been updated in this release. The first two are
+#' divided into whether or not they are threshold dependent or not. Threshold
+#' dependent metrics can be calculated using \code{th.dep} and threshold
+#' independent metrics can be calculated using \code{th.indep}.
+#'
+#' \code{acfft} calculates spatial autocorrelation of residuals from a model
+#' using \emph{Moran's I}. You can set the number of distance bins you'd
+#' like to examine using \code{dmax} argument and the size of those bins
+#' using \code{lim1} and \code{lim2}.
+#'
+#' The vignette titled \emph{Intro to spind} provides more information
+#' on these functions and some example workflows that will demonstrate them
+#' in greater depth than this document. Of course, if you have suggestions on
+#' how to improve this document or any of the other ones in here, please don't
+#' hesitate to contact us.
+#'
+#' @docType package
+#' @name spind
+#' @import grDevices
+#' @import stats
+#' @import graphics
+#' @import utils
+#'
+#'
+NULL
