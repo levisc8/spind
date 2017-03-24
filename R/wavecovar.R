@@ -17,7 +17,8 @@
 #'
 #' @return Wavelet covariance for \code{f1} and \code{f2}.
 #'
-#' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
+#' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}},
+#' \code{\link{scaleWMRR}}
 #'
 #' @author Gudrun Carl
 #'

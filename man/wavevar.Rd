@@ -27,7 +27,8 @@ Calculates the wavelet variance based on a wavelet
 multiresolution analysis.
 }
 \seealso{
-\pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
+\pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}},
+ \code{\link{scaleWMRR}}
 }
 \author{
 Gudrun Carl

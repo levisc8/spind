@@ -13,7 +13,8 @@
 #'
 #' @return Wavelet variance for \code{f}.
 #'
-#' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}}
+#' @seealso \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}},
+#'  \code{\link{scaleWMRR}}
 #'
 #' @author Gudrun Carl
 #'
