@@ -23,11 +23,11 @@
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
 #'
-#' covar.plot(carlina.horrida ~ aridity + land.use,
+#' covar.plot(carlina.horrida ~ aridity + land.use - 1,
 #' carlinadata,coord=coords,wavelet="d4",
 #' wtrafo='modwt',plot='covar')
 #'
-#' covar.plot(carlina.horrida ~ aridity + land.use,
+#' covar.plot(carlina.horrida ~ aridity + land.use - 1,
 #'            carlinadata,coord=coords,wavelet="d4",
 #'            wtrafo='modwt',plot='var')
 #'
