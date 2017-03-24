@@ -112,11 +112,11 @@ padded.predictions<-predict(padded.mwrm, newdata=musdata)
 
 coords<-carlinadata[ ,4:5]
 
-covar.plot(carlina.horrida ~ aridity + land.use,
+covar.plot(carlina.horrida ~ aridity + land.use - 1,
            data=carlinadata,coord=coords,wavelet="d4",
            wtrafo='modwt',plot='covar')
 
-covar.plot(carlina.horrida ~ aridity + land.use,
+covar.plot(carlina.horrida ~ aridity + land.use - 1,
            carlinadata,coord=coords,wavelet="d4",
            wtrafo='modwt',plot='var')
 
@@ -198,7 +198,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 
 ## Goodness of fit and model performance
 
-You may also find that a model not included in this package works best for your data. Don't despair though! We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in the `spind` 1.0 [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
+You may also find that a model not included in this package works best for your data. Don't despair though! We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in the `spind 1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
 [^9]: Carl G, Kuehn I (2016) Spind: a package for computing spatially corrected accuracy measures. Ecography. DOI: 10.1111/ecog.02593
 
