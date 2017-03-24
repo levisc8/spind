@@ -1,9 +1,7 @@
-#'@title Kappa and confusion matrix for species distribution models
+#'@title Spatial threshold-dependent accuracy measures
 #'
-#'@description Calculates threshold-dependent metrics for an observational
-#'data set and model predictions. It is a 2-dimensional analysis that takes
-#'the grid structure of the data into account. Grid cells are assumed to be
-#'square
+#'@description Calculates spatially corrected, threshold-dependent metrics for
+#'an observational data set and model predictions (Kappa and confusion matrix)
 #'
 #'@param data A data frame or matrix with two columns. The first column
 #'should contain actual presence/absence data (binary, 0 or 1) and the
