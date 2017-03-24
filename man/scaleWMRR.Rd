@@ -126,3 +126,6 @@ and three-dimensional signal processing. R package version 1.5.
 \seealso{
 \pkg{waveslim},\code{\link[waveslim]{mra.2d}}
 }
+\author{
+Gudrun Carl
+}

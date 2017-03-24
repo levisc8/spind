@@ -77,6 +77,8 @@
 #'
 #' }
 #'
+#' @author Gudrun Carl
+#'
 #' @seealso \pkg{waveslim},\code{\link[waveslim]{mra.2d}}
 #' @examples
 #' data(carlinadata)
