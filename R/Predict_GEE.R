@@ -1,7 +1,7 @@
 #' predict.GEE
 #'
 #' @description
-#' Predicts values based on a user-specified \code{GEE} model.
+#' Model predictions for \code{GEE}
 #'
 #' @param object   A model object of class \code{GEE} to be used
 #' for making predictions

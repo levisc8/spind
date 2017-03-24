@@ -21,7 +21,7 @@
 A vector of predictions based on a user-specified model
 }
 \description{
-Predicts values based on a user-specified \code{WRM} model.
+Model predictions for \code{WRM}
 }
 \examples{
 data(musdata)

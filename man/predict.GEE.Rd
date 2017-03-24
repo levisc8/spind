@@ -18,7 +18,7 @@ for making predictions}
 A vector of predicted values
 }
 \description{
-Predicts values based on a user-specified \code{GEE} model.
+Model predictions for \code{GEE}
 }
 \examples{
 data(musdata)
