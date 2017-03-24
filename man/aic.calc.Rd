@@ -2,7 +2,7 @@
 % Please edit documentation in R/AIC_Calc.R
 \name{aic.calc}
 \alias{aic.calc}
-\title{Aikake Information Criterion with correction for sample size}
+\title{Akaike Information Criterion with correction for sample size}
 \usage{
 aic.calc(formula, family, data, mu, n.eff = NULL)
 }

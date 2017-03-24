@@ -1,4 +1,4 @@
-#'Aikake Information Criterion with correction for sample size
+#'Akaike Information Criterion with correction for sample size
 #'
 #' @description Calculates AIC and AICc
 #'
