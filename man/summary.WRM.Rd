@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary_WRM.R
 \name{summary.WRM}
 \alias{summary.WRM}
-\title{summary.WRM}
+\title{Summarize the output from \code{WRM}}
 \usage{
 \method{summary}{WRM}(object, ...)
 }
@@ -15,7 +15,8 @@
 Prints the results of a WRM
 }
 \description{
-Provides \code{summary} methods for WRM model objects
+Returns summary of WRM parameter estimates and autocorrelations
+of the residuals.
 }
 \author{
 Gudrun Carl, Sam Levin

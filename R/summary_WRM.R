@@ -1,7 +1,6 @@
-#'summary.WRM
-#'
-#'@description Provides \code{summary} methods for WRM model objects
-#'
+#' @title Summarize the output from \code{WRM}
+#' @description Returns summary of WRM parameter estimates and autocorrelations
+#' of the residuals.
 #'@param object A model of class \code{WRM}
 #'@param ... Other arguments passed to \code{summary}
 #'@return Prints the results of a WRM
