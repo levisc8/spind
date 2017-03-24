@@ -42,15 +42,15 @@
 #'
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
-#'
+#' \dontrun{
 #' mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
 #'               carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
 #'
 #'
 #' # Plot scale-dependent relative variable importance
 #' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-#'          carlinadata,coords,maxlevel=1,detail=TRUE,wavelet="d4")
-#'
+#'          carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+#'}
 #' @references
 #' Burnham, K.P. & Anderson, D.R. (2002) Model selection and
 #' multimodel inference. Springer, New York.
