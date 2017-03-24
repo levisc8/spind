@@ -1,8 +1,3 @@
-#'@import grDevices
-#'@import lattice
-
-
-
 #'@title Adjusted actual values
 #'
 #'@description Adjusts actual presence/absence data based on the autocorrelation

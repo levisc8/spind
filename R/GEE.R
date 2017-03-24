@@ -1,8 +1,3 @@
-#' @import graphics
-#' @import stats
-#' @import MASS
-#' @import utils
-#'
 #' @title  GEE (Generalized Estimating Equations)
 #' @description
 #' \code{GEE} provides GEE-based methods from the packages \pkg{gee} and \pkg{geepack}
