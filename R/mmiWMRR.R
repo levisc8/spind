@@ -10,21 +10,13 @@
 #' regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is used to obtain model
 #' selection weights and to rank the models.
 #'
-#'
-#' @param formula  With specified notation according to names in data frame.
-#' @param family   Family used to fit model. \code{gaussian}, \code{binomial},
-#' or \code{poisson} are supported
+#' @param object A model of class \code{WRM}.
 #' @param data     Data frame.
-#' @param coord    Corresponding coordinates which have to be integer.
-#' @param scale    0 or higher integers possible (limit depends on sample size). \code{scale}=1
-#' is equivalent to \code{WRM} with \code{level}=1.
-#' @param detail   Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
-#' If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.
-#' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
-#' are possible. \code{haar} is the default.
-#' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
-#' \code{dwt} is the default.
-#' @param n.eff    A numeric value of effective sample size.
+#' @param scale    0 or higher integers possible (limit depends on sample size).
+#' \code{scale}=1 is equivalent to \code{WRM} with \code{level}=1.
+#' @param detail   Remove smooth wavelets? If \code{TRUE}, only detail
+#' components are analyzed. If set to \code{FALSE}, smooth and detail
+#' components are analyzed. Default is \code{TRUE}.
 #'
 #' @return  \code{mmiWMRR} returns a list containing the following elements
 #' \describe{
@@ -34,7 +26,8 @@
 #'   \item{\code{level}}{An integer corresponding to scale}
 #'
 #'}
-#' @seealso  \code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}, \code{\link{WRM}}
+#' @seealso  \code{\link{aic.calc}}, \code{\link{rvi.plot}},
+#' \pkg{MuMIn}, \code{\link{WRM}}
 #'
 #' @author Gudrun Carl
 #'
@@ -43,8 +36,12 @@
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
 #' \dontrun{
-#' mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-#'               carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+#'
+#'
+#' wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
+#'               carlinadata,coords,level=1,wavelet="d4")
+#'
+#' mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
 #'
 #'
 #' # Plot scale-dependent relative variable importance
@@ -62,8 +59,15 @@
 #'
 #' @export
 
-mmiWMRR<-function(formula,family,data,coord,scale,detail=TRUE,
-                  wavelet="haar",wtrafo="dwt",n.eff=NULL){
+mmiWMRR<-function(object,data,scale,detail=TRUE){
+
+  family<-object$family
+  formula<-object$formula
+  coord<-object$coord
+  wavelet<-object$wavelet
+  wtrafo<-object$wtrafo
+  n.eff<-object$n.eff
+
 
   # Parameter: varnames, p
   X<-model.matrix(formula,data)

@@ -47,8 +47,12 @@ wavelet="haar",wtrafo="dwt",n.eff=NULL){
 
   cat("\n","Model selection tables:","\n","\n")
 
-  mmi<- mmiWMRR(formula,family,data,coord,scale=1,
-                detail=detail,wavelet=wavelet,wtrafo=wtrafo,n.eff=n.eff)
+
+  wrm<- WRM(formula,family,data,coord,level=1,
+            wavelet=wavelet,wtrafo=wtrafo)
+
+  mmi<-mmiWMRR(wrm,data,scale=1,detail=detail)
+
   nrowA<-dim(mmi$result)[1]
   ncolA<-dim(mmi$result)[2]
 
@@ -62,8 +66,7 @@ wavelet="haar",wtrafo="dwt",n.eff=NULL){
 
   if(maxlevel>=2){
     for (i in 2:maxlevel) {
-      mmi<- mmiWMRR(formula,family,data,coord,scale=i,
-                    detail=detail,wavelet=wavelet,wtrafo=wtrafo,n.eff=n.eff)
+      mmi<-mmiWMRR(wrm,data,scale=i,detail=detail)
       A[,,i]<-mmi$result
       level[i]<-mmi$level
     }

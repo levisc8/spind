@@ -4,32 +4,19 @@
 \alias{mmiWMRR}
 \title{Multi-model inference for wavelet multiresolution regression}
 \usage{
-mmiWMRR(formula, family, data, coord, scale, detail = TRUE,
-  wavelet = "haar", wtrafo = "dwt", n.eff = NULL)
+mmiWMRR(object, data, scale, detail = TRUE)
 }
 \arguments{
-\item{formula}{With specified notation according to names in data frame.}
-
-\item{family}{Family used to fit model. \code{gaussian}, \code{binomial},
-or \code{poisson} are supported}
+\item{object}{A model of class \code{WRM}.}
 
 \item{data}{Data frame.}
 
-\item{coord}{Corresponding coordinates which have to be integer.}
+\item{scale}{0 or higher integers possible (limit depends on sample size).
+\code{scale}=1 is equivalent to \code{WRM} with \code{level}=1.}
 
-\item{scale}{0 or higher integers possible (limit depends on sample size). \code{scale}=1
-is equivalent to \code{WRM} with \code{level}=1.}
-
-\item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail components are analyzed.
-If set to \code{FALSE}, smooth and detail components are analyzed. Default is \code{TRUE}.}
-
-\item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
-are possible. \code{haar} is the default.}
-
-\item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
-\code{dwt} is the default.}
-
-\item{n.eff}{A numeric value of effective sample size.}
+\item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail
+components are analyzed. If set to \code{FALSE}, smooth and detail
+components are analyzed. Default is \code{TRUE}.}
 }
 \value{
 \code{mmiWMRR} returns a list containing the following elements
@@ -55,8 +42,12 @@ selection weights and to rank the models.
 data(carlinadata)
 coords<- carlinadata[,4:5]
 \dontrun{
-mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-              carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+
+
+wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
+              carlinadata,coords,level=1,wavelet="d4")
+
+mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
 
 
 # Plot scale-dependent relative variable importance
@@ -74,7 +65,8 @@ scales: a two-dimensional wavelet analysis.
 Journal of Biogeography 43: 2502-2512.
 }
 \seealso{
-\code{\link{aic.calc}}, \code{\link{rvi.plot}}, \pkg{MuMIn}, \code{\link{WRM}}
+\code{\link{aic.calc}}, \code{\link{rvi.plot}},
+\pkg{MuMIn}, \code{\link{WRM}}
 }
 \author{
 Gudrun Carl
