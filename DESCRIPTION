@@ -1,9 +1,14 @@
 Package: spind
-Title: Spatial methods and indices
+Title: Spatial Methods and Indices
 Version: 2.0.0
 Author: Gudrun Carl [cre, aut], Ingolf Kühn [aut], Sam Levin [aut]
 Maintainer: Sam Levin <levisc8@gmail.com>
-Description: Functions for spatial methods based on generalized estimating equations (GEE) and wavelet-revised methods (WRM), functions for scaling by wavelet multiresolution regression (WMRR), and functions for spatially corrected accuracy measures.
+URL: https://github.com/levisc8/spind
+BugReports: https://github.com/levisc8/spind/issues
+Description: Functions for spatial methods based on generalized estimating equations (GEE) and
+  wavelet-revised methods (WRM), functions for scaling by wavelet multiresolution regression (WMRR),
+  conducting multi-model inference, and stepwise model selection. Further, contains functions 
+  for spatially corrected model accuracy measures.
 Depends: R (>= 3.0.0)
 Imports: gee,
 	 geepack,
@@ -14,7 +19,7 @@ Imports: gee,
 	 rje,
 	 stringr,
 	 sp
-License: GPL-2
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.0
