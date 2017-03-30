@@ -48,8 +48,12 @@ data(carlinadata)
 coords<- carlinadata[,4:5]
 
 \dontrun{
-mmi<- mmiWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-              carlinadata,coords,scale=1,detail=TRUE,wavelet="d4")
+
+wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
+              carlinadata,coords,level=1,wavelet="d4")
+
+mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
+
 
 
 # Plot scale-dependent relative variable importance
