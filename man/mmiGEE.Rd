@@ -7,7 +7,7 @@
 mmiGEE(object, data)
 }
 \arguments{
-\item{object}{A model of \code{GEE}.}
+\item{object}{A model of class \code{GEE}.}
 
 \item{data}{A data frame or set of vectors of equal length.}
 }

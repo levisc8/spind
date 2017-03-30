@@ -14,7 +14,7 @@
 #' using multi-model inference methods in a Generalized Estimating Equations
 #' framework implemented in \code{GEE}.
 #'
-#' @param object A model of \code{GEE}.
+#' @param object A model of class \code{GEE}.
 #' @param data A data frame or set of vectors of equal length.
 #'
 #' @return  \code{mmiGEE} returns a list containing the following elements
@@ -62,8 +62,8 @@
 
 mmiGEE<-function(object,data){
 
-  model<-class(object)
-  if(model!="GEE") stop("error: class")
+
+  if(class(object)!="GEE") stop("Input model is not of class 'GEE'")
 
   family<-object$family
   formula<-object$formula
