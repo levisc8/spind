@@ -83,6 +83,7 @@
 #' @examples
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
+#'\dontrun{
 #'
 #' # scaleWMRR at scale=0 is equivalent to GLM
 #' ms0<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
@@ -96,6 +97,7 @@
 #' ms3<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
 #'                carlinadata,coords,scale=3,plot=TRUE)
 #'
+#'}
 #' @references
 #' Carl G, Doktor D, Schweiger O, Kuehn I (2016)
 #' Assessing relative variable importance across different spatial
