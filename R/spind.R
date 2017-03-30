@@ -39,13 +39,13 @@
 #' for your data. The first two are multimodel inference tools specific to GEEs
 #' and WRMs and are called \code{mmiGEE} and \code{mmiWMRR}. These generate
 #' outputs very similar to those from the \code{MuMIn} package. If you would
-#' like to see how variable importance changes as a function of \code{level} of
+#' like to see how variable importance changes as a function of the \code{level} of
 #' the WRM, you can call \code{rvi.plot}. This will generate a model selection
 #' table for each degree of \code{level} (from 1 to \code{maxlevel}) and then
 #' plot the weight of each variable as a function of \code{level}.
 #'
 #' \code{spind} also includes a function for stepwise model selection that is
-#' loosely based on \code{step} and \code{stepAIC}. \code{step.spind} differs
+#' loosely based on \code{\link[stats]{step}} and \code{\link[MASS]{stepAIC}}. \code{step.spind} differs
 #' from these in that it is specific to classes \code{WRM} and \code{GEE}. It
 #' performs model selection using AIC or AICc for WRMs and QIC for GEEs.
 #'
@@ -53,7 +53,7 @@
 #' Finally, \code{spind} has a number of functions that provide spatially
 #' corrected goodness of fit diagnostics for any type of model (i.e. they
 #' are not specific to classes \code{WRM} or \code{GEE}). These first appeared
-#' in \code{spind 1.0} and have not been updated in this release. The first two are
+#' in \code{spind v1.0} and have not been updated in this release. The first two are
 #' divided into whether or not they are threshold dependent or not. Threshold
 #' dependent metrics can be calculated using \code{th.dep} and threshold
 #' independent metrics can be calculated using \code{th.indep}.
