@@ -40,7 +40,7 @@
 #' and WRMs and are called \code{mmiGEE} and \code{mmiWMRR}. These generate
 #' outputs very similar to those from the \code{MuMIn} package. If you would
 #' like to see how variable importance changes as a function of the \code{scale} of
-#' the WRM, you can call \code{rvi.plot}. This will generate a model selection
+#' the WMRR, you can call \code{rvi.plot}. This will generate a model selection
 #' table for each degree of \code{level} (from 1 to \code{maxlevel}) and then
 #' plot the weight of each variable as a function of \code{level}.
 #'
