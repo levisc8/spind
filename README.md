@@ -5,6 +5,3 @@
 This is the development version of `spind` and may not be totally stable/bug free. The most recent stable version of this package is available on CRAN, though it is entirely possible that the CRAN version may have bugs in it as well. If you find any, please create an issue in this repo and we will try to resolve them as soon as we can. 
 
 I hope to add more to this section in the coming weeks and months so that interacting with this package is as painless as possible for you. In the meantime, a more complete introduction to this package and its functionality is provided in the vignette. The most recent version will be in the vignettes folder in this repo, as updates are not sent to CRAN as frequently. 
-
-
-
