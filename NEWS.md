@@ -10,4 +10,4 @@ In addition to wrappers for GEEs, we've added wrappers for functions found in th
 We've added functions to conduct multi-model inference and stepwise model selection (backwards only for the time being), as well as a slew of helper and utility functions to examine your model in greater detail. 
 
 ## Previous functionality
-The spatial indices included in the original release should still function the same way they did before.
+The spatial indices included in the original release should still work as they did before.
