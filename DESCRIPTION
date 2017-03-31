@@ -1,7 +1,7 @@
 Package: spind
 Title: Spatial Methods and Indices
 Version: 2.0.0
-Author: Gudrun Carl [cre, aut], Ingolf Kühn [aut], Sam Levin [aut]
+Author: Gudrun Carl [cre, aut], Ingolf Kuehn [aut], Sam Levin [aut]
 Maintainer: Sam Levin <levisc8@gmail.com>
 URL: https://github.com/levisc8/spind
 BugReports: https://github.com/levisc8/spind/issues

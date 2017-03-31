@@ -1,4 +1,4 @@
-#' spind: a package for computing spatially corrected accuracy measures
+#' spind: Spatial Methods and Indices
 #'
 #' The \code{spind} package provides convenient implementation of Generalized
 #' estimating equations (GEEs) and Wavelet-revised models (WRMs)
