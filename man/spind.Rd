@@ -4,7 +4,7 @@
 \name{spind}
 \alias{spind}
 \alias{spind-package}
-\title{spind: a package for computing spatially corrected accuracy measures}
+\title{spind: Spatial Methods and Indices}
 \description{
 The \code{spind} package provides convenient implementation of Generalized
 estimating equations (GEEs) and Wavelet-revised models (WRMs)
@@ -50,8 +50,8 @@ effect of cluster resolution on your results.
 for your data. The first two are multimodel inference tools specific to GEEs
 and WRMs and are called \code{mmiGEE} and \code{mmiWMRR}. These generate
 outputs very similar to those from the \code{MuMIn} package. If you would
-like to see how variable importance changes as a function of the \code{level} of
-the WRM, you can call \code{rvi.plot}. This will generate a model selection
+like to see how variable importance changes as a function of the \code{scale} of
+the WMRR, you can call \code{rvi.plot}. This will generate a model selection
 table for each degree of \code{level} (from 1 to \code{maxlevel}) and then
 plot the weight of each variable as a function of \code{level}.
 
