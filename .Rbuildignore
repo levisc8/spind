@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^cran_comments\.md$
+^cran-comments\.md$
 ^README\.md$
-^revdep$
 ^NEWS\.md$
