@@ -28,7 +28,7 @@ data(musdata)
 coords<- musdata[,4:5]
 
 mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-          coord=coords, level=0, plot=TRUE)
+          coord=coords, level=1, plot=TRUE)
 pred<-predict(mwrm,newdata=musdata)
 
 }

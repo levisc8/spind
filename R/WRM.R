@@ -329,14 +329,16 @@ WRM<-function(formula,family,data,coord,
       betaw<-mdwt$coeff
     }  # next step of iteration
 
-    if(level!=0) Lin<-tt%*%mdwt$coeff + tt0%*%mdwt0$coeff
-    if(level==0) Lin<-tt%*%mdwt$coeff
-    Lin.Mat<-matrix(Lin,2^power,2^power)
-    lin<-rep(0,n)
-    for(i in 1:n) lin[i]<-Lin.Mat[y[i]+ymargin,x[i]+xmargin]
-    if(family=="gaussian") fitted.sm<-lin
-    if(family=="binomial") fitted.sm<-exp(lin)/(1+exp(lin))
-    if(family=="poisson")  fitted.sm<-exp(lin)
+    if(!is.na(mdwt$coeff[1])){
+      if(level!=0) Lin<-tt%*%mdwt$coeff + tt0%*%mdwt0$coeff
+      if(level==0) Lin<-tt%*%mdwt$coeff
+      Lin.Mat<-matrix(Lin,2^power,2^power)
+      lin<-rep(0,n)
+      for(i in 1:n) lin[i]<-Lin.Mat[y[i]+ymargin,x[i]+xmargin]
+      if(family=="gaussian") fitted.sm<-lin
+      if(family=="binomial") fitted.sm<-exp(lin)/(1+exp(lin))
+      if(family=="poisson")  fitted.sm<-exp(lin)
+    }
 
     if(!is.na(mdwt$coeff[1])){
       Resmdwt<-matrix(resid(mdwt),2^power,2^power)
@@ -371,7 +373,7 @@ WRM<-function(formula,family,data,coord,
     }
 
     beta[i4,1:nvar]<-mdwt$coeff[1:nvar]
-    if(level!=0) beta.smooth[i4,1:nvar]<-mdwt0$coeff[1:nvar]
+    if(level!=0 & !is.na(mdwt$coeff[1])) beta.smooth[i4,1:nvar]<-mdwt0$coeff[1:nvar]
     resi[i4,1:n ]<-resmdwt[1:n]
     ac[i4,1:10]<-acw[1:10]
     se[i4,1:nvar]<-s.e.[1:nvar]
