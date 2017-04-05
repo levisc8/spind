@@ -1,10 +1,6 @@
 ## Resubmission
 
-This is a resubmission of Spind_2.0.0. In this version,
-we have corrected the code for WRM.R which caused
-the example to pass testing on x64, but not i386.
-We have retested with winbuilder using r-devel,
-r-release, and r-oldrelease. 
+This is a submission of Spind_2.0.1.
 
 All passed with no ERRORS OR WARNINGS.
 
@@ -15,19 +11,15 @@ Namespace in Imports field not imported from: 'sp'
 
 'sp' is listed in IMPORTS because it is listed
 DEPENDS for 'splancs', which our package does use.
-
-This note was not present in checks on more recent 
-versions of R, so we're guessing it's OK. If not, 
-please advise. 
+This NOTE was also present in the spind_2.0.0 submission.
 
 ALL builds had the following NOTE: 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Sam Levin <levisc8@gmail.com>'
 New submission
 
-Based on information I found online, this is not
-actually an issue with the package. Please advise
-if this is incorrect.
+This NOTE was also present in spind_2.0.0 submission
+
 
 Also tested on:
 * ubuntu 12.04 (on travis-ci), R 3.3.2
