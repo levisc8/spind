@@ -14,7 +14,7 @@ Tested on win-builder with the following results:
 R-oldrelease had the following NOTE:
 * checking dependencies in R code ... NOTE
 Namespace in Imports field not imported from: 'sp'
-  All declared Imports should be used.
+  All declared Imports should be used. 
 
 'sp' is listed in IMPORTS because it is listed
 DEPENDS for 'splancs', which our package does use.
