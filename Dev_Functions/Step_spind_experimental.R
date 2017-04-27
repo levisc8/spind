@@ -213,11 +213,11 @@ step.spind_exp<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
       vars <- attr(terms(newstart), 'term.labels')
       for(i in unique(base.terms)){
         # extract hierarchical variables if there are any
-        mod.hier <- scope[stringr::str_detect(scope, stringr::fixed(i))]
-
+        mod.hier <- vars[stringr::str_detect(vars, stringr::fixed(i))]
+        hivars <- mod.hier[mod.hier != i]
         # test for violation
-        if(!mod.hier[1] %in% vars &&
-           mod.hier[2:length(mod.hier)] %in% vars){
+        if(!i %in% vars &&
+           hivars %in% vars){
 
           if(model=="GEE") aod1 <- aod1[order(aod1$QIC), ]
           if(model=="WRM" & !AICc) aod1 <- aod1[order(aod1$AIC), ]
