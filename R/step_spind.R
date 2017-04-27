@@ -88,27 +88,26 @@
 
 step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
 
+  # All parameters
   scope <- attr(terms(object$formula),
                 "term.labels")
   model<-class(object)
   family<-object$family
-
-
   coord<-object$coord
+  # GEE parameters
   scale.fix<-object$scale.fix
   corstr<-object$corstr
   cluster<-object$cluster
-
+  # WRM parameters
   level<-object$level
   wavelet<-object$wavelet
   wtrafo<-object$wtrafo
   b.ini<-object$b.ini
   pad<-object$pad
   control<-object$control
-
   moran.params<-object$moran.params
 
-
+  # set up term matrix
   it<-1
   ns <- length(scope)
   polynomial.pattern<-'([I(])'
