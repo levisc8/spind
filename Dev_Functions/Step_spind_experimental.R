@@ -1,4 +1,10 @@
-#' Stepwise model selection for GEEs and WRMs
+#' Stepwise model selection for GEEs and WRMs - Development version
+#'
+#' Whats new: testing a different method for recognizing hierarchical
+#' variables in models. This way should be able to handle an expanded
+#' set of models and won't be limited to 1 polynomial term per linear term
+#'
+#'
 #'
 #' @description Stepwise model selection by AIC or AICc for WRMS
 #' and QIC for GEEs
@@ -86,75 +92,236 @@
 #'
 
 
-step.spind<-function (object,data,steps=NULL,trace=TRUE,AICc=FALSE){
+step.spind_exp<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
 
   # All models
   scope <- attr(terms(object$formula),
                 "term.labels")
-  model<-class(object)
-  family<-object$family
-  coord<-object$coord
+  model <- class(object)
+  family <- object$family
+  coord <- object$coord
 
   # GEE parameters
-  scale.fix<-object$scale.fix
-  corstr<-object$corstr
-  cluster<-object$cluster
+  scale.fix <- object$scale.fix
+  corstr <- object$corstr
+  cluster <- object$cluster
 
   # WRM parameters
-  level<-object$level
-  wavelet<-object$wavelet
-  wtrafo<-object$wtrafo
-  b.ini<-object$b.ini
-  pad<-object$pad
-  control<-object$control
-  moran.params<-object$moran.params
+  level <- object$level
+  wavelet <- object$wavelet
+  wtrafo <- object$wtrafo
+  b.ini <- object$b.ini
+  pad <- object$pad
+  control <- object$control
+  moran.params <- object$moran.params
 
   # set initial parameters
-  it<-1
+  it <- 1
   ns <- length(scope)
   # detect detect heirarchical variales (if any)
-  polynomial.pattern<-'([I(])'
-  interaction.pattern<-'([:])'
-  poly.terms<-scope[stringr::str_detect(scope,polynomial.pattern)]
-  inter.terms<-scope[stringr::str_detect(scope,interaction.pattern)]
-  base.terms<-setdiff(scope,c(inter.terms,poly.terms))
+  polynomial.pattern <- '([I(])'
+  interaction.pattern <- '([:])'
+  poly.terms <- scope[stringr::str_detect(scope, polynomial.pattern)]
+  inter.terms <- scope[stringr::str_detect(scope, interaction.pattern)]
+  base.terms <- setdiff(scope, c(inter.terms, poly.terms))
 
-  if(model=="WRM"){
+  # match model type
+  if(model == "WRM"){
+    # set up matrix to hold output data
     ans <- matrix(nrow = ns + 1L, ncol = 3L,
                   dimnames = list(c("<none>", scope),
-                                  c("loglik","inf.crit1","inf.crit2")))
+                                  c("loglik", "inf.crit1", "inf.crit2")))
 
-    ans[1, ] <- c(object$LogLik,object$AIC,object$AICc)
+    # insert data from first model
+    ans[1, ] <- c(object$LogLik, object$AIC, object$AICc)
+
+    # loop that removes each variable and recalculates modelu
+    for (i in seq_len(ns)) {
+      tt <- scope[i]
+
+      nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
+      newmod <- WRM(nfit, family, data, coord, level = level,
+                  wavelet = wavelet, wtrafo = wtrafo, b.ini = b.ini,
+                  pad = pad, control = control, moran.params = moran.params)
+      ans[i + 1, ] <- c(newmod$LogLik, newmod$AIC, newmod$AICc)
+    }
+    aod <- data.frame(Deleted.Vars = rownames(ans),
+                      LogLik = ans[ ,1],
+                      AIC = ans[ ,2],
+                      AICc = ans[ ,3],
+                      stringsAsFactors = F)
+
+    rownames(aod) <- 1:dim(aod)[1]
+    if(AICc){
+      best.mod <- aod$Deleted.Vars[which(aod$AICc == min(aod$AICc))]
+    }else{
+      best.mod <- aod$Deleted.Vars[which(aod$AIC == min(aod$AIC))]
+    }
+  }
+
+  if(model == "GEE"){
+    if(!scale.fix){
+      scale.fix<-TRUE
+      message("Scale parameter is now fixed")
+    }
+    ans <- matrix(nrow = ns + 1L, ncol = 2L,
+                  dimnames = list(c("<none>", scope),
+                                  c("inf.crit1", "qlik")))
+
+    ans[1, ] <- c(object$QIC, object$QLik)
 
     for (i in seq_len(ns)) {
       tt <- scope[i]
 
       nfit <- update.formula(object$formula, as.formula(paste("~ . -", tt)))
-      newmod<-WRM(nfit,family,data,coord,level=level,
-                  wavelet=wavelet,wtrafo=wtrafo,b.ini=b.ini,
-                  pad=pad,control=control,moran.params=moran.params)
-      ans[i + 1, ] <-c(newmod$LogLik,newmod$AIC,newmod$AICc)
+      newmod <- suppressWarnings({
+        GEE(nfit, family, data, coord, corstr = corstr,
+            cluster = cluster, moran.params = moran.params,
+            scale.fix = scale.fix)
+      })
+      ans[i + 1, ] <-c(newmod$QIC, newmod$QLik)
     }
-    aod <- data.frame(Deleted.Vars=rownames(ans),
-                      LogLik=ans[, 1],
-                      AIC = ans[, 2],
-                      AICc=ans[, 3],
+    aod <- data.frame(Deleted.Vars = rownames(ans),
+                      Quasi.Lik = ans[ ,2],
+                      QIC = ans[ ,1],
                       stringsAsFactors = F)
 
-    rownames(aod)<-1:dim(aod)[1]
-    if(AICc){
-      best.mod<-aod$Deleted.Vars[which(aod$AICc==min(aod$AICc))]
-    }else{
-      best.mod<-aod$Deleted.Vars[which(aod$AIC==min(aod$AIC))]
-    }
+    rownames(aod) <- 1:dim(aod)[1]
+    best.mod <- aod$Deleted.Vars[which(aod$QIC == min(aod$QIC))]
   }
 
-  # this will find all higher order variables associated with the base
-  # term
-  fill<-scope[stringr::str_detect(scope,stringr::fixed(base.terms[i]))]
+  if(trace){
+    cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+        '\n -------------------- \n')
+    print(aod)
+    cat('\n')
+  }
 
+  if(!is.null(steps)){
+    steps <- steps
+  } else{
+    steps <- length(scope)
+  }
 
+  use.formula <- object$formula
 
+  if(best.mod != '<none>'){
+    while(it <= steps){
+      it <- it + 1
+      aod1 <- aod
+      newstart <- update.formula(use.formula, as.formula(paste('~ . -', best.mod)))
+      vars <- attr(terms(newstart), 'term.labels')
+      for(i in unique(base.terms)){
+        # extract hierarchical variables if there are any
+        mod.hier <- scope[stringr::str_detect(scope, stringr::fixed(i))]
 
+        # test for violation
+        if(!mod.hier[1] %in% vars &&
+           mod.hier[2:length(mod.hier)] %in% vars){
 
+          if(model=="GEE") aod1 <- aod1[order(aod1$QIC), ]
+          if(model=="WRM" & !AICc) aod1 <- aod1[order(aod1$AIC), ]
+          if(model=="WRM" & AICc) aod1 <- aod1[order(aod1$AICc), ]
+
+          aod1 <- aod1[-c(1), ]
+
+          new.best.mod <- aod1[1,"Deleted.Vars"]
+          best.mod <- new.best.mod
+          if(new.best.mod == '<none>') break
+
+          newstart<-update.formula(use.formula, paste("~ . -",new.best.mod))
+          cat('-----\nModel hierarchy violated by last removal\nNew Deleted Term: ',
+              new.best.mod,'\nPreviously deleted term added back into model\n-----\n')
+        }
+      }
+
+      ns <- length(attr(terms(newstart), 'term.labels'))
+
+      if(model == "WRM"){
+        ans <- matrix(nrow = ns + 1L, ncol = 3L,
+                      dimnames = list(c("<none>", attr(terms(newstart), 'term.labels')),
+                                      c("loglik", "inf.crit1", "inf.crit2")))
+        newwrm <- WRM(newstart, family, data, coord, level = level,
+                    wavelet = wavelet, wtrafo = wtrafo, b.ini = b.ini,
+                    pad = pad, control = control, moran.params = moran.params)
+
+        ans[1, ] <- c(newwrm$LogLik, newwrm$AIC, newwrm$AICc)
+
+        for (i in seq_len(ns)) {
+          tt <- attr(terms(newstart),'term.labels')[i]
+
+          nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
+          newmod <- WRM(nfit, family, data, coord, level = level,
+                      wavelet = wavelet, wtrafo = wtrafo, b.ini = b.ini,
+                      pad = pad, control = control, moran.params = moran.params)
+          ans[i + 1, ] <-c(newmod$LogLik, newmod$AIC, newmod$AICc)
+        }
+        aod <- data.frame(Deleted.Vars = rownames(ans),
+                          LogLik = ans[, 1],
+                          AIC = ans[, 2],
+                          AICc=ans[, 3],
+                          stringsAsFactors = F)
+
+        rownames(aod) <- 1:dim(aod)[1]
+        if(AICc){
+          best.mod <- aod$Deleted.Vars[which(aod$AICc == min(aod$AICc))]
+        }else{
+          best.mod <- aod$Deleted.Vars[which(aod$AIC == min(aod$AIC))]
+        }
+      }
+
+      if(model == "GEE"){
+        if(!scale.fix){
+          scale.fix<-TRUE
+        }
+        ans <- matrix(nrow = ns + 1L, ncol = 2L,
+                      dimnames = list(c("<none>", attr(terms(newstart), 'term.labels')),
+                                      c("inf.crit1", "qlik")))
+        newGEE <- suppressWarnings({
+          GEE(newstart, family, data, coord, corstr = corstr,
+              cluster = cluster, moran.params = moran.params,
+              scale.fix = scale.fix)
+        })
+        ans[1, ] <- c(newGEE$QIC, newGEE$QLik)
+        for (i in seq_len(ns)) {
+          tt <- attr(terms(newstart), 'term.labels')[i]
+          nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
+          newmod <- suppressWarnings({
+            GEE(nfit, family, data, coord, corstr = corstr,
+                cluster = cluster, moran.params = moran.params,
+                scale.fix = scale.fix)
+          })
+          ans[i + 1, ] <- c(newmod$QIC, newmod$QLik)
+        }
+        aod <- data.frame(Deleted.Vars = rownames(ans),
+                          Quasi.Lik = ans[ ,2],
+                          QIC = ans[ ,1],
+                          stringsAsFactors = F)
+        rownames(aod) <- 1:dim(aod)[1]
+        best.mod <- aod$Deleted.Vars[which(aod$QIC==min(aod$QIC))]
+      }
+      if(length(best.mod) > 1){
+        warning('Multiple equally parsimonious models')
+      }
+      aod1 <- aod
+      newvars <- setdiff(vars,best.mod)
+      if(trace){
+        cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+            '\n -------------------- \n')
+        print(aod)
+        cat('\n')
+      }
+      suppressWarnings(if(best.mod != '<none>'){
+        use.formula <- newstart
+      })
+      suppressWarnings(if(best.mod == '<none>') break)
+    }
+  }
+  if(trace){
+    cat('\n---------------\nBest model found:\n')
+    print(newstart)
+  }
+
+  return(list(model=newstart,
+              table=aod))
 }
