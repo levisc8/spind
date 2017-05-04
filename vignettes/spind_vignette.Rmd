@@ -59,7 +59,7 @@ predictions<-predict(mgee, newdata=musdata)
 
 As you can see, this package includes S3 methods for `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). Additionally, the `plot` argument in `GEE` can be used to visually inspect the autocorrelation of the residuals from each regression. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
 
-Note that trying to fit GEEs with `corstr="fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will result in errors, as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point due to memory allocation issues). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
+Note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will result in errors as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point due to memory allocation issues). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
 
 [^4]: Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 
@@ -106,7 +106,7 @@ padded.predictions<-predict(padded.mwrm, newdata=musdata)
 
 #### Other features specific to WRMs
 
-`WRM` has a number of other model-specific functions that you may find useful in diagnosing model fit and understanding your results. For example, you might want to plot the variance or covariance of each of your variables as a function of `level`. The `covar.plot` function allows you to visually examine the wavelet relationships from your model. However, we are going to switch to the `carlinadata` data set now.
+`WRM` has a number of other model-specific functions that you may find useful in diagnosing model fit and understanding your results. For example, you might want to plot the variance or covariance of each of your variables as a function of `level`. The `covar.plot` function allows you to visually examine the wavelet relationships from your model. Note that we are going to switch to the `carlinadata` data set now.
 
 ```{r Covar.plot Example, fig.width=5, fig.height=5}
 
@@ -136,7 +136,7 @@ upscale(carlinadata$land.use, carlinadata$x, carlinadata$y)
 
 
 ## Multi-model inference with GEEs and WRMs
-`spind` provides a couple of frameworks for conducting multi-model inference analyses and some helper functions that we hope will make your life easier when examining the results. The first that we'll examine here is the `step.spind` function, which implements step-wise model selection. The process is loosely based on `MASS::stepAIC` and `stats::step`, but is specific to classes `GEE` and `WRM`. For GEEs, `step.spind` uses models with the lowest QIC scores to determine what the next step will be. For WRMs, you have the option of using AIC or AICc (AIC corrected for small sample sizes) using the logical `AICc` argument. 
+`spind` provides a couple of frameworks for conducting multi-model inference analyses and some helper functions to assist you when examining the results. The first that we'll examine here is the `step.spind` function, which implements step-wise model selection. The process is loosely based on `MASS::stepAIC` and `stats::step`, but is specific to classes `GEE` and `WRM`. For GEEs, `step.spind` uses models with the lowest QIC scores to determine what the next step will be. For WRMs, you have the option of using AIC or AICc (AIC corrected for small sample sizes) using the logical `AICc` argument. 
 
 Currently, the function only supports backwards model selection. In other words, you have to start with all of the variables in your model formula and remove them in a stepwise fashion. We hope to add forward model selection methods shortly. Additionally, `step.spind` is written to always respect the hierarchy of variables in the model and the user cannot override this currently. For example, `step.spind` would not remove `race` while retaining `I(race^2)`. We may change that in the future, but it will remain like this at least until the next major release. Currently, it recognizes polynomial variables by matching variable names located inside of `I(var^some_power)` and interaction terms by searching for `var1:var2` in the model terms. If you want to use a higher order polynomial variable and are not worried about the variable hierarchy, you can create a separate variable (i.e. `race_2`) and use that in the model. 
 
@@ -226,7 +226,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 
 ## Goodness of fit and model performance
 
-You may also find that a model not implemented by this package works best for your data. We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in the `spind 1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
+You may also find that a model not implemented by this package works best for your data. We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in `spind v1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
 [^9]: Carl G, Kuehn I (2016) Spind: a package for computing spatially corrected accuracy measures. Ecography. DOI: 10.1111/ecog.02593
 
@@ -268,7 +268,7 @@ th.indep.indices$TSS
 ```
 
 
-Additionally, we include the function `acfft` to calculate spatial autocorrelation of model residuals using Moran's I statistic. A quick example below using a GLM and the `musdata` data set.
+Finally, many analyses require a calculation of spatial autocorrelation. To that end, we include the function `acfft` (AutoCorrelation Fast Fourier Transform) to calculate spatial autocorrelation using Moran's I statistic. While many other packages include functions to perform this analysis, ours provides improved efficiency by harnessing the power of fast Fourier transforms which reduce the time needed to compute the statistic. A quick example below using a GLM and the `musdata` data set.
 
 ```{r ACFFT example}
 
@@ -281,7 +281,7 @@ ac
 
 ```
 
-Note that you can adjust the number of distance bins to examine in `acfft` using the `dmax` argument. The default is 10.
+Note that you can adjust the number of distance bins to examine in `acfft` using the `dmax` argument. The default is 10. Finally, you can adjust the size of the distance bins by adjusting the values of `lim1` and `lim2` to meet your needs. 
 
 ## Wrapping up
 Hopefully, you are now ready to utilize GEEs and WRMs to conquer the world of species distribution modeling. However, if this vignette has not served its purpose and you still have questions about how to use these tools (or how to improve this vignette), please let us know. Of course, no package is complete without bugs and we are always trying to improve our code. If you find any bugs that need squashing, have suggestions for additional functionality or improvements to existing functionality, please don't hesitate to contact us[^10]. 
