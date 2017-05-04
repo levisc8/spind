@@ -1,3 +1,9 @@
+## `spind` v2.0.1.9000 (changes implemented for 2.0.2)
+-Updated `step.spind` model hierarchy recognition algorithm for improved efficiency and generality
+-Fixed examples in `wavevar` and `wavecovar` which called a non-existant function
+-Updated the package vignette for clarity
+
+
 ## `spind` v2.0.1
 -Updated vignette to newest version. Old version is not well developed.
 -added citation() to package 
