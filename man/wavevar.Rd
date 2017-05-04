@@ -26,6 +26,12 @@ Wavelet variance for \code{f}.
 Calculates the wavelet variance based on a wavelet
 multiresolution analysis.
 }
+\examples{
+data(carlinadata)
+coords<-carlinadata[,4:5]
+pc<-covar.plot(carlina.horrida~aridity+land.use,carlinadata,coords,
+               wavelet='d4',wtrafo='modwt',plot='covar')
+}
 \seealso{
 \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}},
  \code{\link{scaleWMRR}}

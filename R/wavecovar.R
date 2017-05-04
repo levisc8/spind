@@ -22,10 +22,10 @@
 #'
 #' @author Gudrun Carl
 #'
-#' @example
+#' @examples
 #' data(carlinadata)
 #' coords<-carlinadata[,4:5]
-#' pc<-plot.covar(carlina.horrida~aridity+land.use,carlinadata,coords,
+#' pc<-covar.plot(carlina.horrida~aridity+land.use,carlinadata,coords,
 #'                wavelet='d4',wtrafo='modwt',plot='covar')
 #'
 #' @export
