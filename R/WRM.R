@@ -120,6 +120,7 @@
 #' summary(mwrm1)
 #'
 #' @author Gudrun Carl, Sam Levin
+#' @import ggplot2
 #' @export
 
 
@@ -417,15 +418,36 @@ WRM<-function(formula,family,data,coord,
   }
 
   if(plot & !is.na(acw[1])){
-    y1<-min(min(ac0),min(acw))-.1
-    y2<-max(max(ac0),max(acw))+.1
-    plot(ac0,type="b",ylim=c(y1,y2),
-         ylab="Autocorrelation of residuals", xlab="Lag Distance",
-         main=paste("Autocorrelation for level = ", level))
-    points(acw,pch=2,type="b")
-    v<-1:2
-    leg<-c("glm.residuals","wavelet.residuals")
-    legend('topright',leg,pch=v)
+
+    plt.blank <-  theme(panel.grid.major = element_blank(),
+                        panel.grid.minor = element_blank(),
+                        panel.background = element_blank(),
+                        axis.line = element_line(colour = "black"))
+
+    plt.data <- data.frame(val=1:length(acw),
+                           ac.wrm=acw,
+                           ac.glm=ac0)
+
+    plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
+      plt.blank +
+      geom_line(aes_(y = quote(ac.wrm), color = "WRM Residuals"),
+                size = 0.9) +
+      geom_line(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+                size = 0.9) +
+      geom_point(aes_(y = quote(ac.wrm), color = "WRM Residuals"),
+                 size = 2) +
+      geom_point(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+                 size = 2) +
+      scale_color_manual(paste('Correlation for level = ', level),
+                         breaks = c('WRM Residuals','GLM Residuals'),
+                         values = c('red', 'blue')) +
+      scale_x_continuous('Lag Distance', breaks = 1:10) +
+      scale_y_continuous("Autocorrelation of residuals",
+                         limits = c(min(plt.data[ ,2:3]) - .02,
+                                    max(plt.data[ ,2:3]) + .02))
+
+    print(plt)
+
   }
 
   glm.beta<-beta0

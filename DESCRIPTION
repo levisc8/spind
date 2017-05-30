@@ -18,7 +18,8 @@ Imports: gee,
 	 waveslim,
 	 rje,
 	 stringr,
-	 sp
+	 sp,
+	 ggplot2
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

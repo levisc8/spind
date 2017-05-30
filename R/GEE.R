@@ -112,7 +112,7 @@
 #'
 #' summary(mgee,printAutoCorPars=TRUE)
 #'
-#'@references
+#' @references
 #' Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species
 #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
 #'
@@ -123,6 +123,7 @@
 #' Yan, J., 2004. geepack: Generalized Estimating Equation Package.
 #' R package version 0.2.10.
 #'
+#' @import ggplot2
 #' @export
 #'
 #'
@@ -144,7 +145,7 @@ GEE <- function(formula,family,data,coord,
   lim1 <- moran$lim1
   lim2 <- lim1 + moran$increment
 
-  m0 <- glm(formula,family,data)
+    m0 <- glm(formula,family,data)
   res0 <- resid(m0,type="pearson")
   id <- rep(1,nn)
   dato <- data.frame(data,id)
@@ -187,7 +188,7 @@ GEE <- function(formula,family,data,coord,
     D <- as.matrix(dist(coord))
     R <- alpha^(D^v)
     data <- data.frame(data,id)
-    suppressMessages(suppressWarnings(capture.output({
+  suppressMessages(suppressWarnings(capture.output({
       mgee <- gee::gee(formula=formula,family=family,
                        data=data,id=id,R=R,corstr="fixed",scale.fix=scale.fix)
       })))
@@ -288,15 +289,36 @@ GEE <- function(formula,family,data,coord,
   ac <- acfft(x,y,resid,lim1,lim2)
 
   if(plot){
-    y1 <- min(min(ac0),min(ac))-.1
-    y2 <- max(max(ac0),max(ac))+.1
-    plot(ac0,type="b",ylim=c(y1,y2),
-         ylab="Autocorrelation of residuals", xlab="Lag Distance",
-         main=paste("Autocorrelation for correlation structure: ", corstr))
-    points(ac,pch=2,type="b")
-    v <- 1:2
-    leg <- c("GLM Residuals","GEE Residuals")
-    legend('topright',leg,pch=v)
+    plt.blank <-  theme(panel.grid.major = element_blank(),
+                        panel.grid.minor = element_blank(),
+                        panel.background = element_blank(),
+                        axis.line = element_line(colour = "black"))
+
+    plt.data <- data.frame(val=1:length(ac),
+                           ac.gee=ac,
+                           ac.glm=ac0)
+
+    plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
+           plt.blank +
+           geom_line(aes_(y = quote(ac.gee), color = "GEE Residuals"),
+                     size = 0.9) +
+           geom_line(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+                     size = 0.9) +
+           geom_point(aes_(y = quote(ac.gee), color = "GEE Residuals"),
+                      size = 2) +
+           geom_point(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+                      size = 2) +
+           scale_color_manual(paste("Correlation structure: "
+                                    , corstr),
+                              breaks = c('GEE Residuals','GLM Residuals'),
+                              values = c('blue', 'red')) +
+           scale_x_continuous('Lag Distance', breaks = 1:10) +
+           scale_y_continuous("Autocorrelation of residuals",
+                              limits = c(min(plt.data[ ,2:3]) - .02,
+                                         max(plt.data[ ,2:3]) + .02))
+
+    print(plt)
+
   }
 
   call <- match.call()
