@@ -19,7 +19,8 @@ Imports: gee,
 	 rje,
 	 stringr,
 	 sp,
-	 ggplot2
+	 ggplot2,
+	 RColorBrewer
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
