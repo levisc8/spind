@@ -315,7 +315,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
   }
   if(trace){
     cat('\n---------------\nBest model found:\n')
-    print(newstart)
+    print(use.formula)
   }
 
   return(list(model=newstart,
