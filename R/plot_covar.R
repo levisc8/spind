@@ -33,6 +33,7 @@
 #'
 #' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
 #'
+#' @import ggplot2
 #' @export
 #'
 
@@ -40,67 +41,105 @@
 covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
                      plot="covar"){
 
-  x<-coord[,1]
-  y<-coord[,2]
-  X<-model.matrix(formula,data)
-  namvar<-dimnames(X)[[2]]
-  if(namvar[1]!="(Intercept)") nvar1<-1
-  if(namvar[1]=="(Intercept)") nvar1<-2
-  nvar2<-dim(X)[2]
-  namresp<-as.character(formula[[2]])
-  resp<-model.frame(formula,data)[[1]]
-  wvar0<-wavevar(resp,x,y,wavelet=wavelet,wtrafo=wtrafo)
-  nscale<-length(wvar0)
+  x <- coord[ ,1]
+  y <- coord[ ,2]
+  X <- model.matrix(formula, data)
+  namvar <- dimnames(X)[[2]]
+  if(namvar[1] != "(Intercept)") nvar1 <- 1
+  if(namvar[1] == "(Intercept)") nvar1 <- 2
+  nvar2 <- dim(X)[2]
+  namresp <- as.character(formula[[2]])
+  resp <- model.frame(formula, data)[[1]]
+  wvar0 <- wavevar(resp, x, y, wavelet = wavelet,
+                   wtrafo = wtrafo)
+  nscale <- length(wvar0)
 
-  if(plot=="var"){
+  if(plot == "var"){
     # Variance
-    wvar<-matrix(NA,nvar2,nscale)
-    for (kk in nvar1:nvar2){
-      wvar[kk,]<-wavevar(X[,kk],x,y,wavelet=wavelet,wtrafo=wtrafo)
-    }
-    plot(wvar0[1:nscale],type="b",ylim=c(-.1,.9),pch=16,
-         ylab="Variance", xlab="Level",
-         main=paste(paste(wavelet,wtrafo)," - wavelet variance") )
+    wvar <- matrix(NA, nvar2, nscale)
     for(kk in nvar1:nvar2){
-      points(wvar[kk,1:nscale],pch=kk,type="b")
+      wvar[kk, ] <- wavevar(X[ ,kk], x, y,
+                            wavelet = wavelet, wtrafo = wtrafo)
     }
-    leg<-c(namvar[nvar1:nvar2],namresp)
-    v<-nvar1:nvar2
-    v<-c(v,16)
-    legend('topright',leg,pch=v)
+
+    VarCol <- character()
+    Level <- rep(1:nscale, length(namvar[nvar1:nvar2]) + 1)
+
+    for(i in nvar1:nvar2){
+      tempdata <- rep(namvar[i], nscale)
+      VarCol <- c(VarCol, tempdata)
+    }
+
+    VarCol <- c(VarCol, rep(namresp, nscale))
+
+    Var <- as.vector(t(wvar))
+    Var <- c(Var[!is.na(Var)], wvar0[1:nscale])
+
+    PltData <- data.frame(Variable = VarCol, Level = Level,
+                          Variance = Var)
+
+    VarType <- "Variance"
+
   }
 
-  if(plot=="covar"){
+  if(plot == "covar"){
     # Covariance
-    wcvar<-matrix(NA,nvar2,nscale)
-    for (kk in nvar1:nvar2){
-      wcvar[kk,]<-wavecovar(resp,X[,kk],x,y,wavelet=wavelet,wtrafo=wtrafo,
-                            plot=FALSE)
+    wcvar <- matrix(NA, nvar2, nscale)
+    VarCol <- character()
+    for(kk in nvar1:nvar2){
+      wcvar[kk, ] <- wavecovar(resp, X[ ,kk], x, y,
+                               wavelet = wavelet, wtrafo = wtrafo)
+      tempVar <- rep(paste(namresp, colnames(X)[kk], sep = ' - '), nscale)
+      VarCol <- c(VarCol, tempVar)
     }
-    plot(wcvar[nvar1,1:nscale],type="b",ylim=c(-.1,.6),pch=nvar1,
-         ylab="Covariance", xlab="Level",
-         main=paste(paste(wavelet,wtrafo)," - wavelet covariance") )
-    for(kk in (nvar1+1):nvar2){
-      points(wcvar[kk,1:nscale],pch=kk,type="b")
-    }
-    leg<-rep(NA,nvar2-nvar1+1)
-    for (kk in nvar1:nvar2){
-      leg[kk]<-paste(namresp,namvar[kk],sep=" --- ")
-    }
-    if(nvar1==2) leg<-leg[-1]
-    v<-nvar1:nvar2
-    legend('topright',leg,pch=v)
+
+    Level <- rep(1:nscale, length(namvar[nvar1:nvar2]))
+
+    Covar <- as.vector(t(wcvar))
+    Covar <- Covar[!is.na(Covar)]
+
+    PltData <- data.frame(Variable = VarCol, Level = Level,
+                          Variance = Covar)
+
+    VarType <- "Covariance"
   }
 
-  if(plot=="var") {
-    res<-rbind(wvar0,wvar)
-    rownames(res)<-c(namresp,namvar)
-  }
-  if(plot=="covar") {
-    res<-wcvar
-    rownames(res)<-paste(namresp,namvar,sep="-")
+
+  SeqEnd <- max(PltData$Variance, na.rm = T)
+  if(min(PltData$Variance, na.rm = T) < 0){
+    SeqBegin <- min(PltData$Variance, na.rm = T)
+  } else {
+    SeqBegin <- 0
   }
 
-  fit<-list(result=res)
+  plt.blank <-  theme(panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.background = element_blank(),
+                      axis.line = element_line(colour = "black"))
+
+  Plt <- ggplot(PltData, aes_(x = quote(Level), y = quote(Variance))) +
+    plt.blank +
+    geom_point(aes_(colour = quote(Variable),
+                    shape = quote(Variable)), size = 3) +
+    geom_line(aes_(colour = quote(Variable)), linetype = 2,
+              size = 1) +
+    scale_x_continuous("Level", breaks = 1:nscale) +
+    scale_y_continuous(paste("Wavelet ",VarType),
+                       breaks = round(seq(SeqBegin, SeqEnd,
+                                    length.out = 6),3))
+
+  print(Plt)
+
+
+  if(plot == "var"){
+    res <- rbind(wvar0, wvar)
+    rownames(res) <- c(namresp, namvar)
+  }
+  if(plot == "covar"){
+    res <- wcvar
+    rownames(res) <- paste(namresp, namvar, sep = "-")
+  }
+
+  fit <- list(result = res)
   fit
 }
