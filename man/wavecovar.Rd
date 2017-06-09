@@ -4,7 +4,7 @@
 \alias{wavecovar}
 \title{Wavelet covariance analysis}
 \usage{
-wavecovar(f1, f2, x, y, wavelet = "haar", wtrafo = "dwt", plot = FALSE)
+wavecovar(f1, f2, x, y, wavelet = "haar", wtrafo = "dwt")
 }
 \arguments{
 \item{f1}{A vector of length \emph{n}.}
@@ -20,9 +20,6 @@ are possible. \code{haar} is the default.}
 
 \item{wtrafo}{Type of wavelet transform. Either \code{dwt} or \code{modwt}.
 \code{dwt} is the default.}
-
-\item{plot}{A logical indicating whether to plot the wavelet covariance. Default
-is FALSE}
 }
 \value{
 Wavelet covariance for \code{f1} and \code{f2}.

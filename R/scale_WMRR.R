@@ -53,7 +53,7 @@
 #'     \item\code{lim1} - Lower limit for first bin. Default is 0.
 #'     \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 #'   }
-#' @param plot     A logical value indicating whether to print parameter estimates
+#' @param trace     A logical value indicating whether to print parameter estimates
 #' to the console
 #'
 #' @return  scaleWMRR returns a list containing the following elements
@@ -67,7 +67,7 @@
 #'   \item{\code{fitted}}{Fitted values}
 #'   \item{\code{resid}}{Pearson residuals}
 #'   \item{\code{converged}}{Logical value whether the procedure converged}
-#'   \item{\code{plot}}{Logical. If TRUE:}
+#'   \item{\code{trace}}{Logical. If TRUE:}
 #'
 #'     \itemize{
 #'       \item\code{ac.glm} Autocorrelation of glm.residuals
@@ -87,15 +87,15 @@
 #'
 #' # scaleWMRR at scale=0 is equivalent to GLM
 #' ms0<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-#'                carlinadata,coords,scale=0,plot=TRUE)
+#'                carlinadata,coords,scale=0,trace=TRUE)
 
 #' # scale-specific regressions for detail components
 #' ms1<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-#'                carlinadata,coords,scale=1,plot=TRUE)
+#'                carlinadata,coords,scale=1,trace=TRUE)
 #' ms2<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-#'                carlinadata,coords,scale=2,plot=TRUE)
+#'                carlinadata,coords,scale=2,trace=TRUE)
 #' ms3<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-#'                carlinadata,coords,scale=3,plot=TRUE)
+#'                carlinadata,coords,scale=3,trace=TRUE)
 #'
 #'}
 #' @references
@@ -114,7 +114,7 @@
 scaleWMRR<-function(formula,family,data,coord,
                     scale=1,detail=TRUE,wavelet="haar",wtrafo="dwt",
                     b.ini=NULL,pad=list(),control=list(),moran.params=list(),
-                    plot=FALSE){
+                    trace=FALSE){
 
   n<-dim(data)[1]
   l<-dim(data)[2]
@@ -329,10 +329,10 @@ scaleWMRR<-function(formula,family,data,coord,
       Resmdwt<-matrix(resid(mdwt),2^power,2^power)
       resmdwt<-rep(0,n)
       for(i in 1:n) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
-      if(plot) {
+      if(trace) {
         acw<-acfft(x,y,resmdwt,lim1,lim2)
       }
-      if(!plot){
+      if(!trace){
         acw<-NA
         acpw<-NA
       }
@@ -369,8 +369,8 @@ scaleWMRR<-function(formula,family,data,coord,
 
   glm.beta<-beta0
   wavelet.beta<-apply(beta,2,mean,na.rm=TRUE)
-  if(plot) ac0<-acfft(x,y,res0,lim1,lim2)
-  if(!plot) ac0<-NA
+  if(trace) ac0<-acfft(x,y,res0,lim1,lim2)
+  if(!trace) ac0<-NA
   acw<-apply(ac,2,mean,na.rm=TRUE)
   resw<-apply(resi,2,mean,na.rm=TRUE)
   s.e.<-apply(se,2,mean,na.rm=TRUE)
@@ -403,7 +403,7 @@ scaleWMRR<-function(formula,family,data,coord,
   fit<-list(call=call,b=coef,s.e.=s.e.,z=z.value,p=pr,df=df,
             fitted=pi,resid=resw,converged=converged.logi,ac.glm=ac0,ac=acw)
 
-  if(plot){
+  if(trace){
     cat("\n","Call:","\n")
     print(call)
     mra.comp<- matrix(s,1,length(s))

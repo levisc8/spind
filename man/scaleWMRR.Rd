@@ -6,7 +6,7 @@
 \usage{
 scaleWMRR(formula, family, data, coord, scale = 1, detail = TRUE,
   wavelet = "haar", wtrafo = "dwt", b.ini = NULL, pad = list(),
-  control = list(), moran.params = list(), plot = FALSE)
+  control = list(), moran.params = list(), trace = FALSE)
 }
 \arguments{
 \item{formula}{With specified notation according to names in data frame.}
@@ -61,7 +61,7 @@ If set to \code{FALSE}, smooth and detail components are analyzed. Default is \c
   \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 }}
 
-\item{plot}{A logical value indicating whether to print parameter estimates
+\item{trace}{A logical value indicating whether to print parameter estimates
 to the console}
 }
 \value{
@@ -76,7 +76,7 @@ scaleWMRR returns a list containing the following elements
   \item{\code{fitted}}{Fitted values}
   \item{\code{resid}}{Pearson residuals}
   \item{\code{converged}}{Logical value whether the procedure converged}
-  \item{\code{plot}}{Logical. If TRUE:}
+  \item{\code{trace}}{Logical. If TRUE:}
 
     \itemize{
       \item\code{ac.glm} Autocorrelation of glm.residuals
@@ -105,14 +105,14 @@ coords<- carlinadata[,4:5]
 
 # scaleWMRR at scale=0 is equivalent to GLM
 ms0<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coords,scale=0,plot=TRUE)
+               carlinadata,coords,scale=0,trace=TRUE)
 # scale-specific regressions for detail components
 ms1<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coords,scale=1,plot=TRUE)
+               carlinadata,coords,scale=1,trace=TRUE)
 ms2<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coords,scale=2,plot=TRUE)
+               carlinadata,coords,scale=2,trace=TRUE)
 ms3<-scaleWMRR(carlina.horrida ~ aridity + land.use,"poisson",
-               carlinadata,coords,scale=3,plot=TRUE)
+               carlinadata,coords,scale=3,trace=TRUE)
 
 }
 }
