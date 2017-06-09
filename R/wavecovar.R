@@ -11,8 +11,6 @@
 #' are possible. \code{haar} is the default.
 #' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
 #' \code{dwt} is the default.
-#' @param plot A logical indicating whether to plot the wavelet covariance. Default
-#' is FALSE
 #'
 #'
 #' @return Wavelet covariance for \code{f1} and \code{f2}.
@@ -31,7 +29,7 @@
 #' @export
 
 
-wavecovar<-function(f1,f2,x,y,wavelet="haar",wtrafo="dwt",plot=FALSE){
+wavecovar<-function(f1,f2,x,y,wavelet="haar",wtrafo="dwt"){
 
   n<-length(f1)
   pdim<- max(max(y)-min(y)+1,max(x)-min(x)+1)
@@ -70,9 +68,7 @@ wavecovar<-function(f1,f2,x,y,wavelet="haar",wtrafo="dwt",plot=FALSE){
   }
   CVar
 
-  if(plot){
-    plot(CVar,ylab='Covariance')
-  }
+
   iiende<-level*3+1
   CVarende <- (1/n) * sum(abs(F1.dwt[[iiende]]*F2.dwt[[iiende]]))
   CVartotal<-sum(CVar)+CVarende
