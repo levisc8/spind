@@ -57,7 +57,7 @@ summary(mgee, printAutoCorPars = TRUE)
 predictions <- predict(mgee, newdata = musdata)
 ```
 
-As you can see, this package includes S3 methods for `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). Additionally, the `plot` argument in `GEE` can be used to visually inspect the autocorrelation of the residuals from each regression. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
+As you can see, this package includes methods for `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). Additionally, the `plot` argument in `GEE` can be used to visually inspect the autocorrelation of the residuals from each regression. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
 
 Note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will result in errors as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point due to memory allocation issues). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
 
@@ -103,7 +103,7 @@ padded.predictions <- predict(padded.mwrm, newdata = musdata)
 
 ```
 
-`WRM` has many of the same features as `GEE`. Setting `plot=TRUE` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. S3 methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
+`WRM` has many of the same features as `GEE`. Setting `plot=TRUE` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. Methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
 
 #### Other features specific to WRMs
 
