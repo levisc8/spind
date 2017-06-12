@@ -422,7 +422,8 @@ WRM<-function(formula,family,data,coord,
     plt.blank <-  theme(panel.grid.major = element_blank(),
                         panel.grid.minor = element_blank(),
                         panel.background = element_blank(),
-                        axis.line = element_line(colour = "black"))
+                        axis.line = element_line(colour = "black"),
+                        legend.title = (element_text(size = 9)))
 
     plt.data <- data.frame(val=1:length(acw),
                            ac.wrm=acw,
