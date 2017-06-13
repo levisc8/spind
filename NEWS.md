@@ -1,7 +1,10 @@
 ## `spind` v2.0.1.9000 (changes implemented for 2.0.2)
--Updated `step.spind` model hierarchy recognition algorithm for improved efficiency and generality
--Fixed examples in `wavevar` and `wavecovar` which called a non-existant function
--Updated the package vignette for clarity
+-Updated `step.spind` model hierarchy recognition algorithm for improved efficiency and generality. Additionally reformatted code so no error message is produced when the initial model is the best model.
+-Fixed examples in `wavevar` and `wavecovar` which called a non-existant function.
+-Updated the package vignette for clarity and formatting. Additionally, removed pointless WRM example (padding with mean values) because the particular case being demonstrated was identical to first example.
+-Added prettier plots from `GEE`, `WRM`, `covar.plot`, `rvi.plot`, and `th.indep` using `ggplot2` graphics. These functions should produce publication quality graphics, rather than the bare bones, minimalist approach in the previous versions of the package.
+-Updated color palettes for graphical outputs of `adjusted.actuals` and `upscale` so they are more aesthetically pleasing.
+-Updated argument names for a couple functions to ensure consistency throughout the package.
 
 
 ## `spind` v2.0.1
