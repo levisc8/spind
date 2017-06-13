@@ -112,12 +112,7 @@
 #' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
 #' coord=coords, level=1, plot=TRUE)
 #'
-#' # padding with mean values
-#' mwrm1<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#'            coord=coords, level=1, pad=list(padform=1), plot=TRUE)
-#'
 #' summary(mwrm)
-#' summary(mwrm1)
 #'
 #' @author Gudrun Carl, Sam Levin
 #' @import ggplot2
