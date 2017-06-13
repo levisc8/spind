@@ -87,7 +87,7 @@
 #'
 
 
-step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
+step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
 
   # All models
   scope <- attr(terms(object$formula),
@@ -156,7 +156,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
 
   if(model == "GEE"){
     if(!scale.fix){
-      scale.fix<-TRUE
+      scale.fix <- TRUE
       message("Scale parameter is now fixed")
     }
     ans <- matrix(nrow = ns + 1L, ncol = 2L,
@@ -186,7 +186,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
   }
 
   if(trace){
-    cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+    cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ', best.mod,
         '\n -------------------- \n')
     print(aod)
     cat('\n')
@@ -194,7 +194,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
 
   if(!is.null(steps)){
     steps <- steps
-  } else{
+  } else {
     steps <- length(scope)
   }
 
@@ -215,9 +215,9 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
         if(!i %in% vars &&
            hivars %in% vars){
 
-          if(model=="GEE") aod1 <- aod1[order(aod1$QIC), ]
-          if(model=="WRM" & !AICc) aod1 <- aod1[order(aod1$AIC), ]
-          if(model=="WRM" & AICc) aod1 <- aod1[order(aod1$AICc), ]
+          if(model == "GEE") aod1 <- aod1[order(aod1$QIC), ]
+          if(model == "WRM" & !AICc) aod1 <- aod1[order(aod1$AIC), ]
+          if(model == "WRM" & AICc) aod1 <- aod1[order(aod1$AICc), ]
 
           aod1 <- aod1[-c(1), ]
 
@@ -225,7 +225,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
           best.mod <- new.best.mod
           if(new.best.mod == '<none>') break
 
-          newstart<-update.formula(use.formula, paste("~ . -",new.best.mod))
+          newstart <- update.formula(use.formula, paste("~ . -",new.best.mod))
           cat('-----\nModel hierarchy violated by last removal\nNew Deleted Term: ',
               new.best.mod,'\nPreviously deleted term added back into model\n-----\n')
         }
@@ -244,18 +244,18 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
         ans[1, ] <- c(newwrm$LogLik, newwrm$AIC, newwrm$AICc)
 
         for (i in seq_len(ns)) {
-          tt <- attr(terms(newstart),'term.labels')[i]
+          tt <- attr(terms(newstart), 'term.labels')[i]
 
           nfit <- update.formula(newstart, as.formula(paste("~ . -", tt)))
           newmod <- WRM(nfit, family, data, coord, level = level,
                       wavelet = wavelet, wtrafo = wtrafo, b.ini = b.ini,
                       pad = pad, control = control, moran.params = moran.params)
-          ans[i + 1, ] <-c(newmod$LogLik, newmod$AIC, newmod$AICc)
+          ans[i + 1, ] <- c(newmod$LogLik, newmod$AIC, newmod$AICc)
         }
         aod <- data.frame(Deleted.Vars = rownames(ans),
                           LogLik = ans[, 1],
                           AIC = ans[, 2],
-                          AICc=ans[, 3],
+                          AICc = ans[, 3],
                           stringsAsFactors = F)
 
         rownames(aod) <- 1:dim(aod)[1]
@@ -294,7 +294,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
                           QIC = ans[ ,1],
                           stringsAsFactors = F)
         rownames(aod) <- 1:dim(aod)[1]
-        best.mod <- aod$Deleted.Vars[which(aod$QIC==min(aod$QIC))]
+        best.mod <- aod$Deleted.Vars[which(aod$QIC == min(aod$QIC))]
       }
       if(length(best.mod) > 1){
         warning('Multiple equally parsimonious models')
@@ -302,7 +302,7 @@ step.spind<-function (object, data, steps=NULL, trace=TRUE, AICc=FALSE){
       aod1 <- aod
       newvars <- setdiff(vars,best.mod)
       if(trace){
-        cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ',best.mod,
+        cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ', best.mod,
             '\n -------------------- \n')
         print(aod)
         cat('\n')
