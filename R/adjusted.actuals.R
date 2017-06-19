@@ -63,7 +63,7 @@ adjusted.actuals<-function(data, coord, plot.maps = FALSE, color.maps = FALSE){
     if(color.maps){
       colours <- list(colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50))
     } else {
-      colours <- list(gray((0:50)/50))
+      colours <- list(rev(gray((0:45)/50)))
     }
     a <- lattice::levelplot(fa ~ x + y,
                             col.regions = colours[[1]],
