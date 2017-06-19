@@ -25,6 +25,7 @@ indices (rather than classical indices) should be computed}
 A list with the following components:
 \describe{
  \item{\code{AUC}}{Area under curve}
+ \item{\code{opt.thresh}}{optimal threshold for maximum TSS value}
  \item{\code{TSS}}{Maximum TSS value}
  \item{\code{sensitivity}}{Sensitivity}
  \item{\code{Specificity}}{Specificity}
@@ -36,11 +37,12 @@ an observational data set and model predictions (AUC, ROC, max-TSS)
 }
 \examples{
 data(hook)
-data<-hook[,1:2]
-coord<-hook[,3:4]
-si2<-th.indep(data,coord,spatial=TRUE)
+data <- hook[ ,1:2]
+coord <- hook[ ,3:4]
+si2 <- th.indep(data, coord, spatial = TRUE)
 si2$AUC
 si2$TSS
+si2$opt.thresh
 
 }
 \references{
