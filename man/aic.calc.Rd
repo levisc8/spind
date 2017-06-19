@@ -31,11 +31,11 @@ Calculates AIC and AICc
 }
 \examples{
 data(musdata)
-coords<- musdata[,4:5]
+coords <- musdata[ ,4:5]
 mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
 
-aic<-aic.calc(musculus ~ pollution + exposure, "poisson", musdata,
-             mglm$fitted)
+aic <- aic.calc(musculus ~ pollution + exposure, "poisson", musdata,
+                mglm$fitted)
 aic$AIC
 
 

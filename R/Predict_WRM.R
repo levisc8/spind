@@ -65,39 +65,39 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
     xmargin<-as.integer((2^power-(max(x)-min(x)))/2)-min(x)+1
     ymargin<-as.integer((2^power-(max(y)-min(y)))/2)-min(y)+1
 
-    T<-array(NA,c(2^power,2^power,nvar))
+    Tmat<-array(NA,c(2^power,2^power,nvar))
 
     for(ii in 1:n){
       kx<-x[ii]+xmargin
       ky<-y[ii]+ymargin
       for (i3 in 1:nvar)
-        T[ky,kx,i3]<-X[ii,i3]
+        Tmat[ky,kx,i3]<-X[ii,i3]
     }  # ii loop
 
-    P<-which(is.na(T), arr.ind = TRUE)
+    P<-which(is.na(Tmat), arr.ind = TRUE)
     if(padform==0){
       for (i3 in 1:nvar){
         i1<-P[which(P[,3]==i3),1]
         i2<-P[which(P[,3]==i3),2]
-        for(i in 1:length(i1)) T[i1[i],i2[i],i3]<-0
+        for(i in 1:length(i1)) Tmat[i1[i],i2[i],i3]<-0
       }
     }
     if(padform==1){
       for (i3 in 1:nvar){
         i1<-P[which(P[,3]==i3),1]
         i2<-P[which(P[,3]==i3),2]
-        for(i in 1:length(i1)) T[i1[i],i2[i],i3]<-mean(T[,,i3], na.rm=TRUE)
+        for(i in 1:length(i1)) Tmat[i1[i],i2[i],i3]<-mean(Tmat[,,i3], na.rm=TRUE)
       }
     }
     if(padform==2){
-      for (i3 in 1:nvar) T[,,i3]<-padding(T[,,i3])
+      for (i3 in 1:nvar) Tmat[,,i3]<-padding(Tmat[,,i3])
     }
 
     p<-2^power*2^power
     tt<-matrix(0,p,nvar)
     tt0<-matrix(0,p,nvar)
     for (i3 in 1:nvar){
-      TT<-waveslim::mra.2d(T[,,i3],object$wavelet,n.level,method=object$wtrafo)
+      TT<-waveslim::mra.2d(Tmat[,,i3],object$wavelet,n.level,method=object$wtrafo)
       TTS<-rep(0,length(TT[[1]]))
       TT0<-rep(0,length(TT[[1]]))
       for(is in 1:length(s)){
