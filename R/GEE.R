@@ -131,162 +131,170 @@ GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE,scale.fix=FALSE){
 
-  at <- intersect(names(data),all.vars(formula))
-  if(length(at)==0) stop("formula: specified notation is missing")
+  at <- intersect(names(data), all.vars(formula))
+  if(length(at) == 0) stop("formula: specified notation is missing")
   nn <- nrow(data)
-  x <- coord[,1]
-  y <- coord[,2]
-  if(length(x)!=nn) stop("length of data does not match length of coordinates")
-  logic1 <- identical(as.numeric(x),round(x,0))
-  logic2 <- identical(as.numeric(y),round(y,0))
+  x <- coord[ ,1]
+  y <- coord[ ,2]
+  if(length(x) != nn) stop("length of data does not match length of coordinates")
+  logic1 <- identical(as.numeric(x), round(x, 0))
+  logic2 <- identical(as.numeric(y), round(y, 0))
   if(!logic1 | !logic2) stop("coordinates not integer")
 
-  moran <- do.call("wrm.moran",moran.params)
+  moran <- do.call("wrm.moran", moran.params)
   lim1 <- moran$lim1
   lim2 <- lim1 + moran$increment
 
-    m0 <- glm(formula,family,data)
-  res0 <- resid(m0,type="pearson")
-  id <- rep(1,nn)
-  dato <- data.frame(data,id)
+    m0 <- glm(formula, family, data)
+  res0 <- resid(m0, type = "pearson")
+  id <- rep(1, nn)
+  dato <- data.frame(data, id)
   suppressMessages(suppressWarnings(capture.output({
-    mgee <- gee::gee(formula=formula,family=family,
-                     data=dato,id=id,
-                     corstr="independence",scale.fix=scale.fix)
+    mgee <- gee::gee(formula = formula, family = family,
+                     data = dato, id = id,
+                     corstr = "independence", scale.fix = scale.fix)
     })))
   var.indep.naive <- mgee$naive.variance
 
-  if(corstr=="independence"){
+  if(corstr == "independence"){
     ashort <- 0
     A <- 0
     fitted <- fitted(m0)
-    resid <- resid(m0,type="pearson")
-    b <- summary(m0)$coefficients[,1]
-    s.e. <- summary(m0)$coefficients[,2]
-    z <- summary(m0)$coefficients[,3]
-    p <- summary(m0)$coefficients[,4]
+    resid <- resid(m0, type = "pearson")
+    b <- summary(m0)$coefficients[ ,1]
+    s.e. <- summary(m0)$coefficients[ ,2]
+    z <- summary(m0)$coefficients[ ,3]
+    p <- summary(m0)$coefficients[ ,4]
     scale <- summary(m0)$dispersion
-    Icrit <- qic.calc(formula,family=family,data=data,
-                      fitted,var.indep.naive,var.indep.naive)
+    Icrit <- qic.calc(formula, family = family, data = data,
+                      fitted, var.indep.naive, var.indep.naive)
     QIC <- Icrit$QIC
-    logLik<-Icrit$loglik
-    v2<-var.indep.naive
+    logLik <- Icrit$loglik
+    v2 <- var.indep.naive
   }
 
-  if(corstr=="fixed"){
-    ac01 <- acfft(x,y,res0,1,1.1,dmax=1)
-    ac05 <- acfft(x,y,res0,5,5.1,dmax=1)
-    if(ac05<=0) v <- 1
-    if(ac05>0) v <- log(log(ac05)/log(ac01))/log(5)
+  if(corstr == "fixed"){
+    ac01 <- acfft(coord, res0, 1, 1.1, dmax = 1)
+    ac05 <- acfft(coord, res0, 5, 5.1, dmax = 1)
+    if(ac05 <= 0) v <- 1
+    if(ac05 > 0) v <- log(log(ac05) / log(ac01)) / log(5)
     alpha <- ac01
-    para0 <- paste("n",nn,sep="=")
-    para1 <- paste(", alpha",round(alpha,3),sep="=")
-    para2 <- paste(", v",round(v,3),sep="=")
-    A0 <- paste(para0,para1,para2)
-    id <- rep(1,nn)
-    coord <- cbind(x,y)
+    para0 <- paste("n", nn,sep = "=")
+    para1 <- paste(", alpha", round(alpha, 3), sep = "=")
+    para2 <- paste(", v", round(v, 3), sep = "=")
+    A0 <- paste(para0, para1, para2)
+    id <- rep(1, nn)
+    coord <- cbind(x, y)
     D <- as.matrix(dist(coord))
-    R <- alpha^(D^v)
-    data <- data.frame(data,id)
+    R <- alpha ^ (D^v)
+    data <- data.frame(data, id)
   suppressMessages(suppressWarnings(capture.output({
-      mgee <- gee::gee(formula=formula,family=family,
-                       data=data,id=id,R=R,corstr="fixed",scale.fix=scale.fix)
+      mgee <- gee::gee(formula = formula, family = family,
+                       data = data, id = id,R = R,corstr = "fixed",
+                       scale.fix = scale.fix)
       })))
     var.naive <- mgee$naive.variance
     para3 <- "a=alpha^(d^v) "
-    ashort <- c(alpha,v)
-    A <- paste(para3,para1,para2)
+    ashort <- c(alpha, v)
+    A <- paste(para3, para1, para2)
     b <- mgee$coeff
-    res <- res.gee(formula,family,data,nn,b=mgee$coeff,R=R)
+    res <- res.gee(formula, family, data, nn, b = mgee$coeff, R = R)
     fitted <- res$fitted
     resid <- res$resid
-    s.e. <- summary(mgee)$coefficients[,2]
-    z <- summary(mgee)$coefficients[,3]
-    p <- rep(NA,nrow(summary(mgee)$coefficients))
+    s.e. <- summary(mgee)$coefficients[ ,2]
+    z <- summary(mgee)$coefficients[ ,3]
+    p <- rep(NA, nrow(summary(mgee)$coefficients))
     for(ii in 1:nrow(summary(mgee)$coefficients)){
-      if(z[ii]>=0) p[ii] <- 2*(1-pnorm(z[ii]))
-      if(z[ii]<0) p[ii] <- 2*(pnorm(z[ii]))
+      if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
+      if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
     }
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.naive,var.indep.naive)
+    Icrit <- qic.calc(formula, family = family, data = data, fitted,
+                      var.naive, var.indep.naive)
     QIC <- Icrit$QIC
-    logLik<-Icrit$loglik
-    v2<-var.naive
+    logLik <- Icrit$loglik
+    v2 <- var.naive
    }
 
 
-  if(corstr=="exchangeable") {
-    dato <- dat.nn(data,coord,cluster)
+  if(corstr == "exchangeable") {
+    dato <- dat.nn(data, coord, cluster)
     l <- dim(dato)[2]
-    o <- dato[,l-2]
-    id <- dato[,l-1]
-    waves <- dato[,l]
+    o <- dato[ ,l - 2]
+    id <- dato[ ,l - 1]
+    waves <- dato[ ,l]
 
     clusz <- clus.sz(id)
-    zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
+    zcor <- geepack::genZcor(clusz = clusz,
+                             waves = waves, "unstr")
     suppressMessages(suppressWarnings(capture.output({
-      mgee <- gee::gee(formula=formula,family=family,
-                     data=dato,id=id,corstr="exchangeable",scale.fix=scale.fix)
+      mgee <- gee::gee(formula = formula, family = family,
+                     data = dato, id = id, corstr = "exchangeable",
+                     scale.fix = scale.fix)
       })))
     var.robust <- mgee$robust.variance
-    ashort <- mgee$w[1,2]
-    a <- a.gee(mgee$w,cluster,type="gee",corstr="exchangeable")
+    ashort <- mgee$w[1, 2]
+    a <- a.gee(mgee$w, cluster, type = "gee", corstr = "exchangeable")
     A <- mgee$w
     b <- mgee$coeff
-    res <- res.gee(formula,family,dato,cluster,clusz,zcor,a,b)
+    res <- res.gee(formula, family, dato, cluster, clusz, zcor, a, b)
     fitted <- res$fitted[order(o)]
     resid <- res$resid[order(o)]
-    s.e. <- summary(mgee)$coefficients[,4]
-    z <- summary(mgee)$coefficients[,5]
+    s.e. <- summary(mgee)$coefficients[ ,4]
+    z <- summary(mgee)$coefficients[ ,5]
     p <- rep(NA,nrow(summary(mgee)$coefficients))
     for(ii in 1:nrow(summary(mgee)$coefficients)){
-      if(z[ii]>=0) p[ii] <- 2*(1-pnorm(z[ii]))
-      if(z[ii]<0) p[ii] <- 2*(pnorm(z[ii]))
+      if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
+      if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
     }
 
     scale <- summary(mgee)[[9]]
-    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula, family = family, data = data,
+                      fitted, var.robust, var.indep.naive)
     QIC <- Icrit$QIC
-    logLik<-Icrit$loglik
-    v2<-var.robust
+    logLik <- Icrit$loglik
+    v2 <- var.robust
    }
 
 
-  if(corstr=="quadratic"){
-    dato <- dat.nn(data,coord,cluster)
+  if(corstr == "quadratic"){
+    dato <- dat.nn(data, coord, cluster)
     l <- dim(dato)[2]
-    o <- dato[,l-2]
-    id <- dato[,l-1]
-    waves <- dato[,l]
+    o <- dato[ ,l - 2]
+    id <- dato[ ,l - 1]
+    waves <- dato[ ,l]
 
     clusz <- clus.sz(id)
-    zcor <- geepack::genZcor(clusz=clusz,waves=waves,"unstr")
-    zcorq <- zcor.quad(zcor,cluster,quad=T)
-    mgeese <- geepack::geese(formula=formula,family=family,data=dato,id=id,corstr=
-                    "userdefined",zcor=zcorq,scale.fix=scale.fix)
+    zcor <- geepack::genZcor(clusz = clusz, waves = waves, "unstr")
+    zcorq <- zcor.quad(zcor, cluster, quad = TRUE)
+    mgeese <- geepack::geese(formula = formula, family = family,
+                             data = dato, id = id,
+                             corstr = "userdefined", zcor = zcorq,
+                             scale.fix = scale.fix)
     var.robust <- mgeese$vbeta
     ashort <- mgeese$a
-    a <- a.gee(mgeese$a,cluster,type="geese",corstr="userdefined",quad=T)
-    A <- cor.mat(cluster,a)
+    a <- a.gee(mgeese$a, cluster, type = "geese",
+               corstr = "userdefined", quad = TRUE)
+    A <- cor.mat(cluster, a)
     b <- mgeese$b
-    res <- res.gee(formula,family,dato,cluster,clusz,zcor,a,b)
+    res <- res.gee(formula, family, dato, cluster, clusz, zcor, a, b)
     fitted <- res$fitted[order(o)]
     resid <- res$resid[order(o)]
-    s.e. <- summary(mgeese)$mean[,2]
-    z <- summary(mgeese)$mean[,3]
-    p <- summary(mgeese)$mean[,4]
+    s.e. <- summary(mgeese)$mean[ ,2]
+    z <- summary(mgeese)$mean[ ,3]
+    p <- summary(mgeese)$mean[ ,4]
 
     scale <- as.numeric(summary(mgeese)$scale[1])
-    Icrit <- qic.calc(formula,family=family,data=data,fitted,var.robust,var.indep.naive)
+    Icrit <- qic.calc(formula, family = family, data = data, fitted,
+                      var.robust, var.indep.naive)
     QIC <- Icrit$QIC
-    logLik<-Icrit$loglik
-    v2<-var.robust
+    logLik <- Icrit$loglik
+    v2 <- var.robust
   }
 
-  x <- coord[,1]
-  y <- coord[,2]
-  ac0 <- acfft(x,y,res0,lim1,lim2)
-  ac <- acfft(x,y,resid,lim1,lim2)
+
+  ac0 <- acfft(coord, res0, lim1, lim2)
+  ac <- acfft(coord, resid, lim1, lim2)
 
   if(plot){
     plt.blank <-  theme(panel.grid.major = element_blank(),
@@ -295,9 +303,9 @@ GEE <- function(formula,family,data,coord,
                         axis.line = element_line(colour = "black"),
                         legend.title = (element_text(size = 9)))
 
-    plt.data <- data.frame(val=1:length(ac),
-                           ac.gee=ac,
-                           ac.glm=ac0)
+    plt.data <- data.frame(val = 1:length(ac),
+                           ac.gee = ac,
+                           ac.glm = ac0)
 
     plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
            plt.blank +
@@ -323,28 +331,28 @@ GEE <- function(formula,family,data,coord,
   }
 
   call <- match.call()
-  fit <- list(call=call,
-              formula=formula,
-              family=family,
-              coords=coord,
-              corstr=corstr,
-              b=b,
-              s.e.=s.e.,
-              z=z,p=p,
-              scale=scale,
-              scale.fix=scale.fix,
-              cluster=cluster,
-              fitted=fitted,
-              resid=resid,
-              w.ac=ashort,
-              Mat.ac=A,
-              QIC=QIC,
-              QLik=logLik,
-              ac.glm=ac0,
-              ac.gee=ac,
-              var.gee=v2,
-              var.naive=var.indep.naive,
-              moran.params=moran.params)
+  fit <- list(call = call,
+              formula = formula,
+              family = family,
+              coords = coord,
+              corstr = corstr,
+              b = b,
+              s.e. = s.e.,
+              z = z,p = p,
+              scale = scale,
+              scale.fix = scale.fix,
+              cluster = cluster,
+              fitted = fitted,
+              resid = resid,
+              w.ac = ashort,
+              Mat.ac = A,
+              QIC = QIC,
+              QLik = logLik,
+              ac.glm = ac0,
+              ac.gee = ac,
+              var.gee = v2,
+              var.naive = var.indep.naive,
+              moran.params = moran.params)
   class(fit) <- "GEE"
   return(fit)
 
@@ -375,39 +383,40 @@ GEE <- function(formula,family,data,coord,
 #'
 #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
 #' @export
-qic.calc <- function(formula,family,data,mu,var.robust,var.indep.naive){
+qic.calc <- function(formula, family, data, mu, var.robust, var.indep.naive){
 
-  X <- model.matrix(formula,data)
-  if(is.vector(model.frame(formula,data)[[1]])){
-    y <- model.frame(formula,data)[[1]]
+  X <- model.matrix(formula, data)
+  if(is.vector(model.frame(formula, data)[[1]])){
+    y <- model.frame(formula, data)[[1]]
     ntr <- 1
   }
-  if(family=="binomial" & is.matrix(model.frame(formula,data)[[1]])){
-    y <- model.frame(formula,data)[[1]][,1]
-    ntr <- model.frame(formula,data)[[1]][,1] +
-      model.frame(formula,data)[[1]][,2]
+  if(family == "binomial" & is.matrix(model.frame(formula, data)[[1]])){
+    y <- model.frame(formula, data)[[1]][ ,1]
+    ntr <- model.frame(formula, data)[[1]][ ,1] +
+           model.frame(formula, data)[[1]][ ,2]
   }
   n  <-  dim(X)[1]
   nvar <- dim(X)[2]
 
-  if(family=="gaussian"){
-    sos <- sum((y-mu)^2)                    # sum of squares
-    sigma2 <-  sos/n                        # variance
-    loglik <-  -n/2*(log(2*pi*sigma2) +1)   # log likelihood
+  if(family == "gaussian"){
+    sos <- sum((y - mu)^2)                    # sum of squares
+    sigma2 <-  sos / n                        # variance
+    loglik <-  -n / 2 * (log(2 * pi * sigma2) + 1)   # log likelihood
   }
-  if(family=="binomial"){                         # choose= Binomialkoeff.
-    loglik <-  sum(y*log(mu/(1-mu)) + ntr*log(1-mu) + log(choose(ntr,y)) )
+  if(family == "binomial"){                         # choose= Binomialkoeff.
+    loglik <-  sum(y * log(mu / (1 - mu)) +
+                     ntr * log(1 - mu) + log(choose(ntr, y)))
   }
-  if(family=="poisson"){
+  if(family == "poisson"){
     # loglik <-  sum(y*log(mu)-mu)  # useful for delta in multimodel inference
-    loglik <-  sum(y*log(mu)-mu) - sum(log(factorial(y))) # factorial=Fakultät
+    loglik <-  sum(y * log(mu) - mu) - sum(log(factorial(y))) # factorial=Fakultät
   }
 
-  trace <- sum(diag(MASS::ginv(var.indep.naive)%*% var.robust))
+  trace <- sum(diag(MASS::ginv(var.indep.naive) %*% var.robust))
 
-  QIC <-  -2*loglik + 2*trace
+  QIC <-  -2 * loglik + 2 * trace
 
-  return(list(QIC=QIC, loglik=loglik))
+  return(list(QIC = QIC, loglik = loglik))
 
 }
 

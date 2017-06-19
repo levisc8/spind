@@ -344,7 +344,7 @@ WRM<-function(formula,family,data,coord,
         resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
       }
 
-      acw<-acfft(x,y,resmdwt,lim1,lim2)
+      acw<-acfft(coord,resmdwt,lim1,lim2)
 
       try.solve<-try(MASS::ginv(t(tt)%*%tt),silent = TRUE)
       if (inherits(try.solve, "try-error"))  var.b<-matrix(NA,nvar,nvar)
@@ -380,7 +380,7 @@ WRM<-function(formula,family,data,coord,
   glm.beta<-beta0
   wavelet.beta<-apply(beta,2,mean,na.rm=TRUE)
   if(level!=0) wavelet.beta.smooth<-apply(beta.smooth,2,mean,na.rm=TRUE)
-  ac0<-acfft(x,y,res0,lim1,lim2)
+  ac0<-acfft(coord,res0,lim1,lim2)
   acw<-apply(ac,2,mean,na.rm=TRUE)
   resw<-apply(resi,2,mean,na.rm=TRUE)
   s.e.<-apply(se,2,mean,na.rm=TRUE)

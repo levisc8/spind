@@ -4,14 +4,11 @@
 \alias{acfft}
 \title{Spatial autocorrelation diagnostics}
 \usage{
-acfft(x, y, f, lim1 = 1, lim2 = 2, dmax = 10)
+acfft(coord, f, lim1 = 1, lim2 = 2, dmax = 10)
 }
 \arguments{
-\item{x}{A vector of length \emph{n} representing the x coordinates
-(integer, consecutively numbered cells).}
-
-\item{y}{A vector of length \emph{n} representing the y coordinates
-(integer, consecutively numbered cells)}
+\item{coord}{A matrix of two columns with corresponding cartesian
+coordinates. Currently only supports integer coordinates.}
 
 \item{f}{A vector which is the same length as \code{x} and \code{y}}
 
@@ -33,7 +30,7 @@ data(musdata)
 coords<- musdata[,4:5]
 mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
 
-ac<-acfft(coords[,1],coords[,2],resid(mglm,type="pearson"),lim1=0,lim2=1)
+ac<-acfft(coords,resid(mglm,type="pearson"),lim1=0,lim2=1)
 ac
 
 }

@@ -3,10 +3,8 @@
 #' @description
 #' A function for calculating spatial autocorrelation using Moran's I.
 #'
-#' @param x 	    A vector of length \emph{n} representing the x coordinates
-#'         (integer, consecutively numbered cells).
-#' @param y 	    A vector of length \emph{n} representing the y coordinates
-#'         (integer, consecutively numbered cells)
+#' @param coord A matrix of two columns with corresponding cartesian
+#' coordinates. Currently only supports integer coordinates.
 #' @param f       A vector which is the same length as \code{x} and \code{y}
 #' @param lim1    Lower bound for first bin. Default is 1
 #' @param lim2    Upper bound for first bin. Default is 2
@@ -20,14 +18,16 @@
 #' coords<- musdata[,4:5]
 #' mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
 #'
-#' ac<-acfft(coords[,1],coords[,2],resid(mglm,type="pearson"),lim1=0,lim2=1)
+#' ac<-acfft(coords,resid(mglm,type="pearson"),lim1=0,lim2=1)
 #' ac
 #'
 #' @author Gudrun Carl
 
 #' @export
-acfft<-function(x,y,f,lim1=1,lim2=2,dmax=10){
+acfft<-function(coord, f, lim1 = 1, lim2 = 2, dmax = 10){
 
+  x <- coord[ ,1]
+  y <- coord[ ,2]
 
 
   if(length(x)!=length(f)) stop("error in dimension")
