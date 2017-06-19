@@ -42,9 +42,9 @@ an observational data set and model predictions (Kappa and confusion matrix)
 }
 \examples{
 data(hook)
-data<-hook[,1:2]
-coord<-hook[,3:4]
-si1<-th.dep(data,coord,spatial=TRUE)
+data <- hook[ ,1:2]
+coord <- hook[ ,3:4]
+si1 <- th.dep(data, coord, spatial = TRUE)
 si1$kappa
 si1$cm
 
