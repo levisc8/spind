@@ -4,7 +4,7 @@
 \alias{adjusted.actuals}
 \title{Adjusted actual values}
 \usage{
-adjusted.actuals(data, coord, plot.maps = FALSE)
+adjusted.actuals(data, coord, plot.maps = FALSE, color.maps = FALSE)
 }
 \arguments{
 \item{data}{a dataframe or matrix containing actual presence/absence (binary,
@@ -17,6 +17,9 @@ consecutively numbered coordinates for each occurence and prediction in
 
 \item{plot.maps}{A logical indicating whether maps should be plotted.
 Default is FALSE.}
+
+\item{color.maps}{A logical value. If \code{TRUE}, produces colorful maps.
+If \code{FALSE}, produces grayscale maps. Default is grayscale.}
 }
 \value{
 A vector of adjusted actual values.

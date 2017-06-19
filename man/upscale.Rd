@@ -4,14 +4,14 @@
 \alias{upscale}
 \title{Upscaling of smooth components}
 \usage{
-upscale(f, x, y, wavelet = "haar", wtrafo = "dwt", pad = mean(f))
+upscale(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
+  color.maps = FALSE)
 }
 \arguments{
 \item{f}{A vector.}
 
-\item{x}{Corresponding x-coordinates which have to be integer.}
-
-\item{y}{Corresponding y-coordinates which have to be integer.}
+\item{coord}{A matrix of two columns with corresponding cartesian
+coordinates. Currently only supports integer coordinates.}
 
 \item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
 are possible. \code{haar} is the default.}
@@ -21,6 +21,9 @@ are possible. \code{haar} is the default.}
 
 \item{pad}{A numeric value for padding the matrix
 into a bigger square. Default is set to mean(f).}
+
+\item{color.maps}{A logical value. If \code{TRUE}, produces colorful maps.
+If \code{FALSE}, produces grayscale maps. Default is grayscale.}
 }
 \value{
 A set of plots showing the matrix image at each value for
@@ -37,10 +40,12 @@ The scale-dependent results are graphically displayed.
 }
 \examples{
 data(carlinadata)
+coords <- carlinadata[ ,4:5]
 
 # Upscaling of smooth components
-upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
-upscale(carlinadata$aridity,carlinadata$x,carlinadata$y,pad=0)
+upscale(carlinadata$land.use, coord = coords)
+upscale(carlinadata$aridity, coord = coords,pad=0,
+        color.maps = TRUE)
 
 }
 \author{

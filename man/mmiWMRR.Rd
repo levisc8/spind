@@ -4,7 +4,7 @@
 \alias{mmiWMRR}
 \title{Multi-model inference for wavelet multiresolution regression}
 \usage{
-mmiWMRR(object, data, scale, detail = TRUE)
+mmiWMRR(object, data, scale, detail = TRUE, trace = FALSE)
 }
 \arguments{
 \item{object}{A model of class \code{WRM}.}
@@ -17,6 +17,8 @@ mmiWMRR(object, data, scale, detail = TRUE)
 \item{detail}{Remove smooth wavelets? If \code{TRUE}, only detail
 components are analyzed. If set to \code{FALSE}, smooth and detail
 components are analyzed. Default is \code{TRUE}.}
+
+\item{trace}{Logical value indicating whether to print results to console.}
 }
 \value{
 \code{mmiWMRR} returns a list containing the following elements
@@ -40,14 +42,16 @@ selection weights and to rank the models.
 \examples{
 
 data(carlinadata)
-coords<- carlinadata[,4:5]
+coords <- carlinadata[ ,4:5]
 \dontrun{
 
 
-wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
-              carlinadata,coords,level=1,wavelet="d4")
+wrm<- WRM(carlina.horrida ~ aridity + land.use, family = "poisson",
+          data = carlinadata, coord = coords, level = 1,
+          wavelet = "d4")
 
-mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
+mmi<- mmiWMRR(wrm, data = carlinadata, scale = 3,
+              detail = TRUE, trace = FALSE)
 
 }
 }

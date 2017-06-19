@@ -4,16 +4,15 @@
 \alias{wavecovar}
 \title{Wavelet covariance analysis}
 \usage{
-wavecovar(f1, f2, x, y, wavelet = "haar", wtrafo = "dwt")
+wavecovar(f1, f2, coord, wavelet = "haar", wtrafo = "dwt")
 }
 \arguments{
 \item{f1}{A vector of length \emph{n}.}
 
 \item{f2}{A vector of length \emph{n}.}
 
-\item{x}{Corresponding x-coordinates which have to be integer.}
-
-\item{y}{Corresponding y-coordinates which have to be integer.}
+\item{coord}{A matrix of two columns with corresponding cartesian
+coordinates. Currently only supports integer coordinates.}
 
 \item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
 are possible. \code{haar} is the default.}

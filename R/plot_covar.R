@@ -50,7 +50,7 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
   nvar2 <- dim(X)[2]
   namresp <- as.character(formula[[2]])
   resp <- model.frame(formula, data)[[1]]
-  wvar0 <- wavevar(resp, x, y, wavelet = wavelet,
+  wvar0 <- wavevar(resp, coord, wavelet = wavelet,
                    wtrafo = wtrafo)
   nscale <- length(wvar0)
 
@@ -58,7 +58,7 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     # Variance
     wvar <- matrix(NA, nvar2, nscale)
     for(kk in nvar1:nvar2){
-      wvar[kk, ] <- wavevar(X[ ,kk], x, y,
+      wvar[kk, ] <- wavevar(X[ ,kk], coord,
                             wavelet = wavelet, wtrafo = wtrafo)
     }
 
@@ -87,7 +87,7 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     wcvar <- matrix(NA, nvar2, nscale)
     VarCol <- character()
     for(kk in nvar1:nvar2){
-      wcvar[kk, ] <- wavecovar(resp, X[ ,kk], x, y,
+      wcvar[kk, ] <- wavecovar(resp, X[ ,kk], coord,
                                wavelet = wavelet, wtrafo = wtrafo)
       tempVar <- rep(paste(namresp, colnames(X)[kk], sep = ' - '), nscale)
       VarCol <- c(VarCol, tempVar)
@@ -105,11 +105,21 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
   }
 
 
-  SeqEnd <- max(PltData$Variance, na.rm = T)
+
+
+  SeqEnd <- max(PltData$Variance, na.rm = T) + .1
   if(min(PltData$Variance, na.rm = T) < 0){
     SeqBegin <- min(PltData$Variance, na.rm = T)
   } else {
     SeqBegin <- 0
+  }
+
+  if(max(PltData$Variance > 0.5)){
+    y_scale <- seq(SeqBegin, 1, .2)
+    ylim <- c(SeqBegin,1)
+  } else {
+    y_scale <- seq(SeqBegin, SeqEnd, .1)
+    ylim <- c(SeqBegin, SeqEnd)
   }
 
   plt.blank <-  theme(panel.grid.major = element_blank(),
@@ -125,8 +135,8 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
               size = 1) +
     scale_x_continuous("Level", breaks = 1:nscale) +
     scale_y_continuous(paste("Wavelet ",VarType),
-                       breaks = round(seq(SeqBegin, SeqEnd,
-                                    length.out = 6),3))
+                       breaks = y_scale,
+                       limits = ylim)
 
   print(Plt)
 

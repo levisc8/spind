@@ -12,6 +12,8 @@
 #'\code{data}.
 #'@param plot.maps A logical indicating whether maps should be plotted.
 #'Default is FALSE.
+#' @param color.maps A logical value. If \code{TRUE}, produces colorful maps.
+#' If \code{FALSE}, produces grayscale maps. Default is grayscale.
 #'
 #'@return A vector of adjusted actual values.
 #'
@@ -25,7 +27,7 @@
 #'
 #'@export
 
-adjusted.actuals<-function(data,coord,plot.maps=FALSE){
+adjusted.actuals<-function(data, coord, plot.maps = FALSE, color.maps = FALSE){
 
   x <- coord[ ,1]
   y <- coord[ ,2]
@@ -38,8 +40,8 @@ adjusted.actuals<-function(data,coord,plot.maps=FALSE){
   if(!logic1 | !logic2) stop("coordinates not integer")
 
   fbs <- fb
-  ac01a <- acfft(x, y, fa, lim1 = 0, lim2 = 1, dmax = 1)
-  ac01b <- acfft(x, y, fb, lim1 = 0, lim2 = 1, dmax = 1)
+  ac01a <- acfft(coord, fa, lim1 = 0, lim2 = 1, dmax = 1)
+  ac01b <- acfft(coord, fb, lim1 = 0, lim2 = 1, dmax = 1)
   if(ac01a > 0.05 & ac01b > 0.05){
     ac01 <- ac01a - ac01b
     if(ac01 > 0.02){
@@ -47,10 +49,10 @@ adjusted.actuals<-function(data,coord,plot.maps=FALSE){
       D <- as.matrix(dist(coord))
       R <- alpha^D
       spatial.W <- R^3
-      ac01s <- acfft(x, y, fbs, lim1 = 0, lim2 = 1, dmax = 1)
+      ac01s <- acfft(coord, fbs, lim1 = 0, lim2 = 1, dmax = 1)
       while(ac01a > ac01s){
         fbs <- spatial.W %*% fbs
-        ac01s <- acfft(x, y, fbs, lim1 = 0, lim2 = 1, dmax = 1)
+        ac01s <- acfft(coord, fbs, lim1 = 0, lim2 = 1, dmax = 1)
       }
       fbs <- fbs - min(fbs)
       fbs <- fbs / max(fbs)
@@ -58,8 +60,11 @@ adjusted.actuals<-function(data,coord,plot.maps=FALSE){
   }
 
   if (plot.maps){
-    colours <- list(colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50))
-
+    if(color.maps){
+      colours <- list(colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50))
+    } else {
+      colours <- list(gray((0:50)/50))
+    }
     a <- lattice::levelplot(fa ~ x + y,
                             col.regions = colours[[1]],
                             colorkey = FALSE,

@@ -4,14 +4,13 @@
 \alias{wavevar}
 \title{Wavelet variance analysis}
 \usage{
-wavevar(f, x, y, wavelet = "haar", wtrafo = "dwt")
+wavevar(f, coord, wavelet = "haar", wtrafo = "dwt")
 }
 \arguments{
 \item{f}{A vector}
 
-\item{x}{Corresponding x-coordinates which have to be integer}
-
-\item{y}{Corresponding y-coordinates which have to be integer}
+\item{coord}{A matrix of two columns with corresponding cartesian
+coordinates. Currently only supports integer coordinates.}
 
 \item{wavelet}{Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
 are possible. \code{haar} is the default.}
@@ -28,9 +27,9 @@ multiresolution analysis.
 }
 \examples{
 data(carlinadata)
-coords<-carlinadata[,4:5]
-pc<-covar.plot(carlina.horrida~aridity+land.use,carlinadata,coords,
-               wavelet='d4',wtrafo='modwt',plot='covar')
+coords <- carlinadata[ ,4:5]
+pc <- covar.plot(carlina.horrida ~ aridity + land.use, carlinadata, coords,
+                 wavelet = 'd4', wtrafo = 'modwt', plot = 'covar')
 }
 \seealso{
 \pkg{waveslim}, \code{\link{WRM}}, \code{\link{covar.plot}},

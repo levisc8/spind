@@ -22,6 +22,7 @@
 #' @param wavelet  Type of wavelet: \code{haar}, \code{d4}, or \code{la8}
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}
 #' @param n.eff    A numeric value of effective sample size
+#' @param trace Should R print progress updates to the console? Default is FALSE
 #'
 #' @return A matrix containing the relative importance of each variable
 #' in the regression at each value of the scale level.
@@ -47,11 +48,12 @@
 #' @export
 
 
-rvi.plot<-function(formula,family,data,coord,maxlevel,detail=TRUE,
-wavelet="haar",wtrafo="dwt",n.eff=NULL){
-
-  cat("\n","Model selection tables:","\n","\n")
-
+rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
+                     wavelet = "haar", wtrafo = "dwt",
+                     n.eff = NULL, trace = FALSE){
+  if(trace){
+    cat("\n","Model selection tables:","\n","\n")
+  }
 
   wrm <- WRM(formula, family, data, coord, level = 1,
             wavelet = wavelet, wtrafo = wtrafo)
@@ -71,14 +73,15 @@ wavelet="haar",wtrafo="dwt",n.eff=NULL){
 
   if(maxlevel >= 2){
     for (i in 2:maxlevel) {
-      mmi <- mmiWMRR(wrm, data, scale = i, detail = detail)
+      mmi <- mmiWMRR(wrm, data, scale = i, detail = detail, trace = trace)
       A[ , ,i] <- mmi$result
       level[i] <- mmi$level
     }
   }
 
-  # Plot: scale-dependent relative variable importance
-  cat("\n","---","\n","Relative variable importance:","\n","\n")
+  if(trace){
+    cat("\n","---","\n","Relative variable importance:","\n","\n")
+  }
 
   klimitscale <- dim(A)[3]
   ip <- dim(A)[1]
@@ -144,7 +147,10 @@ wavelet="haar",wtrafo="dwt",n.eff=NULL){
 
   rownames(WeightSums) <- leg
   colnames(WeightSums) <- paste("level", c(1:klimitscale), sep = "=")
-  print(WeightSums)
+  # Plot: scale-dependent relative variable importance
+  if(trace){
+    print(WeightSums)
+  }
 
   fit <- list(rvi = WeightSums)
 

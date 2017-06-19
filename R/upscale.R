@@ -10,14 +10,16 @@
 #'
 #'
 #' @param f     A vector.
-#' @param x     Corresponding x-coordinates which have to be integer.
-#' @param y     Corresponding y-coordinates which have to be integer.
+#' @param coord A matrix of two columns with corresponding cartesian
+#' coordinates. Currently only supports integer coordinates.
 #' @param wavelet   Name of wavelet family. \code{haar}, \code{d4}, and \code{la8}.
 #' are possible. \code{haar} is the default.
 #' @param wtrafo    Type of wavelet transform. Either \code{dwt} or \code{modwt}.
 #' \code{dwt} is the default.
 #' @param pad       A numeric value for padding the matrix
 #' into a bigger square. Default is set to mean(f).
+#' @param color.maps A logical value. If \code{TRUE}, produces colorful maps.
+#' If \code{FALSE}, produces grayscale maps. Default is grayscale.
 #'
 #' @return A set of plots showing the matrix image at each value for
 #' \code{level}.
@@ -26,15 +28,20 @@
 #'
 #' @examples
 #' data(carlinadata)
+#' coords <- carlinadata[ ,4:5]
 #'
 #' # Upscaling of smooth components
-#' upscale(carlinadata$land.use,carlinadata$x,carlinadata$y)
-#' upscale(carlinadata$aridity,carlinadata$x,carlinadata$y,pad=0)
+#' upscale(carlinadata$land.use, coord = coords)
+#' upscale(carlinadata$aridity, coord = coords,pad=0,
+#'         color.maps = TRUE)
 #'
 #' @export
 
-upscale<-function(f, x, y, wavelet = "haar", wtrafo = "dwt", pad = mean(f)){
+upscale<-function(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
+                  color.maps = FALSE){
 
+  x <- coord[ ,1]
+  y <- coord[ ,2]
   if(length(f) != length(x) | length(f) != length(y)) stop("error in dim")
   logic1 <- identical(as.numeric(x), round(x, 0))
   logic2 <- identical(as.numeric(y), round(y, 0))
@@ -57,7 +64,12 @@ upscale<-function(f, x, y, wavelet = "haar", wtrafo = "dwt", pad = mean(f)){
       mai = c(0.1, 0, 0.4, 0),
       omi = c(0, 0, 0, 0),
       pty = "s",cex.main=1)
-  colors <- list(colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(100))
+  if(color.maps){
+    colors <- list(colorRampPalette(RColorBrewer::brewer.pal(10,
+                                                             'Spectral'))(100))
+  } else {
+    colors <- list(gray((0:50)/50))
+  }
   minvec <- rep(NA, 4)
   maxvec <- rep(NA, 4)
 
@@ -96,7 +108,6 @@ upscale<-function(f, x, y, wavelet = "haar", wtrafo = "dwt", pad = mean(f)){
     FTS <- FTS / (maxFTS - minFTS)
     image(FTS, zlim=c(0,1), axes = FALSE, col = colors[[1]],
           main = paste("level = ", i - 1))
-
 
   } # i-loop
 

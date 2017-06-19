@@ -5,7 +5,7 @@
 \title{Relative Variable Importance}
 \usage{
 rvi.plot(formula, family, data, coord, maxlevel, detail = TRUE,
-  wavelet = "haar", wtrafo = "dwt", n.eff = NULL)
+  wavelet = "haar", wtrafo = "dwt", n.eff = NULL, trace = FALSE)
 }
 \arguments{
 \item{formula}{A model formula}
@@ -28,6 +28,8 @@ If set to \code{FALSE}, smooth and detail components are analyzed. Default is \c
 \item{wtrafo}{Type of wavelet transform: \code{dwt} or \code{modwt}}
 
 \item{n.eff}{A numeric value of effective sample size}
+
+\item{trace}{Should R print progress updates to the console? Default is FALSE}
 }
 \value{
 A matrix containing the relative importance of each variable
