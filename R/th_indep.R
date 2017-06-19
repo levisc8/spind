@@ -36,9 +36,9 @@
 #'si2$TSS
 #'si2$opt.thresh
 #'
-#' @references Carl G, Kuehn I (2016)
-#' Spind: a package for computing spatially corrected accuracy measures.
-#' Ecography. DOI: 10.1111/ecog.02593
+#' @references Carl G, Kuehn I (2017) Spind: a package for computing spatially
+#'  corrected accuracy measures. Ecography 40: 675-682.
+#'  doi: 10.1111/ecog.02593
 #' @import ggplot2
 #' @export
 

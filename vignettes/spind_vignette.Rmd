@@ -216,7 +216,8 @@ rvi.plot(carlina.horrida ~ aridity + land.use, family = "poisson",
 
 You may also find that a model not implemented by this package works best for your data. We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in `spind v1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
-[^9]: Carl G, Kuehn I (2016) Spind: a package for computing spatially corrected accuracy measures. Ecography. DOI: 10.1111/ecog.02593
+[^9]: Carl G, Kuehn I (2017) Spind: a package for computing spatially corrected accuracy measures. Ecography 40: 675-682. doi: 10.1111/ecog.02593
+
 
 ```{r GOF data, eval = FALSE}
 data(hook)
