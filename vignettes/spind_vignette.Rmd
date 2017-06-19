@@ -107,15 +107,15 @@ covar.plot(carlina.horrida ~ aridity + land.use - 1,
 
 ```
 
-You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function, which allows you to visually examine your matrices for a number of different levels of `scale`, which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components as well. The default is mean values of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. A quick example below using `carlinadata` data set.
+You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function, which allows you to visually examine your matrices for a number of different levels of `scale` which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components as well. The default is mean values of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. Finally, you can optionally produce grayscale or colorized maps using the `color.maps` argument. A quick example below using `carlinadata` data set.
 
 [^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
 
 
 ```{r Upscale Example, fig.width = 7.15, fig.height = 7}
 
-upscale(carlinadata$land.use, carlinadata$x, carlinadata$y,
-        pad = mean(carlinadata$land.use))
+upscale(carlinadata$land.use, coord = coords,
+        pad = mean(carlinadata$land.use), color.maps = FALSE)
 
 
 ```
@@ -265,7 +265,7 @@ coords <- musdata[ ,4:5]
 mglm <- glm(musculus ~ pollution + exposure, family = "poisson",
             data = musdata)
 
-ac <- acfft(coords[ ,1], coords[ ,2], resid(mglm, type = "pearson"),
+ac <- acfft(coords, resid(mglm, type = "pearson"),
             lim1 = 0, lim2 = 1, dmax = 10)
 ac
 
