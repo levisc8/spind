@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/levisc8/spind.svg?branch=master)](https://travis-ci.org/levisc8/spind)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spind)](http://cran.r-project.org/package=spind)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/spind)](https://cran.r-project.org/package=spind)
+[![codecov](https://codecov.io/gh/levisc8/spind/branch/master/graph/badge.svg)](https://codecov.io/gh/levisc8/spind)
 
 # spind 
 
