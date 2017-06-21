@@ -6,3 +6,5 @@ bin
 spind.Rcheck
 Figures_from_pilot_programs
 Tarball_Archive
+tests/testthat/Rplots.pdf
+tests/testthat/comparison to PresenceAbsence.txt
