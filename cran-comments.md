@@ -1,10 +1,11 @@
 ## Submission
 
-This is a submission of Spind_2.0.2.
+This is a submission of Spind_2.1.0.
 
 All passed with no ERRORS OR WARNINGS.
 
-Tested on win-builder with the following results: 
+Tested on win-builder for R-devel, R-release, and
+R-oldrelease with the following results: 
 
 ALL builds had the following NOTE: 
 * checking CRAN incoming feasibility ... NOTE
@@ -22,7 +23,7 @@ Some of these words are abbreviations or hyphenated words.
 
 Also tested on:
 * ubuntu 12.04 (on travis-ci), R 3.3.4
-* macOS X 10.11.6
+* 
 
 *Built cleanly on these two platforms with no 
 ERRORS, WARNINGS, or NOTES

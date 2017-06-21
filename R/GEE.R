@@ -307,6 +307,10 @@ GEE <- function(formula,family,data,coord,
                            ac.gee = ac,
                            ac.glm = ac0)
 
+    y.breaks <- round(seq(min(plt.data[ ,2:3])-.02,
+                          max(plt.data[ ,2:3]) + .02,
+                          by = .1),1)
+
     plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
            plt.blank +
            geom_line(aes_(y = quote(ac.gee), color = "GEE Residuals"),
@@ -323,8 +327,10 @@ GEE <- function(formula,family,data,coord,
                               values = c('blue', 'red')) +
            scale_x_continuous('Lag Distance', breaks = 1:10) +
            scale_y_continuous("Autocorrelation of residuals",
+                              breaks = y.breaks,
                               limits = c(min(plt.data[ ,2:3]) - .02,
                                          max(plt.data[ ,2:3]) + .02))
+
 
     print(plt)
 
