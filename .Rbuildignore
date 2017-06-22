@@ -8,4 +8,4 @@
 ^Bug_examples$
 ^Tarball_Archive$
 ^tests/testthat/comparison to PresenceAbsence\.txt$
-^Rplots\.pdf
+^tests/testthat/Rplots\.pdf$
