@@ -82,4 +82,42 @@ test_that('fails correctly', {
 })
 
 
+test_that("GEE's alternative corr+error structures work",{
+  data(musdata)
+  coords<- musdata[,4:5]
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="exchangeable", cluster = 2,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-1.539848, 3.783996, -2.34400),
+               tolerance = 1e-7)
+  expect_equal(as.vector(mgee$s.e.), c(.8850701, .8142585, .7519995),
+               tolerance = 1e-7)
+
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="quadratic", cluster = 2,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-1.778806, 3.999191, -2.336889),
+               tolerance = 5e-7)
+  expect_equal(as.vector(mgee$s.e.), c(.8890819, .7705253, .7116026),
+               tolerance = 1e-7)
+
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="independence",
+            plot=F)
+  mglm<-glm(musculus ~ pollution + exposure, family = poisson(),
+            data = musdata)
+
+  expect_equal(as.vector(mgee$b), as.vector(mglm$coefficients),
+               tolerance = 1e-7)
+  expect_equal(as.vector(mgee$s.e.),
+               as.vector(summary(mglm)$coefficients[ ,2]),
+               tolerance = 1e-7)
+
+
+})
 

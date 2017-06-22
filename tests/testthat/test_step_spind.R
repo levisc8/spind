@@ -51,5 +51,22 @@ test_that("Outputs are as expected for WRM", {
 
 })
 
+test_that("Trace outputs are as expected",{
+  skip_on_cran()
+  library(MASS)
+  data(birthwt)
+  x <- rep(1:14, 14)
+  y <- as.integer(gl(14,14))
+  coords <- cbind(x[-(190:196)],y[-(190:196)])
+  formula <- formula(low ~ age + lwt + race + smoke + ftv + bwt + I(race^2))
 
+  mgee <- GEE(formula, family = "gaussian", data = birthwt,
+              coord = coords, corstr = "fixed", scale.fix = TRUE)
+
+  expect_output(step.spind(mgee, birthwt, trace = F),
+                "Model hierarchy violated by last removal\nNew Deleted Term:")
+
+
+
+})
 
