@@ -313,16 +313,23 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
       suppressWarnings(if(best.mod == '<none>') break)
     }
   }
-  if(trace){
-    cat('\n---------------\nBest model found:\n')
-    if(it == 1){
-      table.mod <- use.formula
+
+  if(it == 1){
+    table.mod <- use.formula
+
+    if(trace){
+      cat('\n---------------\nBest model found:\n')
       print(use.formula)
-    } else {
-      table.mod <- newstart
+    }
+  } else {
+    table.mod <- newstart
+
+    if(trace){
+      cat('\n---------------\nBest model found:\n')
       print(newstart)
     }
   }
+
 
   return(list(model = table.mod,
               table = aod))
