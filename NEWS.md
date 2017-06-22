@@ -1,4 +1,4 @@
-## `spind` v2.0.1.9000 (changes implemented for 2.0.2)
+## `spind` v2.0.1.9000 (changes implemented for 2.1.0)
 -Updated `step.spind` model hierarchy recognition algorithm for improved efficiency and generality. Additionally reformatted code so no error message is produced when the initial model is the best model.
 -Fixed examples in `wavevar` and `wavecovar` which called a non-existant function.
 -Updated the package vignette for clarity and formatting. Additionally, removed pointless WRM example (padding with mean values) because the particular case being demonstrated was identical to first example.
