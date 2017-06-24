@@ -1,8 +1,8 @@
 ## Submission
 
-This is a submission of Spind_2.1.0.
+This is a submission of Spind_v2.1.0.
 
-All passed with no ERRORS OR WARNINGS.
+All builds passed with no ERRORS OR WARNINGS.
 
 Tested on win-builder for R-devel, R-release, and
 R-oldrelease with the following results: 
@@ -22,11 +22,10 @@ Possibly mis-spelled words in DESCRIPTION:
 Some of these words are abbreviations or hyphenated words. 
 
 Also tested on:
-* ubuntu 12.04 (on travis-ci), R 3.3.4
-* 
+* Windows 7, R 3.4.0 Patched (2017-06-02 r72758)
+* ubuntu 12.04 (on travis-ci), R 3.4.0
 
-*Built cleanly on these two platforms with no 
-ERRORS, WARNINGS, or NOTES
+*Built cleanly with no ERRORS, WARNINGS, or NOTES
 
 
 ## Downstream dependencies
