@@ -1,6 +1,6 @@
 ## Submission
 
-This is a submission of Spind_2.1.0.
+This is a submission of Spind_v2.1.0.
 
 All passed with no ERRORS OR WARNINGS.
 
@@ -23,9 +23,8 @@ Some of these words are abbreviations or hyphenated words.
 
 Also tested on:
 * ubuntu 12.04 (on travis-ci), R 3.3.4
-* 
 
-*Built cleanly on these two platforms with no 
+*Built cleanly on with no 
 ERRORS, WARNINGS, or NOTES
 
 
