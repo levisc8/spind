@@ -4,7 +4,8 @@
 \alias{th.indep}
 \title{Spatial threshold-independent accuracy measures}
 \usage{
-th.indep(data, coord, spatial = TRUE, plot.ROC = TRUE)
+th.indep(data, coord, spatial = TRUE, plot.ROC = TRUE,
+  customize_plot = NULL)
 }
 \arguments{
 \item{data}{A data frame or matrix with two columns. The first column
@@ -20,6 +21,8 @@ integer and consecutively numbered.}
 indices (rather than classical indices) should be computed}
 
 \item{plot.ROC}{A logical indicating whether the ROC should be plotted}
+
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
 }
 \value{
 A list with the following components:

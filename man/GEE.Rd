@@ -5,7 +5,8 @@
 \title{GEE (Generalized Estimating Equations)}
 \usage{
 GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
-  moran.params = list(), plot = FALSE, scale.fix = FALSE)
+  moran.params = list(), plot = FALSE, scale.fix = FALSE,
+  customize_plot = NULL)
 }
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
@@ -60,6 +61,8 @@ residuals should be plotted.}
 \item{scale.fix}{A logical indicating whether or not the scale parameter should
 be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
 stepwise model selection procedures in \code{step.spind}.}
+
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
 }
 \value{
 An object of class \code{GEE}. This consists of a list with the
@@ -119,11 +122,13 @@ cluster models (i.e \code{quadratic, exchangeable}).
 data(musdata)
 coords<- musdata[,4:5]
 
+\dontrun{
 mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-      coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
+      coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE,
+      customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
 
 summary(mgee,printAutoCorPars=TRUE)
-
+}
 }
 \references{
 Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species

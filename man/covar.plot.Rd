@@ -5,7 +5,7 @@
 \title{Plot wavelet variance/covariance}
 \usage{
 covar.plot(formula, data, coord, wavelet = "haar", wtrafo = "dwt",
-  plot = "covar")
+  plot = "covar", customize_plot = NULL)
 }
 \arguments{
 \item{formula}{With specified notation according to names in data frame.}
@@ -21,6 +21,8 @@ corresponding x,y-coordinates which have to be integer.}
 
 \item{plot}{Either \code{var} for wavelet variance analysis
 or \code{covar} for wavelet covariance analysis.}
+
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
 }
 \value{
 A list containing a vector of results.

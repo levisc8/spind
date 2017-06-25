@@ -13,6 +13,8 @@
 #'@param spatial A logical value indicating whether spatial corrected
 #'indices (rather than classical indices) should be computed
 #'@param plot.ROC A logical indicating whether the ROC should be plotted
+#'@param customize_plot Additional plotting parameters passed to \code{ggplot}
+#'
 #'
 #'@return A list with the following components:
 #'\describe{
@@ -43,7 +45,8 @@
 #' @export
 
 
-th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE){
+th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
+                     customize_plot = NULL){
 
   if(dim(data)[1] != dim(coord)[1]) stop("error in dimension")
 
@@ -168,7 +171,8 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE){
                          values = c('red', 'blue')) +
       scale_x_continuous('1 - Specificity', breaks = seq(0, 1, .25)) +
       scale_y_continuous("Sensitivity",
-                         limits = c(0,1))
+                         limits = c(0,1)) +
+      customize_plot
 
     print(plt)
 

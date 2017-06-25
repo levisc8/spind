@@ -5,7 +5,8 @@
 \title{Relative Variable Importance}
 \usage{
 rvi.plot(formula, family, data, coord, maxlevel, detail = TRUE,
-  wavelet = "haar", wtrafo = "dwt", n.eff = NULL, trace = FALSE)
+  wavelet = "haar", wtrafo = "dwt", n.eff = NULL, trace = FALSE,
+  customize_plot = NULL)
 }
 \arguments{
 \item{formula}{A model formula}
@@ -30,6 +31,8 @@ If set to \code{FALSE}, smooth and detail components are analyzed. Default is \c
 \item{n.eff}{A numeric value of effective sample size}
 
 \item{trace}{Should R print progress updates to the console? Default is FALSE}
+
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
 }
 \value{
 A matrix containing the relative importance of each variable

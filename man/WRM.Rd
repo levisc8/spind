@@ -6,7 +6,7 @@
 \usage{
 WRM(formula, family, data, coord, level = 1, wavelet = "haar",
   wtrafo = "dwt", b.ini = NULL, pad = list(), control = list(),
-  moran.params = list(), plot = FALSE)
+  moran.params = list(), plot = FALSE, customize_plot = NULL)
 }
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
@@ -66,6 +66,8 @@ are possible. \code{haar} is the default.}
 
 \item{plot}{A logical value indicating whether to plot autocorrelation of
 residuals by distance bin}
+
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
 }
 \value{
 An object of class \code{WRM}. This consists of a list with the
@@ -121,11 +123,13 @@ For those interested in multimodel inference approaches \code{WRM} with
 data(musdata)
 coords<- musdata[,4:5]
 
+\dontrun{
 mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-coord=coords, level=1, plot=TRUE)
+coord=coords, level=1, plot=TRUE,
+customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
 
 summary(mwrm)
-
+}
 }
 \references{
 Carl, G., Kuehn, I. (2010): A wavelet-based extension of generalized

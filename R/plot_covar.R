@@ -11,6 +11,7 @@
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}.
 #' @param plot      Either \code{var} for wavelet variance analysis
 #'           or \code{covar} for wavelet covariance analysis.
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
 #'
 #' @details Each variable or pair of variables in \code{formula} is passed to \code{wavevar} or
 #' \code{wavecovar} internally, and the result is plotted as a function of \code{level}.
@@ -39,7 +40,7 @@
 
 
 covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
-                     plot="covar"){
+                     plot="covar", customize_plot = NULL){
 
   x <- coord[ ,1]
   y <- coord[ ,2]
@@ -136,7 +137,8 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     scale_x_continuous("Level", breaks = 1:nscale) +
     scale_y_continuous(paste("Wavelet ",VarType),
                        breaks = y_scale,
-                       limits = ylim)
+                       limits = ylim) +
+    customize_plot
 
   print(Plt)
 

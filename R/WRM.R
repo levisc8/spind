@@ -58,6 +58,7 @@
 #'   }
 #' @param plot     A logical value indicating whether to plot autocorrelation of
 #' residuals by distance bin
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
 #'
 #' @return An object of class \code{WRM}. This consists of a list with the
 #' following elements:
@@ -109,11 +110,13 @@
 #' data(musdata)
 #' coords<- musdata[,4:5]
 #'
+#'\dontrun{
 #' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#' coord=coords, level=1, plot=TRUE)
+#' coord=coords, level=1, plot=TRUE,
+#' customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
 #'
 #' summary(mwrm)
-#'
+#'}
 #' @author Gudrun Carl, Sam Levin
 #' @import ggplot2
 #' @export
@@ -122,7 +125,7 @@
 WRM<-function(formula,family,data,coord,
               level=1,wavelet="haar",wtrafo="dwt",
               b.ini=NULL,pad=list(),control=list(),moran.params=list(),
-              plot=FALSE){
+              plot=FALSE, customize_plot = NULL){
 
   n <- dim(data)[1]
   l <- dim(data)[2]
@@ -473,7 +476,8 @@ WRM<-function(formula,family,data,coord,
       scale_y_continuous("Autocorrelation of residuals",
                          breaks = y.breaks,
                          limits = c(min(plt.data[ ,2:3]) - .02,
-                                    max(plt.data[ ,2:3]) + .02))
+                                    max(plt.data[ ,2:3]) + .02)) +
+      customize_plot
 
     print(plt)
 

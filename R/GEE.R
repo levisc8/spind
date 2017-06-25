@@ -57,6 +57,7 @@
 #' @param scale.fix A logical indicating whether or not the scale parameter should
 #' be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
 #' stepwise model selection procedures in \code{step.spind}.
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
 #'
 #'
 #' @return An object of class \code{GEE}. This consists of a list with the
@@ -107,11 +108,13 @@
 #' data(musdata)
 #' coords<- musdata[,4:5]
 #'
+#' \dontrun{
 #' mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-#'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE)
+#'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE,
+#'       customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
 #'
 #' summary(mgee,printAutoCorPars=TRUE)
-#'
+#'}
 #' @references
 #' Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species
 #' Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170
@@ -129,7 +132,7 @@
 #'
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
-              plot=FALSE,scale.fix=FALSE){
+              plot=FALSE,scale.fix=FALSE, customize_plot = NULL){
 
   at <- intersect(names(data), all.vars(formula))
   if(length(at) == 0) stop("formula: specified notation is missing")
@@ -329,7 +332,8 @@ GEE <- function(formula,family,data,coord,
            scale_y_continuous("Autocorrelation of residuals",
                               breaks = y.breaks,
                               limits = c(min(plt.data[ ,2:3]) - .02,
-                                         max(plt.data[ ,2:3]) + .02))
+                                         max(plt.data[ ,2:3]) + .02)) +
+           customize_plot
 
 
     print(plt)
@@ -359,8 +363,10 @@ GEE <- function(formula,family,data,coord,
               var.gee = v2,
               var.naive = var.indep.naive,
               moran.params = moran.params)
+
   class(fit) <- "GEE"
   return(fit)
+
 
 }
 

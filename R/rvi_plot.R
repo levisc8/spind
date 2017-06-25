@@ -23,6 +23,7 @@
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}
 #' @param n.eff    A numeric value of effective sample size
 #' @param trace Should R print progress updates to the console? Default is FALSE
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
 #'
 #' @return A matrix containing the relative importance of each variable
 #' in the regression at each value of the scale level.
@@ -50,7 +51,7 @@
 
 rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
                      wavelet = "haar", wtrafo = "dwt",
-                     n.eff = NULL, trace = FALSE){
+                     n.eff = NULL, trace = FALSE, customize_plot = NULL){
   if(trace){
     cat("\n","Model selection tables:","\n","\n")
   }
@@ -127,7 +128,8 @@ rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
          scale_x_continuous("Level", breaks = 1:maxlevel) +
          scale_y_continuous("Relative Variable Importance",
                             breaks = seq(0, max(WeightSums),
-                                         length.out = 6))
+                                         length.out = 6)) +
+         customize_plot
 
   print(Plt)
 
