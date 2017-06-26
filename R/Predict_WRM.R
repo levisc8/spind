@@ -33,7 +33,7 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
   formula<-object$formula
   family<-object$family
   b<-object$b
-  bsm<-object$bsm
+  bsm<-object$b.sm
   level<-object$level
   padzone<-object$padzone
   padform<-object$padform
@@ -124,4 +124,5 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
   if(family=="binomial") pi<-exp(lin)/(1+exp(lin))
   if(family=="poisson")  pi<-exp(lin)
   predict<-pi
+  return(predict)
 }
