@@ -16,6 +16,7 @@
 #'
 #' @param object A model of class \code{GEE}.
 #' @param data A data frame or set of vectors of equal length.
+#' @param trace A logical indicating whether or not to print results to console.
 #'
 #' @return  \code{mmiGEE} returns a list containing the following elements
 #' \describe{
@@ -60,7 +61,7 @@
 #'
 #'
 
-mmiGEE<-function(object,data){
+mmiGEE<-function(object,data, trace = FALSE){
 
 
   if(class(object)!="GEE") stop("Input model is not of class 'GEE'")
@@ -129,15 +130,17 @@ mmiGEE<-function(object,data){
   weight<-exp(-delta/2)/sum(exp(-delta/2)) # = weight
 
   # Print results
-  cat("\n","Model selection table:","\n","\n")
   result<-cbind(result,round(delta,2),round(weight,3))
   ord<-order(delta)
   res<-result[ord,]
   dimnames(res)[[1]]<-ord
   dimnames(res)[[2]]<-c("(Int)",varnames,
                         "df","QLik","QIC","delta","weight")
-  print(res,na.print = "")
 
+  if(trace) {
+    cat("\n","Model selection table:","\n","\n")
+    print(res,na.print = "")
+  }
   nrowA<-dim(res)[1]
   ncolA<-dim(res)[2]
 
@@ -148,7 +151,6 @@ mmiGEE<-function(object,data){
   A<-res
 
   # Plot: relative variable importance
-  cat("\n","---","\n","Relative variable importance:","\n","\n")
 
   ip<-dim(A)[1]
 
@@ -162,8 +164,10 @@ mmiGEE<-function(object,data){
   WeightSums<-colSums(B,na.rm=TRUE)
 
   names(WeightSums)<-leg
-  print(WeightSums)
-
+  if(trace){
+    cat("\n","---","\n","Relative variable importance:","\n","\n")
+    print(WeightSums)
+  }
   fit<-list(result=res,rvi=WeightSums)
   fit
 }
