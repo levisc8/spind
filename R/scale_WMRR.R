@@ -120,7 +120,7 @@ scaleWMRR<-function(formula,family,data,coord,
   l<-dim(data)[2]
   x<-coord[,1]
   y<-coord[,2]
-  if(length(x)!=n) stop("error in dimension")
+  if(length(x) != n) stop("error in dimension")
   logic1<-identical(as.numeric(x),round(x,0))
   logic2<-identical(as.numeric(y),round(y,0))
   if(!logic1 | !logic2) stop("coordinates not integer")
@@ -330,7 +330,7 @@ scaleWMRR<-function(formula,family,data,coord,
       resmdwt<-rep(0,n)
       for(i in 1:n) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
       if(trace) {
-        acw<-acfft(x,y,resmdwt,lim1,lim2)
+        acw<-acfft(coord,resmdwt,lim1,lim2)
       }
       if(!trace){
         acw<-NA
@@ -369,7 +369,7 @@ scaleWMRR<-function(formula,family,data,coord,
 
   glm.beta<-beta0
   wavelet.beta<-apply(beta,2,mean,na.rm=TRUE)
-  if(trace) ac0<-acfft(x,y,res0,lim1,lim2)
+  if(trace) ac0<-acfft(coord,res0,lim1,lim2)
   if(!trace) ac0<-NA
   acw<-apply(ac,2,mean,na.rm=TRUE)
   resw<-apply(resi,2,mean,na.rm=TRUE)
