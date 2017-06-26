@@ -42,7 +42,15 @@ test_that('predict.GEE and .WRM interact properly with parent functions',{
   mwrm <- WRM(musculus ~ pollution + exposure, family = "poisson",
               data = musdata, coord = coords, level = 1, plot = F)
   expect_match(class(predict.GEE(mgee, newdata = musdata)), 'numeric')
+  expect_match(class(predict.WRM(mwrm, newdata = musdata,
+                                 sm = T, newcoord = coords)), 'numeric')
   expect_match(class(predict.WRM(mwrm, newdata = musdata)), 'numeric')
+
+  expect_equal(predict.GEE(mgee, newdata = musdata), mgee$fitted,
+               tolerance = 1e-5)
+  expect_equal(predict.WRM(mwrm, newdata = musdata), as.vector(mwrm$fitted),
+               tolerance = 1e-5)
+
 })
 
 test_that('fails correctly', {
@@ -109,6 +117,7 @@ test_that("GEE's alternative corr+error structures work",{
   mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
             coord=coords, corstr="independence",
             plot=F)
+
   mglm<-glm(musculus ~ pollution + exposure, family = poisson(),
             data = musdata)
 
@@ -119,5 +128,47 @@ test_that("GEE's alternative corr+error structures work",{
                tolerance = 1e-7)
 
 
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="exchangeable", cluster = 3,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-1.671703, 4.092487, -2.51481),
+               tolerance = 1e-6)
+  expect_equal(as.vector(mgee$s.e.), c(0.963654, .8203059, .6312397),
+               tolerance = 1e-7)
+
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="quadratic", cluster = 3,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-2.715358, 4.492083, -1.850096),
+               tolerance = 1e-7)
+  expect_equal(as.vector(mgee$s.e.), c(.9045938, .8047187, .5717413),
+               tolerance = 1e-7)
+
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="exchangeable", cluster = 4,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-1.685432, 3.237147, -1.620231),
+               tolerance = 1e-6)
+  expect_equal(as.vector(mgee$s.e.), c(.7889265, 1.1213838, .8657069),
+               tolerance = 1e-7)
+
+  mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
+            coord=coords, corstr="quadratic", cluster = 4,
+            plot=F)
+
+  expect_equal(as.vector(mgee$b), c(-2.303986, 3.829125, -1.660454),
+               tolerance = 1e-7)
+  expect_equal(as.vector(mgee$s.e.), c(1.1420045, .9939361, .6020102),
+               tolerance = 1e-7)
+
+
+
 })
+
+
 

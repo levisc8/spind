@@ -401,7 +401,8 @@ scaleWMRR<-function(formula,family,data,coord,
   names(coef)<-dimnames(X)[[2]]
   call<-match.call()
   fit<-list(call=call,b=coef,s.e.=s.e.,z=z.value,p=pr,df=df,
-            fitted=pi,resid=resw,converged=converged.logi,ac.glm=ac0,ac=acw)
+            fitted=pi,resid=resw,converged=converged.logi,
+            ac.glm=ac0,ac=acw)
 
   if(trace){
     cat("\n","Call:","\n")
