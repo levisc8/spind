@@ -4,12 +4,14 @@
 \alias{mmiGEE}
 \title{Multi-model inference for GEE models}
 \usage{
-mmiGEE(object, data)
+mmiGEE(object, data, trace = FALSE)
 }
 \arguments{
 \item{object}{A model of class \code{GEE}.}
 
 \item{data}{A data frame or set of vectors of equal length.}
+
+\item{trace}{A logical indicating whether or not to print results to console.}
 }
 \value{
 \code{mmiGEE} returns a list containing the following elements
