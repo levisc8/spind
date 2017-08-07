@@ -1,6 +1,6 @@
 ## Submission
 
-This is a submission of Spind_v2.1.0.
+This is a submission of Spind_v2.1.1.
 
 All builds passed with no ERRORS OR WARNINGS.
 
@@ -19,11 +19,12 @@ Possibly mis-spelled words in DESCRIPTION:
   multiresolution (9:67)
   stepwise (10:41)
 
+
 Some of these words are abbreviations or hyphenated words. 
 
 Also tested on:
-* Windows 7, R 3.4.0 Patched (2017-06-02 r72758)
-* ubuntu 12.04 (on travis-ci), R 3.4.0
+* Windows 7, R 3.4.1 
+* ubuntu 12.04.5 (on travis-ci), R 3.4.1
 
 *Built cleanly with no ERRORS, WARNINGS, or NOTES
 
