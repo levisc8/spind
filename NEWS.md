@@ -2,6 +2,7 @@
 -fix bug in `predict.WRM` that prevented calculating smooth components
 -fix bug in `scaleWMRR` that prevented acfft from being called internally
 -added `trace` argument to `mmiGEE`
+-updated vignette to teach users how to customize plots
 
 ## `spind` v2.1.0
 -Updated `step.spind` model hierarchy recognition algorithm for improved efficiency and generality. Additionally reformatted code so no error message is produced when the initial model is the best model.
