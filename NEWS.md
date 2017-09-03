@@ -1,3 +1,6 @@
+## `spind` vX.x.x
+-News to follow
+
 ## `spind` v2.1.1
 -fix bug in `predict.WRM` that prevented calculating smooth components
 -fix bug in `scaleWMRR` that prevented acfft from being called internally
