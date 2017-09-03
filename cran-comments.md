@@ -7,7 +7,7 @@ All builds passed with no ERRORS OR WARNINGS.
 Tested on win-builder for R-devel, R-release, and
 R-oldrelease with the following results: 
 
-ALL builds had the following NOTE: 
+R-release and R-oldrelease builds had the following NOTE: 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Sam Levin <levisc8@gmail.com>'
 
@@ -18,9 +18,12 @@ Possibly mis-spelled words in DESCRIPTION:
   multi (10:14)
   multiresolution (9:67)
   stepwise (10:41)
-
-
+  
 Some of these words are abbreviations or hyphenated words. 
+
+R-devel had the following NOTE:
+* checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+Maintainer: 'Sam Levin <levisc8@gmail.com>'
 
 Also tested on:
 * Windows 7, R 3.4.1 
