@@ -1,5 +1,5 @@
-## `spind` vX.x.x
--News to follow
+## `spind` v2.1.1.9000
+-Updated plot outputs from `GEE` and `WRM` so that y-axes aren't absurdly packed when autocorrelation values are very large
 
 ## `spind` v2.1.1
 -fix bug in `predict.WRM` that prevented calculating smooth components

@@ -312,7 +312,7 @@ GEE <- function(formula,family,data,coord,
 
     y.breaks <- round(seq(min(plt.data[ ,2:3])-.02,
                           max(plt.data[ ,2:3]) + .02,
-                          by = .1),1)
+                          length.out = 6),1)
 
     plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
            plt.blank +
