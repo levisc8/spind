@@ -111,6 +111,8 @@ As a spatial model, it is a generalized linear model in which the residuals
 may be autocorrelated. It accounts for spatial (2-dimensional)
 autocorrelation of the residuals in cases of regular gridded datasets
 and returns corrected parameter estimates. The grid cells are assumed to be square.
+Futhermore, this function requires that \strong{all predictor variables
+be continuous}.
 }
 \note{
 When using \code{corstr = "fixed"} on large data sets, the function

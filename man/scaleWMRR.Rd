@@ -88,8 +88,11 @@ scaleWMRR returns a list containing the following elements
 }
 \description{
 scaleWMRR performs a scale-specific regression based on a
-wavelet multiresolution analysis. It  fits
-generalized linear models while taking the two-dimensional grid structure of
+wavelet multiresolution analysis.
+}
+\details{
+This function fits generalized linear models while taking the
+two-dimensional grid structure of
 datasets into account. The following error distributions (in
 conjunction with appropriate link functions) are allowed: \code{gaussian},
 \code{binomial}, or \code{poisson}. The model provides scale-specific
@@ -97,6 +100,8 @@ results for data sampled on a contiguous geographical area. The
 dataset is assumed to be regular gridded and the grid cells are
 assumed to be square. A function from the package 'waveslim' is used
 for the wavelet transformations (Whitcher, 2005).
+Futhermore, this function requires that \strong{all predictor variables
+be continuous}.
 }
 \examples{
 data(carlinadata)

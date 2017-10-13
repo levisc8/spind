@@ -11,6 +11,9 @@
 #' may be autocorrelated. It corrects for  2-dimensional residual
 #' autocorrelation for regular gridded data sets using the wavelet
 #' decomposition technique. The grid cells are assumed to be square.
+#' Futhermore, this function requires that \strong{all predictor variables
+#' be continuous}.
+#'
 #'
 #' @param formula  Model formula. Variable names must match variables in \code{data}.
 #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported.

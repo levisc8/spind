@@ -26,12 +26,16 @@ mmiGEE(object, data, trace = FALSE)
 }
 \description{
 mmiGEE is a multimodel inference approach evaluating the relative
-importance of predictors used in \code{\link{GEE}}. It performs automatically
+importance of predictors used in \code{\link{GEE}}.
+
+ @details It performs automatically
 generated model selection and creates a model
 selection table according to the approach of multi-model inference
 (Burnham & Anderson, 2002). QIC is used to obtain model
 selection weights and to rank the models. Moreover, mmiGEE calculates relative
 variable importance of a given model.
+Finally, this function requires that \strong{all predictor variables
+be continuous}.
 }
 \details{
 Calculates the relative importance of each variable

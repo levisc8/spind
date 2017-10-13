@@ -9,6 +9,8 @@
 #' may be autocorrelated. It accounts for spatial (2-dimensional)
 #' autocorrelation of the residuals in cases of regular gridded datasets
 #' and returns corrected parameter estimates. The grid cells are assumed to be square.
+#' Futhermore, this function requires that \strong{all predictor variables
+#' be continuous}.
 #'
 #' @param formula  Model formula. Variable names must match variables in \code{data}.
 #' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported. Called using
@@ -148,7 +150,7 @@ GEE <- function(formula,family,data,coord,
   lim1 <- moran$lim1
   lim2 <- lim1 + moran$increment
 
-    m0 <- glm(formula, family, data)
+  m0 <- glm(formula, family, data)
   res0 <- resid(m0, type = "pearson")
   id <- rep(1, nn)
   dato <- data.frame(data, id)

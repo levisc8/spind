@@ -32,12 +32,18 @@ components are analyzed. Default is \code{TRUE}.}
 }
 \description{
 mmiWMRR is a multimodel inference approach evaluating the relative
-importance of predictors used in \code{\link{scaleWMRR}}. It performs automatically
+importance of predictors used in \code{\link{scaleWMRR}}.
+}
+\details{
+It performs automatically
 generated model selection and creates a model
 selection table according to the approach of multi-model inference
 (Burnham & Anderson, 2002). The analysis is carried out for scale-specific
-regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is used to obtain model
+regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is
+used to obtain model
 selection weights and to rank the models.
+Futhermore, this function requires that \strong{all predictor variables
+be continuous}.
 }
 \examples{
 
