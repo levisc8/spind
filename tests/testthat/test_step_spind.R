@@ -64,11 +64,9 @@ test_that("Trace outputs are as expected",{
               coord = coords, corstr = "fixed", scale.fix = TRUE)
 
   expect_output(step.spind(mgee, birthwt, trace = FALSE),
-                "-----\nModel hierarchy violated by last removal\n",
-                "New Deleted Term:  smoke \nPreviously deleted term",
-                "added back into model\n-----\n-----\nModel hierarchy",
-                "violated by last removal\n New Deleted Term:  I(race^2)",
-                "\nPreviously deleted term added back into model\n-----")
+                regexp = "-----\nModel hierarchy violated by last removal\n",
+                " New Deleted Term: ")
+
 
 
 
