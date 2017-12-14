@@ -34,7 +34,9 @@ adjusted.actuals<-function(data, coord, plot.maps = FALSE, color.maps = FALSE){
   fb <- data[ ,1]
   fa <- data[ ,2]
 
-  if(length(x) != length(fa)) stop("coordinates and data have different dimensions")
+  if(length(x) != length(fa)){
+    stop("coordinates and data have different dimensions")
+  }
   logic1 <- identical(as.numeric(x), round(x, 0))
   logic2 <- identical(as.numeric(y), round(y, 0))
   if(!logic1 | !logic2) stop("coordinates not integer")
@@ -61,7 +63,9 @@ adjusted.actuals<-function(data, coord, plot.maps = FALSE, color.maps = FALSE){
 
   if (plot.maps){
     if(color.maps){
-      colours <- list(colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50))
+      colours <- list(
+        colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50)
+        )
     } else {
       colours <- list(rev(gray((0:45)/50)))
     }

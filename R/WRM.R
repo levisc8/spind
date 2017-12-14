@@ -256,25 +256,25 @@ WRM<-function(formula,family,data,coord,
       P <- which(is.na(T.array), arr.ind = TRUE)
       if(padform == 0){
         F.mat[is.na(F.mat)] <- 0
-        for (i3 in 1:nvar){
+        for(i3 in seq_len(nvar)){
           i1 <- P[which(P[ ,3] == i3), 1]
           i2 <- P[which(P[ ,3] == i3), 2]
-          for(i in 1:length(i1)) T.array[i1[i], i2[i], i3] <- 0
+          for(i in seq_len(length(i1))) T.array[i1[i], i2[i], i3] <- 0
         }
       }
       if(padform == 1){
         F.mat[is.na(F.mat)] <- mean(F.mat, na.rm = TRUE)
-        for (i3 in 1:nvar){
+        for (i3 in seq_len(nvar)){
           i1 <- P[which(P[ ,3] == i3), 1]
           i2 <- P[which(P[ ,3] == i3), 2]
-          for(i in 1:length(i1)){
+          for(i in seq_len(length(i1))){
             T.array[i1[i], i2[i], i3] <- mean(T.array[,,i3], na.rm = TRUE)
           }
         }
       }
       if(padform == 2){
         F.mat <- padding(F.mat)
-        for (i3 in 1:nvar){
+        for (i3 in seq_len(nvar)){
           T.array[,,i3] <- padding(T.array[,,i3])
         }
       }
@@ -293,18 +293,18 @@ WRM<-function(formula,family,data,coord,
 
       FT <- waveslim::mra.2d(F.mat, wavelet, n.level, method = wtrafo)
       FTS <- rep(0, length(FT[[1]]))
-      for(is in 1:length(s)){
+      for(is in seq_len(length(s))){
         if(s[is] == 1) FTS <- FTS + FT[[is]]
         if(s[is] == 0) FT0 <- FT[[is]]
       }
       ft <- as.vector(FTS)
       if(level != 0) ft0 <- as.vector(FT0)
-      for (i3 in 1:nvar){
+      for (i3 in seq_len(nvar)){
         TT <- waveslim::mra.2d(T.array[,,i3], wavelet, n.level,
                                method = wtrafo)
         TTS <- rep(0, length(TT[[1]]))
         TT0 <- rep(0, length(TT[[1]]))
-        for(is in 1:length(s)){
+        for(is in seq_len(length(s))){
           if(s[is] == 1) TTS <- TTS + TT[[is]]
           if(s[is] == 0) TT0 <- TT[[is]]
         }
@@ -361,7 +361,7 @@ WRM<-function(formula,family,data,coord,
       if(level == 0) Lin <- tt %*% mdwt$coeff
       Lin.Mat <- matrix(Lin, 2^power, 2^power)
       lin <- rep(0,n)
-      for(i in 1:n) lin[i] <- Lin.Mat[y[i] + ymargin, x[i] + xmargin]
+      for(i in seq_len(n)) lin[i] <- Lin.Mat[y[i] + ymargin, x[i] + xmargin]
       if(family == "gaussian") fitted.sm <- lin
       if(family == "binomial") fitted.sm <- exp(lin) / (1 + exp(lin))
       if(family == "poisson")  fitted.sm <- exp(lin)
@@ -371,7 +371,7 @@ WRM<-function(formula,family,data,coord,
       Resmdwt <- matrix(resid(mdwt), 2^power, 2^power)
       resmdwt <- rep(0,n)
 
-      for(i in 1:n) {
+      for(i in seq_len(n)) {
         resmdwt[i] <- Resmdwt[y[i] + ymargin, x[i] + xmargin]
       }
 
@@ -387,7 +387,7 @@ WRM<-function(formula,family,data,coord,
       }
       s.e. <- rep(NA, nvar)
 
-      for(i in 1:nvar){
+      for(i in seq_len(nvar)){
         s.e.[i] <- sqrt(var.b[i,i])
       }
     }
@@ -408,7 +408,7 @@ WRM<-function(formula,family,data,coord,
     se[i4, 1:nvar] <- s.e.[1:nvar]
 
     i4 <- i4 + 1
-  } # i4 loop #..................................................................
+  } # i4 loop #..........................................
 
   glm.beta <- beta0
   wavelet.beta <- apply(beta, 2, mean, na.rm = TRUE)
@@ -434,7 +434,7 @@ WRM<-function(formula,family,data,coord,
   pr <- rep(NA, nvar)
   if(!is.na(wavelet.beta[1]) & !is.na(s.e.[1])) {
     z.value <- wavelet.beta / s.e.
-    for(i in 1:nvar){
+    for(i in seq_len(nvar)){
       if(family == "gaussian"){
         if(z.value[i] <= 0) pr[i] <- 2 * pt(z.value[i], df)
         if(z.value[i] > 0)  pr[i] <- 2 * (1 - pt(z.value[i], df))
@@ -454,13 +454,13 @@ WRM<-function(formula,family,data,coord,
                        axis.line = element_line(colour = "black"),
                        legend.title = (element_text(size = 9)))
 
-    plt.data <- data.frame(val = 1:length(acw),
+    plt.data <- data.frame(val = seq_len(length(acw)),
                            ac.wrm = acw,
                            ac.glm = ac0)
 
     y.breaks <- round(seq(min(plt.data[ ,2:3]) - .02,
                           max(plt.data[ ,2:3]) + .02,
-                          length.out = 6), 1)
+                          length.out = 6), 2)
 
     plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
       plt.blank +

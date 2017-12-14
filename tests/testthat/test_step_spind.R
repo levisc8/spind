@@ -63,8 +63,12 @@ test_that("Trace outputs are as expected",{
   mgee <- GEE(formula, family = "gaussian", data = birthwt,
               coord = coords, corstr = "fixed", scale.fix = TRUE)
 
-  expect_output(step.spind(mgee, birthwt, trace = F),
-                "Model hierarchy violated by last removal\nNew Deleted Term:")
+  expect_output(step.spind(mgee, birthwt, trace = FALSE),
+                "-----\nModel hierarchy violated by last removal\n",
+                "New Deleted Term:  smoke \nPreviously deleted term",
+                "added back into model\n-----\n-----\nModel hierarchy",
+                "violated by last removal\n New Deleted Term:  I(race^2)",
+                "\nPreviously deleted term added back into model\n-----")
 
 
 

@@ -232,7 +232,7 @@ scaleWMRR<-function(formula,family,data,coord,
 
       FMat<-matrix(0,2^power,2^power)
       TArray<-array(0,c(2^power,2^power,nvar))
-      for(ii in 1:n){
+      for(ii in seq_len(n)){
         kx<-x[ii]+xmargin
         ky<-y[ii]+ymargin
         FMat[ky,kx]<-ynew[ii]
@@ -244,10 +244,10 @@ scaleWMRR<-function(formula,family,data,coord,
       P<-which(is.na(TArray), arr.ind = TRUE)
       if(padform==0){
         FMat[is.na(FMat)]<-0
-        for (i3 in 1:nvar){
+        for (i3 in seq_len(nvar)){
           i1<-P[which(P[,3]==i3),1]
           i2<-P[which(P[,3]==i3),2]
-          for(i in 1:length(i1)){
+          for(i in seq_len(length(i1))){
             TArray[i1[i],i2[i],i3]<-0
           }
         }
@@ -255,10 +255,10 @@ scaleWMRR<-function(formula,family,data,coord,
 
       if(padform==1){
         FMat[is.na(FMat)]<-mean(FMat, na.rm=TRUE)
-        for (i3 in 1:nvar){
+        for (i3 in seq_len(nvar)){
           i1<-P[which(P[,3]==i3),1]
           i2<-P[which(P[,3]==i3),2]
-          for(i in 1:length(i1)){
+          for(i in seq_len(length(i1))){
             TArray[i1[i],i2[i],i3]<-mean(TArray[,,i3], na.rm=TRUE)
           }
         }
@@ -266,7 +266,7 @@ scaleWMRR<-function(formula,family,data,coord,
 
       if(padform==2){
         FMat<-padding(FMat)
-        for (i3 in 1:nvar) TArray[,,i3]<-padding(TArray[,,i3])
+        for (i3 in seq_len(nvar)) TArray[,,i3]<-padding(TArray[,,i3])
       }
 
       p<-2^power*2^power
@@ -282,15 +282,15 @@ scaleWMRR<-function(formula,family,data,coord,
 
       FT<-waveslim::mra.2d(FMat,wavelet,n.level,method=wtrafo)
       FTS<-rep(0,length(FT[[1]]))
-      for(is in 1:length(s)){
+      for(is in seq_len(length(s))){
         if(s[is]==1) FTS <- FTS + FT[[is]]
       }
 
       ft<-as.vector(FTS)
-      for (i3 in 1:nvar){
+      for (i3 in seq_len(nvar)){
         TT<-waveslim::mra.2d(TArray[,,i3],wavelet,n.level,method=wtrafo)
         TTS<-rep(0,length(TT[[1]]))
-        for(is in 1:length(s)){
+        for(is in seq_len(length(s))){
           if(s[is]==1){
             TTS <- TTS + TT[[is]]
           }
@@ -333,7 +333,7 @@ scaleWMRR<-function(formula,family,data,coord,
     if(sum(abs(tt[,1]))!=0 & !is.na(mdwt$coeff[1])){
       Resmdwt<-matrix(resid(mdwt),2^power,2^power)
       resmdwt<-rep(0,n)
-      for(i in 1:n) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
+      for(i in seq_len(n)) resmdwt[i]<-Resmdwt[y[i]+ymargin,x[i]+xmargin]
       if(trace) {
         acw<-acfft(coord,resmdwt,lim1,lim2)
       }
@@ -342,7 +342,7 @@ scaleWMRR<-function(formula,family,data,coord,
         acpw<-NA
       }
       if(scale==0) df<-n-nvar
-      if(scale!=0) df<-round(n/4^(n.level-1)) -nvar
+      if(scale!=0) df<-round(n/4^(n.level-1)) - nvar
 
       if(family=="binomial" | family=="poisson"){
         if(scale==0) var.b<-MASS::ginv(t(tt)%*%tt)
@@ -355,13 +355,15 @@ scaleWMRR<-function(formula,family,data,coord,
         var.b<-sigma2*var.b
       }
       s.e.<-rep(NA,nvar)
-      for(i in 1:nvar){
+      for(i in seq_len(nvar)){
         s.e.[i]<-sqrt(var.b[i,i])
       }
     }
 
     if(sum(abs(tt[,1]))==0 | is.na(mdwt$coeff[1])) {
-      acw<-NA; resmdwt<-NA; s.e.<-NA
+      acw<-NA
+      resmdwt<-NA
+      s.e.<-NA
     }
 
     beta[i4,1:nvar]<-mdwt$coeff[1:nvar]
@@ -390,7 +392,7 @@ scaleWMRR<-function(formula,family,data,coord,
   pr<-rep(NA,nvar)
   if(sum(abs(tt[,1]))!=0 & !is.na(wavelet.beta[1])) {
     z.value<-wavelet.beta/s.e.
-    for(i in 1:nvar){
+    for(i in seq_len(nvar)){
       if(family=="gaussian"){
         if(z.value[i]<=0) pr[i]<-2*pt(z.value[i],df)
         if(z.value[i]>0) pr[i]<-2*(1-pt(z.value[i],df))

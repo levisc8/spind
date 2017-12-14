@@ -105,7 +105,7 @@ rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
   VarCol <- character()
   Level <- rep(1:maxlevel, length(leg))
 
-  for(i in 1:length(leg)){
+  for(i in seq_len(length(leg))){
     tempdata <- rep(leg[i], maxlevel)
     VarCol <- c(VarCol, tempdata)
   }

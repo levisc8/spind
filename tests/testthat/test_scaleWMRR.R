@@ -26,14 +26,16 @@ test_that('errors are correct',{
   data(carlinadata)
   coords <- cbind(200:dim(carlinadata)[1],200:dim(carlinadata)[1])
 
-  expect_error(scaleWMRR(carlina.horrida ~ aridity + land.use, family = "poisson",
+  expect_error(scaleWMRR(carlina.horrida ~ aridity + land.use,
+                         family = "poisson",
                          data = carlinadata, coord = coords,
                          scale = 0, trace = F), 'error in dimension')
 
   coords <- cbind(seq(1,100, length.out = dim(carlinadata)[1]),
                   seq(1,100, length.out = dim(carlinadata)[1]))
 
-  expect_error(scaleWMRR(carlina.horrida ~ aridity + land.use, family = "poisson",
+  expect_error(scaleWMRR(carlina.horrida ~ aridity + land.use,
+                         family = "poisson",
                          data = carlinadata, coord = coords,
                          scale = 0, trace = F), 'coordinates not integer')
 

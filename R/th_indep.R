@@ -86,16 +86,28 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
       splitlevely[4, ] <- c(0.75, 1)
       pipos <- matrix(0, n, 4)
       ypos <- matrix(0, n, 4)
-      for(k in 1:n){
-        for(ksp in 1:3){
-          if(splitlevel[ksp,1] <= pi[k] & pi[k] < splitlevel[ksp,2]) pipos[k,ksp] <- 1
-          if(splitlevely[ksp,1] <= y[k] & y[k]  < splitlevely[ksp,2]) ypos[k,ksp] <- 1
+      for(k in seq_len(n)){
+        for(ksp in seq_len(3)){
+          if(splitlevel[ksp,1] <= pi[k] &
+             pi[k] < splitlevel[ksp,2]) {
+            pipos[k,ksp] <- 1
+          }
+          if(splitlevely[ksp,1] <= y[k] &
+             y[k]  < splitlevely[ksp,2]) {
+            ypos[k,ksp] <- 1
+          }
         }
-        if(splitlevel[4,1] <= pi[k] & pi[k] <= splitlevel[4,2]) pipos[k,4] <- 1
-        if(splitlevely[4,1] <= y[k] & y[k]  <= splitlevely[4,2]) ypos[k,4] <- 1
+        if(splitlevel[4,1] <= pi[k] &
+           pi[k] <= splitlevel[4,2]){
+          pipos[k,4] <- 1
+        }
+        if(splitlevely[4,1] <= y[k] &
+           y[k]  <= splitlevely[4,2]) {
+          ypos[k,4] <- 1
+        }
       }
       cm <- matrix(0, 4, 4)
-      for(k in 1:n){
+      for(k in seq_len(n)){
         i <- which(ypos[k, ] == 1)
         j <- which(pipos[k, ] == 1)
         cm[i,j] <- cm[i,j] + 1
@@ -103,8 +115,8 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
       cm <- matrix(rev(as.vector(cm)), 4, 4, byrow = TRUE)
 
       w<-matrix(NA, 4, 4)
-      for (i in 1:4){
-        for (j in 1:4){
+      for (i in seq_len(4)){
+        for (j in seq_len(4)){
           w[i,j] <- ifelse(abs(i - j) < 2, 1, 0)
         }}
       n <- sum(cm)
@@ -118,23 +130,24 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
       splitlevel[2, ] <- c(thresh, 1)
       pipos <- matrix(0, n, 2)
       ypos <- matrix(0, n, 2)
-      for(k in 1:n){
+      for(k in seq_len(n)){
         if(splitlevel[1,1] <= pi[k] & pi[k] < splitlevel[1,2]) pipos[k,1] <- 1
         if(splitlevel[1,1] <= y[k]  & y[k]  < splitlevel[1,2]) ypos[k,1] <- 1
         if(splitlevel[2,1] <= pi[k] & pi[k] <= splitlevel[2,2]) pipos[k,2] <- 1
         if(splitlevel[2,1] <= y[k]  & y[k]  <= splitlevel[2,2]) ypos[k,2] <- 1
       }
       cm <- matrix(0, 2, 2)
-      for(k in 1:n){
+      for(k in seq_len(n)){
         i <- which(ypos[k, ] == 1)
         j <- which(pipos[k, ] == 1)
         cm[i,j] <- cm[i,j] + 1
       }
       cm <- matrix(rev(as.vector(cm)), 2, 2, byrow = TRUE)
       w <- matrix(NA, 2, 2)
-      for (i in 1:2){
-        for (j in 1:2){
-          if(split == 2) w[i,j] <- ifelse(abs(i - j) == 0, 1, 0)  # w = identity matrix
+      for (i in seq_len(2)){
+        for (j in seq_len(2)){
+          # w = identity matrix
+          if(split == 2) w[i,j] <- ifelse(abs(i - j) == 0, 1, 0)
         }}
       n<-sum(cm)
       sensitivity[i.n] <- sum(w[,1]*cm[ ,1]) / sum(cm[ ,1])

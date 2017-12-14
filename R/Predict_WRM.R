@@ -57,7 +57,10 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
     length.s<-3*n.level+1
     s<-rep(1,length.s)
     s[length.s]<-0
-    if(level==0) {s<-c(1,1,1,1) ; n.level<-1}
+    if(level==0) {
+      s<-c(1,1,1,1)
+      n.level<-1
+    }
 
     pdim<- max(max(y)-min(y)+1,max(x)-min(x)+1)*padzone
     power<-0
@@ -67,7 +70,7 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
 
     Tmat<-array(NA,c(2^power,2^power,nvar))
 
-    for(ii in 1:n){
+    for(ii in seq_len(n)){
       kx<-x[ii]+xmargin
       ky<-y[ii]+ymargin
       for (i3 in 1:nvar)
@@ -76,31 +79,38 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
 
     P<-which(is.na(Tmat), arr.ind = TRUE)
     if(padform==0){
-      for (i3 in 1:nvar){
+      for (i3 in seq_len(nvar)){
         i1<-P[which(P[,3]==i3),1]
         i2<-P[which(P[,3]==i3),2]
-        for(i in 1:length(i1)) Tmat[i1[i],i2[i],i3]<-0
+        for(i in seq_len(length(i1))) Tmat[i1[i],i2[i],i3]<-0
       }
     }
     if(padform==1){
-      for (i3 in 1:nvar){
-        i1<-P[which(P[,3]==i3),1]
-        i2<-P[which(P[,3]==i3),2]
-        for(i in 1:length(i1)) Tmat[i1[i],i2[i],i3]<-mean(Tmat[,,i3], na.rm=TRUE)
+      for (i3 in seq_len(nvar)){
+        i1<-P[which(P[ ,3]==i3) ,1]
+        i2<-P[which(P[ ,3]==i3) ,2]
+        for(i in seq_len(length(i1))){ Tmat[i1[i],
+                                            i2[i],
+                                            i3]<-mean(Tmat[,,i3],
+                                                      na.rm=TRUE)
+        }
       }
     }
     if(padform==2){
-      for (i3 in 1:nvar) Tmat[,,i3]<-padding(Tmat[,,i3])
+      for (i3 in seq_len(nvar)) Tmat[,,i3] <- padding(Tmat[,,i3])
     }
 
     p<-2^power*2^power
     tt<-matrix(0,p,nvar)
     tt0<-matrix(0,p,nvar)
-    for (i3 in 1:nvar){
-      TT<-waveslim::mra.2d(Tmat[,,i3],object$wavelet,n.level,method=object$wtrafo)
+    for (i3 in seq_len(nvar)){
+      TT<-waveslim::mra.2d(Tmat[,,i3],
+                           object$wavelet,
+                           n.level,
+                           method=object$wtrafo)
       TTS<-rep(0,length(TT[[1]]))
       TT0<-rep(0,length(TT[[1]]))
-      for(is in 1:length(s)){
+      for(is in seq_len(length(s))){
         if(s[is]==1) TTS <- TTS + TT[[is]]
         if(s[is]==0) TT0 <- TT[[is]]
       }
@@ -112,7 +122,7 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
     if(level==0) lin<- tt%*%b
     Fitted<-matrix(lin,2^power,2^power)
     fitted<-rep(0,n)
-    for(i in 1:n) fitted[i]<-Fitted[y[i]+ymargin,x[i]+xmargin]
+    for(i in seq_len(n)) fitted[i]<-Fitted[y[i]+ymargin,x[i]+xmargin]
   } # add part of smooth components
 
   if(!sm) { # only part of detail components

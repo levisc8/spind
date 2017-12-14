@@ -42,7 +42,7 @@ acfft<-function(coord, f, lim1 = 1, lim2 = 2, dmax = 10){
   n2<-n*n
   Ares<-matrix(0,n,n)
   mask<-matrix(0,n,n)
-  for(i in 1:length(x)){
+  for(i in seq_len(length(x))){
     kx<-x[i]-min(x)+1
     ky<-y[i]-min(y)+1
     Ares[ky,kx]<-reslm[i]

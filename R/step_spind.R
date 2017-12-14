@@ -186,7 +186,10 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
   }
 
   if(trace){
-    cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ', best.mod,
+    cat('Iteration: ',
+        it,
+        '\n','Single term deletions\n','Deleted Term: ',
+        best.mod,
         '\n -------------------- \n')
     print(aod)
     cat('\n')
@@ -204,7 +207,9 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
     while(it <= steps){
       it <- it + 1
       aod1 <- aod
-      newstart <- update.formula(use.formula, as.formula(paste('~ . -', best.mod)))
+      newstart <- update.formula(use.formula,
+                                 as.formula(paste('~ . -',
+                                                  best.mod)))
       vars <- attr(terms(newstart), 'term.labels')
       for(i in unique(base.terms)){
         # extract hierarchical variables if there are any
@@ -225,9 +230,13 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
           best.mod <- new.best.mod
           if(new.best.mod == '<none>') break
 
-          newstart <- update.formula(use.formula, paste("~ . -",new.best.mod))
-          cat('-----\nModel hierarchy violated by last removal\nNew Deleted Term: ',
-              new.best.mod,'\nPreviously deleted term added back into model\n-----\n')
+          newstart <- update.formula(use.formula,
+                                     paste("~ . -",
+                                           new.best.mod))
+          cat('-----\nModel hierarchy violated by last removal\n',
+              'New Deleted Term: ',
+              new.best.mod,
+              '\nPreviously deleted term added back into model\n-----\n')
         }
       }
 
@@ -235,7 +244,9 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
 
       if(model == "WRM"){
         ans <- matrix(nrow = ns + 1L, ncol = 3L,
-                      dimnames = list(c("<none>", attr(terms(newstart), 'term.labels')),
+                      dimnames = list(c("<none>",
+                                        attr(terms(newstart),
+                                             'term.labels')),
                                       c("loglik", "inf.crit1", "inf.crit2")))
         newwrm <- WRM(newstart, family, data, coord, level = level,
                     wavelet = wavelet, wtrafo = wtrafo, b.ini = b.ini,
@@ -271,7 +282,9 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
           scale.fix<-TRUE
         }
         ans <- matrix(nrow = ns + 1L, ncol = 2L,
-                      dimnames = list(c("<none>", attr(terms(newstart), 'term.labels')),
+                      dimnames = list(c("<none>",
+                                        attr(terms(newstart),
+                                             'term.labels')),
                                       c("inf.crit1", "qlik")))
         newGEE <- suppressWarnings({
           GEE(newstart, family, data, coord, corstr = corstr,
@@ -302,7 +315,12 @@ step.spind<-function (object, data, steps = NULL, trace = TRUE, AICc = FALSE){
       aod1 <- aod
       newvars <- setdiff(vars,best.mod)
       if(trace){
-        cat('Iteration: ',it,'\n','Single term deletions\n','Deleted Term: ', best.mod,
+        cat('Iteration: ',
+            it,
+            '\n',
+            'Single term deletions\n',
+            'Deleted Term: ',
+            best.mod,
             '\n -------------------- \n')
         print(aod)
         cat('\n')

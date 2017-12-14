@@ -1,5 +1,6 @@
 ## `spind` v2.1.1.9000
 -Updated plot outputs from `GEE` and `WRM` so that y-axes aren't absurdly packed when autocorrelation values are very large
+-Updated documentation for some modeling functions to reflect that factors as expanatory variables are not supported by `spind`
 
 ## `spind` v2.1.1
 -fix bug in `predict.WRM` that prevented calculating smooth components

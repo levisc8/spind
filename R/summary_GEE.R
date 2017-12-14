@@ -40,7 +40,8 @@ summary.GEE<-function(object,...,printAutoCorPars=TRUE){
    print(acg)
 
    if(printAutoCorPars&object$corstr!="independence"){
-     cat('---','\n','Autocorrelation parameters from ',object$corstr," model",'\n')
+     cat('---','\n','Autocorrelation parameters from ',
+         object$corstr," model",'\n')
      print(object$Mat.ac)
    }
 }

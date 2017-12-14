@@ -141,7 +141,9 @@ GEE <- function(formula,family,data,coord,
   nn <- nrow(data)
   x <- coord[ ,1]
   y <- coord[ ,2]
-  if(length(x) != nn) stop("length of data does not match length of coordinates")
+  if(length(x) != nn) {
+    stop("length of data does not match length of coordinates")
+  }
   logic1 <- identical(as.numeric(x), round(x, 0))
   logic2 <- identical(as.numeric(y), round(y, 0))
   if(!logic1 | !logic2) stop("coordinates not integer")
@@ -209,7 +211,7 @@ GEE <- function(formula,family,data,coord,
     s.e. <- summary(mgee)$coefficients[ ,2]
     z <- summary(mgee)$coefficients[ ,3]
     p <- rep(NA, nrow(summary(mgee)$coefficients))
-    for(ii in 1:nrow(summary(mgee)$coefficients)){
+    for(ii in seq_len(nrow(summary(mgee)$coefficients))){
       if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
       if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
     }
@@ -248,7 +250,7 @@ GEE <- function(formula,family,data,coord,
     s.e. <- summary(mgee)$coefficients[ ,4]
     z <- summary(mgee)$coefficients[ ,5]
     p <- rep(NA,nrow(summary(mgee)$coefficients))
-    for(ii in 1:nrow(summary(mgee)$coefficients)){
+    for(ii in seq_len(nrow(summary(mgee)$coefficients))) {
       if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
       if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
     }
@@ -306,15 +308,15 @@ GEE <- function(formula,family,data,coord,
                         panel.grid.minor = element_blank(),
                         panel.background = element_blank(),
                         axis.line = element_line(colour = "black"),
-                        legend.title = (element_text(size = 9)))
+                        legend.title = element_text(size = 9))
 
-    plt.data <- data.frame(val = 1:length(ac),
+    plt.data <- data.frame(val = seq_len(length(ac)),
                            ac.gee = ac,
                            ac.glm = ac0)
 
     y.breaks <- round(seq(min(plt.data[ ,2:3])-.02,
                           max(plt.data[ ,2:3]) + .02,
-                          length.out = 6),1)
+                          length.out = 6), 2)
 
     plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
            plt.blank +
@@ -423,7 +425,7 @@ qic.calc <- function(formula, family, data, mu, var.robust, var.indep.naive){
   }
   if(family == "poisson"){
     # loglik <-  sum(y*log(mu)-mu)  # useful for delta in multimodel inference
-    loglik <-  sum(y * log(mu) - mu) - sum(log(factorial(y))) # factorial=Fakultät
+    loglik <-  sum(y * log(mu) - mu) - sum(log(factorial(y)))
   }
 
   trace <- sum(diag(MASS::ginv(var.indep.naive) %*% var.robust))
@@ -435,7 +437,7 @@ qic.calc <- function(formula, family, data, mu, var.robust, var.indep.naive){
 }
 
 dat.nn <- function(data,coord,n){
-  ###############################################################################
+  ###########################################################################
   # Description
   # A function to generate clusters and order variables
   # Arguments
@@ -443,13 +445,13 @@ dat.nn <- function(data,coord,n){
   # coord     a matrix of two columns with corresponding coordinates
   # n         for maximal cluster size  n*n
   #
-  # Value: a new data frame containing rearranged data, rearranged coordinates,
+  # Value: a new data frame containing rearranged data, rearranged coordinates
   # and 3 new parameters:
   #    o      order parameter
   #    id     parameter identifying clusters
   #    waves  parameter identifying members of clusters
   #
-  ###############################################################################
+  ############################################################################
 
   l <- dim(data)[2]
   OST <- coord[,1]
@@ -475,14 +477,14 @@ dat.nn <- function(data,coord,n){
 
 
 clus.sz <- function(id){
-  ###############################################################################
+  ########################################################################
   # Description
   # A function to calculate sizes of clusters
   # Argument
   # id     a vector that identifies clusters
   # Value:
   # A vector of numbers of cluster sizes
-  ###############################################################################
+  ########################################################################
 
   clus <- rep(0,length(id))
   k0 <- 0
@@ -511,7 +513,7 @@ clus.sz <- function(id){
 
 
 zcor.quad <- function(zcor,n,quad=TRUE) {
-  ###############################################################################
+  #########################################################################
   # Description
   # A function to create a quadratic correlation structure
   # Arguments:
@@ -520,7 +522,7 @@ zcor.quad <- function(zcor,n,quad=TRUE) {
   # quad    by default quadratic correlation structure
   # Value:
   # A matrix describing the quadratic correlation structure
-  ###############################################################################
+  #########################################################################
 
   if(quad) {
     if(n==2)  {
@@ -572,7 +574,7 @@ zcor.quad <- function(zcor,n,quad=TRUE) {
 
 
 a.gee <- function(mgee,n,type="glm",corstr="independence",quad=T) {
-  ###############################################################################
+  ########################################################################
   # Description
   # A function to order correlation parameters of Generalized Estimating
   # Equation Models
@@ -587,7 +589,7 @@ a.gee <- function(mgee,n,type="glm",corstr="independence",quad=T) {
   #            for model "geese" and "userdefined" correlation only
   # Value:
   # A vector of correlation parameters
-  ###############################################################################
+  #########################################################################
 
   if(n==2)n3 <- 6
   if(n==3)n3 <- 36
@@ -622,7 +624,8 @@ a.gee <- function(mgee,n,type="glm",corstr="independence",quad=T) {
               114,115,118,120)] <- mgee[1]
           a[c(2,8,17,23,37,50,56,62,67,73,83,92,94,101,116,119)] <- mgee[2]
           a[c(3,12,27,41,54,57,95,117)] <- mgee[3]
-          a[c(5,18,20,32,34,45,59,68,70,78,80,87,97,102,104,108,110,113)] <- mgee[4]
+          a[c(5,18,20,32,34,45,59,68,70,78,
+              80,87,97,102,104,108,110,113)] <- mgee[4]
           a[c(6,9,21,22,24,31,36,38,44,49,60,63,71,72,74,77,82,84,86,91,98,
               105,107,112)] <- mgee[5]
           a[c(7,13,26,28,40,42,43,53,61,85,99,111)] <- mgee[6]
@@ -640,7 +643,7 @@ a.gee <- function(mgee,n,type="glm",corstr="independence",quad=T) {
 
 
 cor.mat <- function(cluster,a) {
-  ###############################################################################
+  ######################################################################
   # Description
   # A function to create a block of the correlation matrix
   # Arguments:
@@ -648,7 +651,7 @@ cor.mat <- function(cluster,a) {
   # a           cluster parameter
   # Value:
   # A matrix representing a block of the correlation matrix
-  ###############################################################################
+  ######################################################################
   n <- cluster
   n2 <- cluster*cluster
   z2 <- a
@@ -691,7 +694,7 @@ cor.mat <- function(cluster,a) {
 
 res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
                   R=NA)  {
-  ###############################################################################
+  #######################################################################
   # Description
   # A function to calculate fitted values and residuals
   # for Generalized Estimating Equation Models
@@ -713,7 +716,7 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
   # Value:     A list with components
   #            fitted    fitted values
   #            resid     normalized Pearson residuals
-  ###############################################################################
+  #########################################################################
 
   l <- dim(data)[2]
   ieo <- data[,l-1]
@@ -741,10 +744,20 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
     if(n==3)
       iod <- c(1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6,6,7)
     if(n==4)
-      iod <- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,
-             3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,
-             6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,9,9,9,9,9,10,10,10,10,10,
-             11,11,11,11,12,12,12,13,13,14)
+      iod <- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+               2,2,2,2,2,2,2,2,2,2,2,2,2,
+               3,3,3,3,3,3,3,3,3,3,3,3,
+               4,4,4,4,4,4,4,4,4,4,4,
+               5,5,5,5,5,5,5,5,5,5,
+               6,6,6,6,6,6,6,6,6,
+               7,7,7,7,7,7,7,7,
+               8,8,8,8,8,8,8,
+               9,9,9,9,9,9,
+               10,10,10,10,10,
+               11,11,11,11,
+               12,12,12,
+               13,13,
+               14)
     cs <- 0
     v <- matrix(0,length(ieo),length(ieo))
     vgl <- rep(0,n2)
@@ -780,24 +793,24 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
       v1[13,14:16] <- z2[i,115:117]
       v1[14,15:16] <- z2[i,118:119]
       v1[15,16] <- z2[i,120]   }
-      for(i1 in 1:length(iod)) {
+      for(i1 in seq_len(length(iod))) {
         i2 <- iod[i1]
         if(var(v1[i2,1:n2])==0) {for(k in i2:n5) {k1 <- k+1
         v1[k,] <- v1[k1,]
         v1[k1,] <- vgl[]}}}
-      for(i1 in 1:length(iod)){
+      for(i1 in seq_len(length(iod))) {
         i3 <- iod[i1]+1
         if(var(v1[1:n2,i3])==0) {for(k in i3:n4) {k1 <- k+1
         v1[,k] <- v1[,k1]
         v1[,k1] <- vgl[]}}}
 
       clu1 <- clu-1
-      for(k in 1:clu1) {csk <- cs+k
+      for(k in seq_len(clu1)) {csk <- cs+k
       f1 <- 2
       for(k1 in f1:clu) {k2 <- cs+f1
       v[csk,k2] <- v1[k,k1]
       f1 <- f1+1 }}
-      for(k in 1:clu) {csk <- cs+k
+      for(k in seq_len(clu)) {csk <- cs+k
       v[csk,csk] <-  0.5 } }
     if(clu==1) {cs1 <- cs+1
     v[cs1,cs1] <- 0.5 }
@@ -813,7 +826,7 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
 
   x.matrix <- model.matrix(formula,data)
   fitted <- x.matrix%*%b
-  fitted <- fitted[1:length(ieo)]
+  fitted <- fitted[seq_len(length(ieo))]
   if(family=="poisson") fitted <- exp(fitted)
   if(family=="binomial") fitted <- exp(fitted)/(1+exp(fitted))
 
@@ -823,7 +836,7 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
   if(family=="binomial")
     rgeese <- ( model.frame(formula,data)[[1]]-fitted)/sqrt(fitted*(1-fitted))
   rsgeese <- w%*%rgeese
-  resgeeseo <- rsgeese[1:length(ieo)]
+  resgeeseo <- rsgeese[seq_len(length(ieo))]
 
   list(fitted=fitted,resid=resgeeseo)
 }

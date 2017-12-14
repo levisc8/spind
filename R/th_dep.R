@@ -139,7 +139,8 @@ th.dep<-function(data,coord,thresh=0.5,spatial=TRUE){
     w<-matrix(NA, 2, 2)
     for (i in 1:2){
       for (j in 1:2){
-        if(split == 2) w[i, j] <- ifelse(abs(i - j) == 0, 1, 0)  # w = identity matrix
+        # w = identity matrix
+        if(split == 2) w[i, j] <- ifelse(abs(i - j) == 0, 1, 0)
       }}
     sensitivity <- sum(w[ ,1] * cm[ ,1]) / sum(cm[ ,1])
     specificity <- sum(w[ ,2] * cm[ ,2]) / sum(cm[ ,2])

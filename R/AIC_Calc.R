@@ -64,7 +64,7 @@ aic.calc <- function(formula, family, data, mu, n.eff = NULL){
   }
   if(family == "poisson"){
     # loglik<- sum(y*log(mu)-mu)  # useful for delta in multimodel inference
-    loglik <- sum(y * log(mu) - mu) - sum(log(factorial(y))) # factorial=Fakult?t
+    loglik <- sum(y * log(mu) - mu) - sum(log(factorial(y)))
     K <- nvar              # without variance (since var. is function of mean)
 
   }
