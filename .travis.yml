@@ -6,7 +6,9 @@ r:
   - release
   - devel
 
-os: osx
+os:
+  - linux
+  - osx
 sudo: false
 dist: trusty
 cache: packages
