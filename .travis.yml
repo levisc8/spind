@@ -18,18 +18,16 @@ dist: trusty
 cache: packages
 
 # Exclude R-devel on MacOS. It's buggy and shouldn't cause problems.
-# Exclude codecov on MacOS. It times out too frequently causing
-# successful builds to be marked failed
 matrix:
   exclude:
   - os: osx
     r: devel
 
-
-
+# Exclude these for this run as we have already run
+# codecov() on the package today
 # Run test coverage and push results to codecov.io
-r_github_packages:
-  - r-lib/covr
+# r_github_packages:
+#  - r-lib/covr
 
-after_success:
-  - travis_wait Rscript -e 'covr::codecov()'
+# after_success:
+#  - travis_wait Rscript -e 'covr::codecov()'
