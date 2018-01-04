@@ -1,19 +1,31 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
 language: r
+
+# R versions
 r:
   - oldrel
   - release
   - devel
 
+# operating systems to test
 os:
   - linux
   - osx
+
+# options for Linux tests
 sudo: false
 dist: trusty
 cache: packages
 
+# Exclude R-devel on MacOS. It's buggy and shouldn't cause problems
 matrix:
   exclude:
   - os: osx
     r: devel
+
+# Run test coverage and push results to codecov.io
+r_github_packages:
+  - r-lib/covr
+
+after_success:
+  - Rscript -e 'covr::codecov()'
