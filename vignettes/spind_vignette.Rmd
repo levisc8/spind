@@ -10,12 +10,12 @@ vignette: >
 ---
 
 `spind` is a package dedicated to removing the spectre of spatial autocorrelation in your spatial
-models. It contains many of the tools you need to make predictions, assess model performance, and conduct multimodel inference for 2-D gridded datasets using methods that are robust to spatial autocorrelation. 
+models. It contains many of the tools you need to make predictions, assess model performance, and conduct multimodel inference for 2-D gridded data sets using methods that are robust to spatial autocorrelation. 
 
 The theory underlying the use of GEEs, WRMs, and many of the other tools in this package is covered elsewhere in the literature, and for the purposes of this vignette, we assume that you have already read those papers. If you haven't, citations are included in the footnotes of this vignette as well as in the documentation of each function. We also assume that you have a working knowledge of how to use _R_. This vignette will focus on demonstrating how to utilize this package to create a robust model from spatially referenced data and subsequently assess its accuracy. Along the way, we will use a couple different data sets to examine how these functions work and investigate how one might use them to create a spatially robust model. This particular demonstration will focus on species distribution models (hereafter referred to as SDMs), but this general framework can be applied to any data set that is spatially structured (e.g. economic, sociological). 
 
 ##Generalized Estimating Equations (GEEs) for species distribution modeling [^1]
-This package utilizes the functions already written for GEEs from the packages `gee`[^2] and `geepack`[^3] and adapts them for easy use in the context of an SDM. Let's start with a fairly simple GEE using the simulated `musdata` data set included in the package. 
+This package utilizes the functions already written for GEEs from the packages `gee`[^2] and `geepack`[^3] and adapts them for easy use in the context of an SDM. Let's start with a fairly simple GEE using the simulated `musdata` data set included in the package. Before we get started though, note that `GEE` requires that **predictor variables be continuous variables**. 
 
 [^1]: Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species Distributions using Gaussian and Logit Models, Ecol. Model. 207, 159 - 170]
 
@@ -69,7 +69,7 @@ Note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. nu
 
 
 ## Wavelet Revised Models (WRMs) [^6]
-Next, we'll examine the other main model that is introduced in this package - the Wavelet Revised Model. These are implemented using wavelet transforms from the `waveslim` package.[^7] Let's start with a fairly simple WRM using the same `musdata` data set as above.
+Next, we'll examine the other main model that is introduced in this package - the Wavelet Revised Model. These are implemented using wavelet transforms from the `waveslim` package.[^7] Let's start with a fairly simple WRM using the same `musdata` data set as above. As with `GEE`,  `WRM` also requires that predictor variables are continuous.
 
 [^6]: Carl, G., Kuehn, I. (2010): A wavelet-based extension of generalized linear models to remove the effect of spatial autocorrelation. Geographical Analysis 42 (3), 323 - 337
 
@@ -109,7 +109,7 @@ covar.plot(carlina.horrida ~ aridity + land.use - 1,
 
 ```
 
-You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function, which allows you to visually examine your matrices for a number of different levels of `scale` which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components as well. The default is mean values of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. Finally, you can optionally produce grayscale or colorized maps using the `color.maps` argument. A quick example below using `carlinadata` data set.
+You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function. `upscale` allows you to visually examine your data at a number of different levels of `scale` which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components. The default padding level is the mean value of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. Finally, you can optionally produce gray scale or colorized maps using the `color.maps` argument. A quick example below using `carlinadata` data set.
 
 [^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
 
@@ -178,7 +178,7 @@ wrm <- WRM(carlina.horrida ~ aridity + land.use, family = "poisson",
 
 ms1 <- scaleWMRR(carlina.horrida ~ aridity + land.use, family = "poisson",
                  data = carlinadata, coord = coords, scale = 1,
-                 wavelet = 'd4', trace = F)
+                 wavelet = 'd4', trace = FALSE)
 
 mmi <- mmiWMRR(wrm, data = carlinadata, scale = 1, detail = TRUE)
 
@@ -216,7 +216,7 @@ rvi.plot(carlina.horrida ~ aridity + land.use, family = "poisson",
 
 ## Goodness of fit and model performance
 
-You may also find that a model not implemented by this package works best for your data. We still have some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in `spind v1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
+You may also find that a model not implemented by this package works best for your data. We've implemented some spatially corrected accuracy measures that you can use to assess goodness of model fit.  The first two of these are categorized according to whether or not their outputs are dependent on the chosen threshold and first appeared in `spind v1.0` [^9]. `th.dep` (threshold dependent) and `th.indep` (threshold independent) are designed to work on any number of model types, all you need is a set of actual values, predictions, and their associated coordinates. We'll use the `hook` data set to see how these work. 
 
 [^9]: Carl G, Kuehn I (2017) Spind: a package for computing spatially corrected accuracy measures. Ecography 40: 675-682. doi: 10.1111/ecog.02593
 
