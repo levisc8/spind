@@ -121,7 +121,11 @@
 #' summary(mwrm)
 #'}
 #' @author Gudrun Carl, Sam Levin
-#' @import ggplot2
+#' @importFrom ggplot2 theme element_blank element_line element_text
+#' ggplot aes_ geom_line geom_point scale_color_manual
+#' scale_x_continuous scale_y_continuous
+#' @importFrom stats glm resid as.formula pt pnorm
+#' @importFrom waveslim mra.2d
 #' @export
 
 
@@ -211,8 +215,8 @@ WRM<-function(formula,family,data,coord,
     }
 
     # GLM for comparison
-    m0 <- glm(formula, family, data)
-    res0 <- resid(m0, type = "pearson")
+    m0 <- stats::glm(formula, family, data)
+    res0 <- stats::resid(m0, type = "pearson")
     beta0 <- m0$coeff
 
 
@@ -328,9 +332,9 @@ WRM<-function(formula,family,data,coord,
       }
       if(level != 0){
         xnam0 <- paste("tt0[,", 1:nvar, "]", sep = "")
-        formula.dwt0 <- as.formula(paste("ft0~",
-                                         paste(xnam0, collapse = "+"),
-                                         "-1"))
+        formula.dwt0 <- stats::as.formula(paste("ft0~",
+                                                paste(xnam0, collapse = "+"),
+                                                "-1"))
         mdwt0 <- lm(formula.dwt0)
         if(sum(abs(tt0[ ,1])) == 0) mdwt0$coeff[1] <- beta0[1]
       }
@@ -436,23 +440,23 @@ WRM<-function(formula,family,data,coord,
     z.value <- wavelet.beta / s.e.
     for(i in seq_len(nvar)){
       if(family == "gaussian"){
-        if(z.value[i] <= 0) pr[i] <- 2 * pt(z.value[i], df)
-        if(z.value[i] > 0)  pr[i] <- 2 * (1 - pt(z.value[i], df))
+        if(z.value[i] <= 0) pr[i] <- 2 * stats::pt(z.value[i], df)
+        if(z.value[i] > 0)  pr[i] <- 2 * (1 - stats::pt(z.value[i], df))
       }
       if(family == "binomial" | family == "poisson"){
-        if(z.value[i] <= 0) pr[i] <- 2 * pnorm(z.value[i])
-        if(z.value[i] > 0)  pr[i] <- 2 * (1 - pnorm(z.value[i]))
+        if(z.value[i] <= 0) pr[i] <- 2 * stats::pnorm(z.value[i])
+        if(z.value[i] > 0)  pr[i] <- 2 * (1 - stats::pnorm(z.value[i]))
       }
     }
   }
 
   if(plot & !is.na(acw[1])){
 
-    plt.blank <- theme(panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       panel.background = element_blank(),
-                       axis.line = element_line(colour = "black"),
-                       legend.title = (element_text(size = 9)))
+    plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                                panel.grid.minor = ggplot2::element_blank(),
+                                panel.background = ggplot2::element_blank(),
+                                axis.line = ggplot2::element_line(colour = "black"),
+                                legend.title = ggplot2::element_text(size = 9))
 
     plt.data <- data.frame(val = seq_len(length(acw)),
                            ac.wrm = acw,
@@ -462,24 +466,31 @@ WRM<-function(formula,family,data,coord,
                           max(plt.data[ ,2:3]) + .02,
                           length.out = 6), 2)
 
-    plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
+    plt <- ggplot2::ggplot(data = plt.data,
+                           ggplot2::aes_(x = quote(val))) +
       plt.blank +
-      geom_line(aes_(y = quote(ac.wrm), color = "WRM Residuals"),
-                size = 0.9) +
-      geom_line(aes_(y = quote(ac.glm), color = "GLM Residuals"),
-                size = 0.9) +
-      geom_point(aes_(y = quote(ac.wrm), color = "WRM Residuals"),
-                 size = 2) +
-      geom_point(aes_(y = quote(ac.glm), color = "GLM Residuals"),
-                 size = 2) +
-      scale_color_manual(paste('Correlation for level = ', level),
-                         breaks = c('WRM Residuals','GLM Residuals'),
-                         values = c('red', 'blue')) +
-      scale_x_continuous('Lag Distance', breaks = 1:10) +
-      scale_y_continuous("Autocorrelation of residuals",
-                         breaks = y.breaks,
-                         limits = c(min(plt.data[ ,2:3]) - .02,
-                                    max(plt.data[ ,2:3]) + .02)) +
+      ggplot2::geom_line(ggplot2::aes_(y = quote(ac.wrm),
+                                       color = "WRM Residuals"),
+                         size = 0.9) +
+      ggplot2::geom_line(ggplot2::aes_(y = quote(ac.glm),
+                                       color = "GLM Residuals"),
+                         size = 0.9) +
+      ggplot2::geom_point(ggplot2::aes_(y = quote(ac.wrm),
+                                        color = "WRM Residuals"),
+                          size = 2) +
+      ggplot2::geom_point(ggplot2::aes_(y = quote(ac.glm),
+                                        color = "GLM Residuals"),
+                          size = 2) +
+      ggplot2::scale_color_manual(paste('Correlation for level = ',
+                                        level),
+                                  breaks = c('WRM Residuals',
+                                             'GLM Residuals'),
+                                  values = c('red', 'blue')) +
+      ggplot2::scale_x_continuous('Lag Distance', breaks = 1:10) +
+      ggplot2::scale_y_continuous("Autocorrelation of residuals",
+                                  breaks = y.breaks,
+                                  limits = c(min(plt.data[ ,2:3]) - .02,
+                                             max(plt.data[ ,2:3]) + .02)) +
       customize_plot
 
     print(plt)

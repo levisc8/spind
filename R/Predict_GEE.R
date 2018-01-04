@@ -19,6 +19,7 @@
 #'@author Gudrun Carl,
 #'        Sam Levin
 #'
+#'@importFrom stats model.matrix
 #'@export
 predict.GEE<-function(object,...,newdata){
 
@@ -28,7 +29,7 @@ predict.GEE<-function(object,...,newdata){
   family<-object$family
   b<-object$b
 
-  x.matrix<-model.matrix(formula,data)
+  x.matrix<-stats::model.matrix(formula,data)
   fitted<-x.matrix%*%b
   fitted<-as.vector(fitted)
   if(family=="poisson") fitted<-exp(fitted)

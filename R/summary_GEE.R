@@ -10,8 +10,8 @@
 #'for the first 10 distance bins. Additionally, if \code{printAutoCorPars} = TRUE,
 #'prints working autocorrelation parameters used in the model.
 #'
-#'@author Sam Levin
-#'
+#' @author Sam Levin
+#' @importFrom stats printCoefmat
 #' @export
 summary.GEE<-function(object,...,printAutoCorPars=TRUE){
 
@@ -29,7 +29,7 @@ summary.GEE<-function(object,...,printAutoCorPars=TRUE){
    if(family=="binomial" | family=="poisson")
       colnames(beta) <- c("Estimate", "Std.Err", "z value", "Pr(>|z|)")
    cat("---","\n","Coefficients:","\n")
-   printCoefmat(beta)
+   stats::printCoefmat(beta)
    cat("---","\n","QIC: ",QIC,"\n" )
    cat("---","\n")
    ac0<-object$ac.glm
@@ -39,7 +39,7 @@ summary.GEE<-function(object,...,printAutoCorPars=TRUE){
    cat("\n","Autocorrelation of GEE residuals","\n")
    print(acg)
 
-   if(printAutoCorPars&object$corstr!="independence"){
+   if(printAutoCorPars & object$corstr != "independence"){
      cat('---','\n','Autocorrelation parameters from ',
          object$corstr," model",'\n')
      print(object$Mat.ac)

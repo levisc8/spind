@@ -72,10 +72,5 @@
 #'
 #' @docType package
 #' @name spind
-#' @import grDevices
-#' @import stats
-#' @import graphics
-#' @import utils
-#'
 #'
 NULL

@@ -41,7 +41,10 @@
 #' @references Carl G, Kuehn I (2017) Spind: a package for computing spatially
 #'  corrected accuracy measures. Ecography 40: 675-682.
 #'  doi: 10.1111/ecog.02593
-#' @import ggplot2
+#'
+#' @importFrom ggplot2 theme element_blank element_line ggplot aes_
+#' geom_line scale_color_manual scale_x_continuous scale_y_continuous
+
 #' @export
 
 
@@ -168,23 +171,26 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
     plt.data <- data.frame(spec = 1-specificity,
                            sens = sensitivity)
 
-    plt.blank <-  theme(panel.grid.major = element_blank(),
-                        panel.grid.minor = element_blank(),
-                        panel.background = element_blank(),
-                        axis.line = element_line(colour = "black"))
+    plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                                panel.grid.minor = ggplot2::element_blank(),
+                                panel.background = ggplot2::element_blank(),
+                                axis.line = ggplot2::element_line(colour = "black"))
 
-    plt <- ggplot(data = plt.data, aes_(x = quote(spec))) +
+    plt <- ggplot2::ggplot(data = plt.data,
+                           ggplot2::aes_(x = quote(spec))) +
       plt.blank +
-      geom_line(aes_(y = quote(spec), color = "1:1 Line"),
-                size = 0.9) +
-      geom_line(aes_(y = quote(sensitivity), color = "ROC"),
-                size = 0.9) +
-      scale_color_manual("",
-                         breaks = c('1:1 Line','ROC'),
-                         values = c('red', 'blue')) +
-      scale_x_continuous('1 - Specificity', breaks = seq(0, 1, .25)) +
-      scale_y_continuous("Sensitivity",
-                         limits = c(0,1)) +
+      ggplot2::geom_line(ggplot2::aes_(y = quote(spec),
+                                       color = "1:1 Line"),
+                         size = 0.9) +
+      ggplot2::geom_line(ggplot2::aes_(y = quote(sensitivity),
+                                       color = "ROC"),
+                         size = 0.9) +
+      ggplot2::scale_color_manual("",
+                                  breaks = c('1:1 Line','ROC'),
+                                  values = c('red', 'blue')) +
+      ggplot2::scale_x_continuous('1 - Specificity', breaks = seq(0, 1, .25)) +
+      ggplot2::scale_y_continuous("Sensitivity",
+                                  limits = c(0,1)) +
       customize_plot
 
     print(plt)

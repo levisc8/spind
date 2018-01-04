@@ -38,7 +38,6 @@ aic <- aic.calc(musculus ~ pollution + exposure, "poisson", musdata,
                 mglm$fitted)
 aic$AIC
 
-
 }
 \author{
 Gudrun Carl, Sam Levin

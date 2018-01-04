@@ -1,6 +1,6 @@
 Package: spind
 Title: Spatial Methods and Indices
-Version: 2.1.1.9000
+Version: 2.1.2
 Author: Gudrun Carl [cre, aut], Ingolf Kuehn [aut], Sam Levin [aut]
 Maintainer: Sam Levin <levisc8@gmail.com>
 URL: https://github.com/levisc8/spind
@@ -18,7 +18,6 @@ Imports: gee,
 	 waveslim,
 	 rje,
 	 stringr,
-	 sp,
 	 ggplot2,
 	 RColorBrewer
 License: GPL-3
@@ -28,5 +27,6 @@ RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,
     testthat,
-    PresenceAbsence
+    PresenceAbsence,
+    sp
 VignetteBuilder: knitr

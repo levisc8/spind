@@ -60,7 +60,8 @@
 #' Assessing relative variable importance across different spatial
 #' scales: a two-dimensional wavelet analysis.
 #' Journal of Biogeography 43: 2502-2512.
-#'
+#' @importFrom stats update reformulate drop.terms model.matrix as.formula terms
+#' @importFrom rje powerSetMat
 #' @export
 
 mmiWMRR <- function(object, data, scale, detail = TRUE, trace = FALSE){
@@ -74,10 +75,10 @@ mmiWMRR <- function(object, data, scale, detail = TRUE, trace = FALSE){
 
 
   # Parameter: varnames, p
-  X <- model.matrix(formula, data)
+  X <- stats::model.matrix(formula, data)
   if(dimnames(X)[[2]][1] != "(Intercept)") {
     formula <- update(formula, ~ . + 1)
-    X <- model.matrix(formula, data)
+    X <- stats::model.matrix(formula, data)
   }
   nvar <- dim(X)[2]
   varnames <- dimnames(X)[[2]][-1]
@@ -85,7 +86,7 @@ mmiWMRR <- function(object, data, scale, detail = TRUE, trace = FALSE){
 
   pset <- rje::powerSetMat(p)
   ip <- dim(pset)[1]
-  t <- terms(formula)
+  t <- stats::terms(formula)
   # Run every model and calculate AIC (multimodel inference)
   coef.vec <- matrix(NA,ip,nvar)
   df <- rep(NA, ip)
@@ -93,12 +94,13 @@ mmiWMRR <- function(object, data, scale, detail = TRUE, trace = FALSE){
   AIC <- rep(NA, ip)
   for (i in 1:ip) {
     if(sum(pset[i, ]) != 0 & sum(pset[i, ]) != p){
-      t1 <- drop.terms(t, which(pset[i, ] == 0), keep.response = TRUE)
-      formula1 <- reformulate(attr(t1, "term.labels"), formula[[2]])
+      t1 <- stats::drop.terms(t, which(pset[i, ] == 0), keep.response = TRUE)
+      formula1 <- stats::reformulate(attr(t1, "term.labels"), formula[[2]])
       formulae <- formula1
     }
     if(sum(pset[i, ]) == p) formulae <- formula
-    if(sum(pset[i, ]) == 0) formulae <- as.formula(paste(formula[[2]], "~1"))
+    if(sum(pset[i, ]) == 0) formulae <- stats::as.formula(paste(formula[[2]],
+                                                                "~1"))
     m0 <- scaleWMRR(formulae, family, data, coord, scale = scale,
                     detail = detail, wavelet = wavelet, wtrafo = wtrafo,
                     pad = list(padzone = 1.1))

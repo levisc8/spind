@@ -34,7 +34,9 @@
 #'
 #' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
 #'
-#' @import ggplot2
+#' @importFrom ggplot2 theme element_blank element_text ggplot aes_
+#' geom_point geom_line scale_x_continuous scale_y_continuous
+#' @importFrom stats model.matrix model.frame
 #' @export
 #'
 
@@ -44,13 +46,13 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
 
   x <- coord[ ,1]
   y <- coord[ ,2]
-  X <- model.matrix(formula, data)
+  X <- stats::model.matrix(formula, data)
   namvar <- dimnames(X)[[2]]
   if(namvar[1] != "(Intercept)") nvar1 <- 1
   if(namvar[1] == "(Intercept)") nvar1 <- 2
   nvar2 <- dim(X)[2]
   namresp <- as.character(formula[[2]])
-  resp <- model.frame(formula, data)[[1]]
+  resp <- stats::model.frame(formula, data)[[1]]
   wvar0 <- wavevar(resp, coord, wavelet = wavelet,
                    wtrafo = wtrafo)
   nscale <- length(wvar0)
@@ -108,9 +110,9 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
 
 
 
-  SeqEnd <- max(PltData$Variance, na.rm = T) + .1
-  if(min(PltData$Variance, na.rm = T) < 0){
-    SeqBegin <- min(PltData$Variance, na.rm = T)
+  SeqEnd <- max(PltData$Variance, na.rm = TRUE) + .1
+  if(min(PltData$Variance, na.rm = TRUE) < 0){
+    SeqBegin <- min(PltData$Variance, na.rm = TRUE)
   } else {
     SeqBegin <- 0
   }
@@ -123,21 +125,25 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     ylim <- c(SeqBegin, SeqEnd)
   }
 
-  plt.blank <-  theme(panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(),
-                      panel.background = element_blank(),
-                      axis.line = element_line(colour = "black"))
+  plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                               panel.grid.minor = ggplot2::element_blank(),
+                               panel.background = ggplot2::element_blank(),
+                               axis.line = ggplot2::element_line(colour = "black"))
 
-  Plt <- ggplot(PltData, aes_(x = quote(Level), y = quote(Variance))) +
+  Plt <- ggplot2::ggplot(PltData,
+                         ggplot2::aes_(x = quote(Level),
+                                       y = quote(Variance))) +
     plt.blank +
-    geom_point(aes_(colour = quote(Variable),
-                    shape = quote(Variable)), size = 3) +
-    geom_line(aes_(colour = quote(Variable)), linetype = 2,
-              size = 1) +
-    scale_x_continuous("Level", breaks = 1:nscale) +
-    scale_y_continuous(paste("Wavelet ",VarType),
-                       breaks = y_scale,
-                       limits = ylim) +
+    ggplot2::geom_point(ggplot2::aes_(colour = quote(Variable),
+                                      shape = quote(Variable)),
+                        size = 3) +
+    ggplot2::geom_line(ggplot2::aes_(colour = quote(Variable)),
+                       linetype = 2,
+                       size = 1) +
+    ggplot2::scale_x_continuous("Level", breaks = 1:nscale) +
+    ggplot2::scale_y_continuous(paste("Wavelet ",VarType),
+                                breaks = y_scale,
+                                limits = ylim) +
     customize_plot
 
   print(Plt)

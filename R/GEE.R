@@ -13,9 +13,10 @@
 #' be continuous}.
 #'
 #' @param formula  Model formula. Variable names must match variables in \code{data}.
-#' @param family   \code{gaussian}, \code{binomial}, or \code{poisson} are supported. Called using
-#' a quoted character string (i.e. \code{family} = "gaussian").
-#' @param data     A data frame with variable names that match the variables specified in \code{formula}.
+#' @param family \code{gaussian}, \code{binomial}, or \code{poisson} are supported.
+#' Called using a quoted character string (i.e. \code{family} = "gaussian").
+#' @param data  A data frame with variable names that match the variables
+#' specified in \code{formula}.
 #' @param coord    A matrix of two columns with corresponding cartesian
 #' coordinates. Currently only supports integer coordinates.
 #' @param  corstr   Expected autocorrelation structure: \code{independence}, \code{fixed},
@@ -128,7 +129,13 @@
 #' Yan, J., 2004. geepack: Generalized Estimating Equation Package.
 #' R package version 0.2.10.
 #'
-#' @import ggplot2
+#' @importFrom ggplot2 theme element_blank element_line element_text
+#' ggplot aes_ geom_line geom_point scale_color_manual
+#' scale_x_continuous scale_y_continuous
+#' @importFrom gee gee
+#' @importFrom geepack genZcor geese
+#' @importFrom stats glm resid fitted dist pnorm
+#' @importFrom utils capture.output
 #' @export
 #'
 #'
@@ -152,11 +159,11 @@ GEE <- function(formula,family,data,coord,
   lim1 <- moran$lim1
   lim2 <- lim1 + moran$increment
 
-  m0 <- glm(formula, family, data)
-  res0 <- resid(m0, type = "pearson")
+  m0 <- stats::glm(formula, family, data)
+  res0 <- stats::resid(m0, type = "pearson")
   id <- rep(1, nn)
   dato <- data.frame(data, id)
-  suppressMessages(suppressWarnings(capture.output({
+  suppressMessages(suppressWarnings(utils::capture.output({
     mgee <- gee::gee(formula = formula, family = family,
                      data = dato, id = id,
                      corstr = "independence", scale.fix = scale.fix)
@@ -166,8 +173,8 @@ GEE <- function(formula,family,data,coord,
   if(corstr == "independence"){
     ashort <- 0
     A <- 0
-    fitted <- fitted(m0)
-    resid <- resid(m0, type = "pearson")
+    fitted <- stats::fitted(m0)
+    resid <- stats::resid(m0, type = "pearson")
     b <- summary(m0)$coefficients[ ,1]
     s.e. <- summary(m0)$coefficients[ ,2]
     z <- summary(m0)$coefficients[ ,3]
@@ -192,10 +199,10 @@ GEE <- function(formula,family,data,coord,
     A0 <- paste(para0, para1, para2)
     id <- rep(1, nn)
     coord <- cbind(x, y)
-    D <- as.matrix(dist(coord))
+    D <- as.matrix(stats::dist(coord))
     R <- alpha ^ (D^v)
     data <- data.frame(data, id)
-  suppressMessages(suppressWarnings(capture.output({
+  suppressMessages(suppressWarnings(utils::capture.output({
       mgee <- gee::gee(formula = formula, family = family,
                        data = data, id = id,R = R,corstr = "fixed",
                        scale.fix = scale.fix)
@@ -212,8 +219,8 @@ GEE <- function(formula,family,data,coord,
     z <- summary(mgee)$coefficients[ ,3]
     p <- rep(NA, nrow(summary(mgee)$coefficients))
     for(ii in seq_len(nrow(summary(mgee)$coefficients))){
-      if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
-      if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
+      if(z[ii] >= 0) p[ii] <- 2 * (1 - stats::pnorm(z[ii]))
+      if(z[ii] < 0) p[ii] <- 2 * (stats::pnorm(z[ii]))
     }
     scale <- summary(mgee)[[9]]
     Icrit <- qic.calc(formula, family = family, data = data, fitted,
@@ -234,7 +241,7 @@ GEE <- function(formula,family,data,coord,
     clusz <- clus.sz(id)
     zcor <- geepack::genZcor(clusz = clusz,
                              waves = waves, "unstr")
-    suppressMessages(suppressWarnings(capture.output({
+    suppressMessages(suppressWarnings(utils::capture.output({
       mgee <- gee::gee(formula = formula, family = family,
                      data = dato, id = id, corstr = "exchangeable",
                      scale.fix = scale.fix)
@@ -251,8 +258,8 @@ GEE <- function(formula,family,data,coord,
     z <- summary(mgee)$coefficients[ ,5]
     p <- rep(NA,nrow(summary(mgee)$coefficients))
     for(ii in seq_len(nrow(summary(mgee)$coefficients))) {
-      if(z[ii] >= 0) p[ii] <- 2 * (1 - pnorm(z[ii]))
-      if(z[ii] < 0) p[ii] <- 2 * (pnorm(z[ii]))
+      if(z[ii] >= 0) p[ii] <- 2 * (1 - stats::pnorm(z[ii]))
+      if(z[ii] < 0) p[ii] <- 2 * (stats::pnorm(z[ii]))
     }
 
     scale <- summary(mgee)[[9]]
@@ -304,11 +311,11 @@ GEE <- function(formula,family,data,coord,
   ac <- acfft(coord, resid, lim1, lim2)
 
   if(plot){
-    plt.blank <-  theme(panel.grid.major = element_blank(),
-                        panel.grid.minor = element_blank(),
-                        panel.background = element_blank(),
-                        axis.line = element_line(colour = "black"),
-                        legend.title = element_text(size = 9))
+    plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                        panel.grid.minor = ggplot2::element_blank(),
+                        panel.background = ggplot2::element_blank(),
+                        axis.line = ggplot2::element_line(colour = "black"),
+                        legend.title = ggplot2::element_text(size = 9))
 
     plt.data <- data.frame(val = seq_len(length(ac)),
                            ac.gee = ac,
@@ -318,27 +325,31 @@ GEE <- function(formula,family,data,coord,
                           max(plt.data[ ,2:3]) + .02,
                           length.out = 6), 2)
 
-    plt <- ggplot(data = plt.data, aes_(x = quote(val))) +
+    plt <- ggplot2::ggplot(data = plt.data,
+                           ggplot2::aes_(x = quote(val))) +
            plt.blank +
-           geom_line(aes_(y = quote(ac.gee), color = "GEE Residuals"),
+           ggplot2::geom_line(ggplot2::aes_(y = quote(ac.gee),
+                                   color = "GEE Residuals"),
                      size = 0.9) +
-           geom_line(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+           ggplot2::geom_line(ggplot2::aes_(y = quote(ac.glm),
+                                   color = "GLM Residuals"),
                      size = 0.9) +
-           geom_point(aes_(y = quote(ac.gee), color = "GEE Residuals"),
+           ggplot2::geom_point(ggplot2::aes_(y = quote(ac.gee),
+                                             color = "GEE Residuals"),
                       size = 2) +
-           geom_point(aes_(y = quote(ac.glm), color = "GLM Residuals"),
+           ggplot2::geom_point(ggplot2::aes_(y = quote(ac.glm),
+                                    color = "GLM Residuals"),
                       size = 2) +
-           scale_color_manual(paste("Correlation structure: "
-                                    , corstr),
+           ggplot2::scale_color_manual(paste("Correlation structure: ",
+                                             corstr),
                               breaks = c('GEE Residuals','GLM Residuals'),
                               values = c('blue', 'red')) +
-           scale_x_continuous('Lag Distance', breaks = 1:10) +
-           scale_y_continuous("Autocorrelation of residuals",
+           ggplot2::scale_x_continuous('Lag Distance', breaks = 1:10) +
+           ggplot2::scale_y_continuous("Autocorrelation of residuals",
                               breaks = y.breaks,
                               limits = c(min(plt.data[ ,2:3]) - .02,
                                          max(plt.data[ ,2:3]) + .02)) +
            customize_plot
-
 
     print(plt)
 
@@ -398,18 +409,19 @@ GEE <- function(formula,family,data,coord,
 #' Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 #'
 #' Barnett et al. Methods in Ecology & Evolution 2010, 1, 15-24.
+#' @importFrom stats model.matrix model.frame
 #' @export
 qic.calc <- function(formula, family, data, mu, var.robust, var.indep.naive){
 
-  X <- model.matrix(formula, data)
-  if(is.vector(model.frame(formula, data)[[1]])){
-    y <- model.frame(formula, data)[[1]]
+  X <- stats::model.matrix(formula, data)
+  if(is.vector(stats::model.frame(formula, data)[[1]])){
+    y <- stats::model.frame(formula, data)[[1]]
     ntr <- 1
   }
-  if(family == "binomial" & is.matrix(model.frame(formula, data)[[1]])){
-    y <- model.frame(formula, data)[[1]][ ,1]
-    ntr <- model.frame(formula, data)[[1]][ ,1] +
-           model.frame(formula, data)[[1]][ ,2]
+  if(family == "binomial" & is.matrix(stats::model.frame(formula, data)[[1]])){
+    y <- stats::model.frame(formula, data)[[1]][ ,1]
+    ntr <- stats::model.frame(formula, data)[[1]][ ,1] +
+           stats::model.frame(formula, data)[[1]][ ,2]
   }
   n  <-  dim(X)[1]
   nvar <- dim(X)[2]
@@ -573,7 +585,7 @@ zcor.quad <- function(zcor,n,quad=TRUE) {
 }
 
 
-a.gee <- function(mgee,n,type="glm",corstr="independence",quad=T) {
+a.gee <- function(mgee,n,type="glm",corstr="independence",quad=TRUE) {
   ########################################################################
   # Description
   # A function to order correlation parameters of Generalized Estimating
@@ -691,8 +703,9 @@ cor.mat <- function(cluster,a) {
 }
 
 
-
-res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
+#' @importFrom stats model.matrix model.frame
+#' @importFrom stats var
+res.gee <- function(formula,family='gaussian',data,n,clusz=NA,zcor=NA,a=NA,b,
                   R=NA)  {
   #######################################################################
   # Description
@@ -761,81 +774,107 @@ res.gee <- function(formula,family=gaussian,data,n,clusz=NA,zcor=NA,a=NA,b,
     cs <- 0
     v <- matrix(0,length(ieo),length(ieo))
     vgl <- rep(0,n2)
-    for(i in 1:lc) {clu <- clusz[i]
-    if(clu!=1) {
-      v1 <- matrix(0,n2,n2)
-      if(n==2)
-      {  v1[1,2:4] <- z2[i,1:3]
-      v1[2,3:4] <- z2[i,4:5]
-      v1[3,4] <- z2[i,6]  }
-      if(n==3)
-      {  v1[1,2:9] <- z2[i,1:8]
-      v1[2,3:9] <- z2[i,9:15]
-      v1[3,4:9] <- z2[i,16:21]
-      v1[4,5:9] <- z2[i,22:26]
-      v1[5,6:9] <- z2[i,27:30]
-      v1[6,7:9] <- z2[i,31:33]
-      v1[7,8:9] <- z2[i,34:35]
-      v1[8,9] <- z2[i,36]  }
-      if(n==4)
-      {  v1[1,2:16] <- z2[i,1:15]
-      v1[2,3:16] <- z2[i,16:29]
-      v1[3,4:16] <- z2[i,30:42]
-      v1[4,5:16] <- z2[i,43:54]
-      v1[5,6:16] <- z2[i,55:65]
-      v1[6,7:16] <- z2[i,66:75]
-      v1[7,8:16] <- z2[i,76:84]
-      v1[8,9:16] <- z2[i,85:92]
-      v1[9,10:16] <- z2[i,93:99]
-      v1[10,11:16] <- z2[i,100:105]
-      v1[11,12:16] <- z2[i,106:110]
-      v1[12,13:16] <- z2[i,111:114]
-      v1[13,14:16] <- z2[i,115:117]
-      v1[14,15:16] <- z2[i,118:119]
-      v1[15,16] <- z2[i,120]   }
-      for(i1 in seq_len(length(iod))) {
-        i2 <- iod[i1]
-        if(var(v1[i2,1:n2])==0) {for(k in i2:n5) {k1 <- k+1
-        v1[k,] <- v1[k1,]
-        v1[k1,] <- vgl[]}}}
-      for(i1 in seq_len(length(iod))) {
-        i3 <- iod[i1]+1
-        if(var(v1[1:n2,i3])==0) {for(k in i3:n4) {k1 <- k+1
-        v1[,k] <- v1[,k1]
-        v1[,k1] <- vgl[]}}}
+    for(i in 1:lc) {
+      clu <- clusz[i]
+      if(clu!=1) {
+        v1 <- matrix(0,n2,n2)
+        if(n==2) {
+          v1[1,2:4] <- z2[i,1:3]
+          v1[2,3:4] <- z2[i,4:5]
+          v1[3,4] <- z2[i,6]
+        }
+        if(n==3){
+          v1[1,2:9] <- z2[i,1:8]
+          v1[2,3:9] <- z2[i,9:15]
+          v1[3,4:9] <- z2[i,16:21]
+          v1[4,5:9] <- z2[i,22:26]
+          v1[5,6:9] <- z2[i,27:30]
+          v1[6,7:9] <- z2[i,31:33]
+          v1[7,8:9] <- z2[i,34:35]
+          v1[8,9] <- z2[i,36]
+        }
+        if(n==4){
+          v1[1,2:16] <- z2[i,1:15]
+          v1[2,3:16] <- z2[i,16:29]
+          v1[3,4:16] <- z2[i,30:42]
+          v1[4,5:16] <- z2[i,43:54]
+          v1[5,6:16] <- z2[i,55:65]
+          v1[6,7:16] <- z2[i,66:75]
+          v1[7,8:16] <- z2[i,76:84]
+          v1[8,9:16] <- z2[i,85:92]
+          v1[9,10:16] <- z2[i,93:99]
+          v1[10,11:16] <- z2[i,100:105]
+          v1[11,12:16] <- z2[i,106:110]
+          v1[12,13:16] <- z2[i,111:114]
+          v1[13,14:16] <- z2[i,115:117]
+          v1[14,15:16] <- z2[i,118:119]
+          v1[15,16] <- z2[i,120]
+        }
+        for(i1 in seq_len(length(iod))) {
+          i2 <- iod[i1]
+          if(stats::var(v1[i2,1:n2])==0) {
+            for(k in i2:n5) {
+              k1 <- k+1
+              v1[k,] <- v1[k1,]
+              v1[k1,] <- vgl[]
+            }
+          }
+        }
+        for(i1 in seq_len(length(iod))) {
+          i3 <- iod[i1]+1
+          if(stats::var(v1[1:n2,i3])==0) {
+            for(k in i3:n4) {
+              k1 <- k+1
+              v1[,k] <- v1[,k1]
+              v1[,k1] <- vgl[]
+            }
+          }
+        }
 
-      clu1 <- clu-1
-      for(k in seq_len(clu1)) {csk <- cs+k
-      f1 <- 2
-      for(k1 in f1:clu) {k2 <- cs+f1
-      v[csk,k2] <- v1[k,k1]
-      f1 <- f1+1 }}
-      for(k in seq_len(clu)) {csk <- cs+k
-      v[csk,csk] <-  0.5 } }
-    if(clu==1) {cs1 <- cs+1
-    v[cs1,cs1] <- 0.5 }
-    cs <-  cumsum(clusz)[i]  }
+        clu1 <- clu-1
+        for(k in seq_len(clu1)) {
+          csk <- cs+k
+          f1 <- 2
+          for(k1 in f1:clu) {
+            k2 <- cs+f1
+            v[csk,k2] <- v1[k,k1]
+            f1 <- f1+1
+          }
+        }
+        for(k in seq_len(clu)) {
+          csk <- cs+k
+          v[csk,csk] <-  0.5
+        }
+      }
+      if(clu==1) {cs1 <- cs+1
+      v[cs1,cs1] <- 0.5 }
+      cs <-  cumsum(clusz)[i]  }
     v <- v+t(v)
   }
-  if(n==dim(data)[1]) v <- R
+  if(n == dim(data)[1]) v <- R
   ww <- solve(v)
 
   s.geese <- svd(ww)
   d.geese <- diag(sqrt(s.geese$d))
-  w <- s.geese$u%*%d.geese%*%t(s.geese$u)
+  w <- s.geese$u %*% d.geese %*% t(s.geese$u)
 
-  x.matrix <- model.matrix(formula,data)
-  fitted <- x.matrix%*%b
+  x.matrix <- stats::model.matrix(formula,data)
+  fitted <- x.matrix %*% b
   fitted <- fitted[seq_len(length(ieo))]
   if(family=="poisson") fitted <- exp(fitted)
   if(family=="binomial") fitted <- exp(fitted)/(1+exp(fitted))
 
-  if(family=="gaussian") rgeese <-  model.frame(formula,data)[[1]]-fitted
+  if(family=="gaussian") {
+    rgeese <-  stats::model.frame(formula,data)[[1]]-fitted
+  }
   if(family=="poisson")
-    rgeese <- ( model.frame(formula,data)[[1]]-fitted)/sqrt(fitted)
-  if(family=="binomial")
-    rgeese <- ( model.frame(formula,data)[[1]]-fitted)/sqrt(fitted*(1-fitted))
-  rsgeese <- w%*%rgeese
+    rgeese <- ( stats::model.frame(formula,
+                                   data)[[1]]-fitted)/sqrt(fitted)
+  if(family=="binomial"){
+    rgeese <- ( stats::model.frame(formula,
+                                   data)[[1]]-fitted)/sqrt(fitted*(1-fitted))
+  }
+  rsgeese <- w %*% rgeese
   resgeeseo <- rsgeese[seq_len(length(ieo))]
 
   list(fitted=fitted,resid=resgeeseo)

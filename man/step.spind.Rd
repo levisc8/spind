@@ -93,7 +93,7 @@ summary(best.mgee,printAutoCorPars=FALSE)
 Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 }
 \seealso{
-\code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{drop1}},
+\code{\link{qic.calc}}, \code{\link{aic.calc}}, \code{\link[stats]{add1}},
 \code{\link[stats]{step}}, \code{\link[MASS]{stepAIC}}
 }
 \author{

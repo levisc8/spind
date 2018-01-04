@@ -6,7 +6,7 @@
 #'@return Prints the results of a WRM
 #'
 #'@author Gudrun Carl, Sam Levin
-#'
+#'@importFrom stats printCoefmat
 #'@export
 
 summary.WRM<-function (object,...) {
@@ -29,7 +29,7 @@ summary.WRM<-function (object,...) {
   if(family=="binomial" | family=="poisson")
     colnames(beta) <- c("Estimate", "Std.Err", "z value", "Pr(>|z|)")
   cat("---","\n","Coefficients:","\n")
-  printCoefmat(beta)
+  stats::printCoefmat(beta)
   cat("---","\n","Number of observations n: ",n, ",  n.eff: ",
       n.eff,",  AIC: ",AIC,"\n" )
   cat("\n","Number of iterations: ",it,"\n")

@@ -112,6 +112,10 @@
 #' Whitcher, B. (2005) Waveslim: basic wavelet routines for one-, two-
 #' and three-dimensional signal processing. R package version 1.5.
 #'
+#'@importFrom stats model.matrix model.frame as.formula lm glm resid
+#' pt pnorm
+#'@importFrom waveslim mra.2d
+#'@importFrom MASS ginv
 #'@export
 
 
@@ -131,17 +135,17 @@ scaleWMRR<-function(formula,family,data,coord,
   if(!logic1 | !logic2) stop("coordinates not integer")
   converged.logi<-TRUE
 
-  X<-model.matrix(formula,data)
+  X<-stats::model.matrix(formula,data)
   nvar<-dim(X)[2]
 
-  if(is.vector(model.frame(formula,data)[[1]])){
-    yold<-model.frame(formula,data)[[1]]
+  if(is.vector(stats::model.frame(formula,data)[[1]])){
+    yold<-stats::model.frame(formula,data)[[1]]
     ntr<-1
   }
-  if(family=="binomial" & is.matrix(model.frame(formula,data)[[1]])){
-    yold<-model.frame(formula,data)[[1]][,1]
-    ntr<-model.frame(formula,data)[[1]][,1] +
-      model.frame(formula,data)[[1]][,2]
+  if(family=="binomial" & is.matrix(stats::model.frame(formula,data)[[1]])){
+    yold<-stats::model.frame(formula,data)[[1]][,1]
+    ntr<-stats::model.frame(formula,data)[[1]][,1] +
+      stats::model.frame(formula,data)[[1]][,2]
   }
 
   n.level<-scale
@@ -198,8 +202,8 @@ scaleWMRR<-function(formula,family,data,coord,
     }
 
     # GLM for comparison
-    m0<-glm(formula,family,data)
-    res0<-resid(m0,type="pearson")
+    m0<-stats::glm(formula,family,data)
+    res0<-stats::resid(m0,type="pearson")
     beta0<-m0$coeff
 
     if(is.null(b.ini)){
@@ -299,8 +303,8 @@ scaleWMRR<-function(formula,family,data,coord,
       }
 
       xnam<-paste("tt[,",1:nvar,"]",sep="")
-      formula.dwt<-as.formula(paste("ft~",paste(xnam,collapse="+"),"-1"))
-      mdwt<-lm(formula.dwt)
+      formula.dwt<-stats::as.formula(paste("ft~",paste(xnam,collapse="+"),"-1"))
+      mdwt<-stats::lm(formula.dwt)
       if(sum(abs(tt[,1]))==0) mdwt$coeff[1]<-beta0[1]
       if(max(abs(mdwt$coeff),na.rm=TRUE)>1e+10 ) {
         mdwt$coeff<-rep(NA,nvar);break}
@@ -394,12 +398,12 @@ scaleWMRR<-function(formula,family,data,coord,
     z.value<-wavelet.beta/s.e.
     for(i in seq_len(nvar)){
       if(family=="gaussian"){
-        if(z.value[i]<=0) pr[i]<-2*pt(z.value[i],df)
-        if(z.value[i]>0) pr[i]<-2*(1-pt(z.value[i],df))
+        if(z.value[i]<=0) pr[i]<-2*stats::pt(z.value[i],df)
+        if(z.value[i]>0) pr[i]<-2*(1-stats::pt(z.value[i],df))
       }
       if(family=="binomial" | family=="poisson"){
-        if(z.value[i]<=0) pr[i]<-2*pnorm(z.value[i])
-        if(z.value[i]>0) pr[i]<-2*(1-pnorm(z.value[i]))
+        if(z.value[i]<=0) pr[i]<-2*stats::pnorm(z.value[i])
+        if(z.value[i]>0) pr[i]<-2*(1-stats::pnorm(z.value[i]))
       }
     }
   }

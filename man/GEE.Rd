@@ -11,10 +11,11 @@ GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
 
-\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported. Called using
-a quoted character string (i.e. \code{family} = "gaussian").}
+\item{family}{\code{gaussian}, \code{binomial}, or \code{poisson} are supported.
+Called using a quoted character string (i.e. \code{family} = "gaussian").}
 
-\item{data}{A data frame with variable names that match the variables specified in \code{formula}.}
+\item{data}{A data frame with variable names that match the variables
+specified in \code{formula}.}
 
 \item{coord}{A matrix of two columns with corresponding cartesian
 coordinates. Currently only supports integer coordinates.}

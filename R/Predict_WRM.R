@@ -23,6 +23,8 @@
 
 #' pred<-predict(mwrm,newdata=musdata)
 #'
+#' @importFrom stats model.matrix
+#' @importFrom waveslim mra.2d
 #' @export
 #'
 
@@ -39,7 +41,7 @@ predict.WRM<-function(object,...,newdata,sm=FALSE,newcoord=NA){
   padform<-object$padform
   coord<-newcoord
 
-  X<-model.matrix(formula,data)
+  X<-stats::model.matrix(formula,data)
   nvar<-dim(X)[2]
   n<-dim(data)[1]
   l<-dim(data)[2]

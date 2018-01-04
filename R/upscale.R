@@ -35,6 +35,11 @@
 #' upscale(carlinadata$aridity, coord = coords,pad=0,
 #'         color.maps = TRUE)
 #'
+#' @importFrom grDevices colorRampPalette gray
+#' @importFrom graphics par
+#' @importFrom waveslim mra.2d
+#' @importFrom graphics image
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 
 upscale<-function(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
@@ -60,15 +65,15 @@ upscale<-function(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
   } # ii loop
 
   ## Plot
-  par(mfrow = c(2, 2),
-      mai = c(0.1, 0, 0.4, 0),
-      omi = c(0, 0, 0, 0),
-      pty = "s",cex.main=1)
+  graphics::par(mfrow = c(2, 2),
+                mai = c(0.1, 0, 0.4, 0),
+                omi = c(0, 0, 0, 0),
+                pty = "s",cex.main=1)
   if(color.maps){
-    colors <- list(colorRampPalette(RColorBrewer::brewer.pal(10,
+    colors <- list(grDevices::colorRampPalette(RColorBrewer::brewer.pal(10,
                                                              'Spectral'))(100))
   } else {
-    colors <- list(gray((0:50)/50))
+    colors <- list(grDevices::gray((0:50)/50))
   }
   minvec <- rep(NA, 4)
   maxvec <- rep(NA, 4)
@@ -106,8 +111,8 @@ upscale<-function(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
     }
     FTS <- FTS - minFTS
     FTS <- FTS / (maxFTS - minFTS)
-    image(FTS, zlim=c(0,1), axes = FALSE, col = colors[[1]],
-          main = paste("level = ", i - 1))
+    graphics::image(FTS, zlim=c(0,1), axes = FALSE, col = colors[[1]],
+                    main = paste("level = ", i - 1))
 
   } # i-loop
 

@@ -27,20 +27,20 @@
 #'                 mglm$fitted)
 #' aic$AIC
 #'
-#'
+#' @importFrom stats model.frame model.matrix
 #' @export
 
 aic.calc <- function(formula, family, data, mu, n.eff = NULL){
 
-  X <- model.matrix(formula, data)
-  if(is.vector(model.frame(formula, data)[[1]])){
-    y <- model.frame(formula, data)[[1]]
+  X <- stats::model.matrix(formula, data)
+  if(is.vector(stats::model.frame(formula, data)[[1]])){
+    y <- stats::model.frame(formula, data)[[1]]
     ntr <- 1
   }
-  if(family == "binomial" & is.matrix(model.frame(formula, data)[[1]])){
-    y <- model.frame(formula, data)[[1]][ ,1]
-    ntr <- model.frame(formula, data)[[1]][ ,1] +
-           model.frame(formula, data)[[1]][ ,2]
+  if(family == "binomial" & is.matrix(stats::model.frame(formula, data)[[1]])){
+    y <- stats::model.frame(formula, data)[[1]][ ,1]
+    ntr <- stats::model.frame(formula, data)[[1]][ ,1] +
+           stats::model.frame(formula, data)[[1]][ ,2]
   }
 
   n <- dim(X)[1]

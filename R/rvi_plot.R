@@ -45,7 +45,9 @@
 #' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 #'          carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
 #'}
-#' @import ggplot2
+#' @importFrom ggplot2 theme element_blank element_line ggplot
+#' aes_ geom_point geom_line scale_x_continuous scale_y_continuous
+
 #' @export
 
 
@@ -114,38 +116,28 @@ rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
   PltData <- data.frame(Variable = VarCol, Level = Level,
                         Weight = as.vector(t(WeightSums)))
 
-  plt.blank <-  theme(panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(),
-                      panel.background = element_blank(),
-                      axis.line = element_line(colour = "black"))
+  plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                               panel.grid.minor = ggplot2::element_blank(),
+                               panel.background = ggplot2::element_blank(),
+                               axis.line = element_line(colour = "black"))
 
-  Plt <- ggplot(PltData, aes_(x = quote(Level), y = quote(Weight))) +
+  Plt <- ggplot2::ggplot(PltData,
+                         ggplot2::aes_(x = quote(Level),
+                                       y = quote(Weight))) +
          plt.blank +
-         geom_point(aes_(colour = quote(Variable),
-                         shape = quote(Variable)), size = 3) +
-         geom_line(aes_(colour = quote(Variable)), linetype = 2,
-                   size = 1) +
-         scale_x_continuous("Level", breaks = 1:maxlevel) +
-         scale_y_continuous("Relative Variable Importance",
-                            breaks = seq(0, max(WeightSums),
-                                         length.out = 6)) +
+    ggplot2::geom_point(ggplot2::aes_(colour = quote(Variable),
+                                      shape = quote(Variable)),
+                        size = 3) +
+    ggplot2::geom_line(ggplot2::aes_(colour = quote(Variable)),
+                       linetype = 2,
+                       size = 1) +
+    ggplot2::scale_x_continuous("Level", breaks = 1:maxlevel) +
+    ggplot2::scale_y_continuous("Relative Variable Importance",
+                                breaks = seq(0, max(WeightSums),
+                                             length.out = 6)) +
          customize_plot
 
   print(Plt)
-
-  # plot(level, WeightSums[1, ], type = "b", ylim = c(0,2),
-  #      xlim = c(min(level), max(level)),
-  #      ylab = "Relative Variable Importance",
-  #      xlab = "Level", pch = 2, lty = vec[1], lwd = 2)
-  #
-  # for (kvar in 2:nvar){
-  #   points(level, WeightSums[kvar, ], type = "b", pch = kvar + 1,
-  #          lty = vec[kvar], lwd = 2)
-  # }
-  #
-  # #leg<-dimnames(mmi$res)[[2]][vec+1]
-  # v <- 2:(nvar + 1)
-  # legend('topright', leg, pch = v, lty = vec, lwd = 2)
 
   rownames(WeightSums) <- leg
   colnames(WeightSums) <- paste("level", c(1:klimitscale), sep = "=")

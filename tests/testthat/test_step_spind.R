@@ -66,9 +66,24 @@ test_that("Trace outputs are as expected",{
   expect_output(step.spind(mgee, birthwt, trace = FALSE),
                 regexp = "-----\nModel hierarchy violated by last removal\n",
                 " New Deleted Term: ")
+})
 
+test_that("Nothing breaks when first model is best model",{
+  skip_on_cran()
+  library(MASS)
+  data(birthwt)
+  x <- rep(1:14, 14)
+  y <- as.integer(gl(14,14))
+  coords <- cbind(x[-(190:196)],y[-(190:196)])
+  formula <- formula(low ~ bwt)
 
+  mgee <- GEE(formula, family = "gaussian", data = birthwt,
+              coord = coords, corstr = "fixed", scale.fix = TRUE)
 
+  ss <- step.spind(mgee, birthwt)
+  expect_true(ss$model == as.formula(low ~ bwt))
+  expect_equal(as.numeric(ss$table[1, 2:3]), c(-52.86072, 110.96558),
+               tolerance = 1e-6)
 
 })
 

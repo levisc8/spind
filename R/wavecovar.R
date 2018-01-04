@@ -26,6 +26,7 @@
 #' pc<-covar.plot(carlina.horrida~aridity+land.use,carlinadata,coords,
 #'                wavelet='d4',wtrafo='modwt',plot='covar')
 #'
+#' @importFrom waveslim modwt.2d dwt.2d
 #' @export
 
 
