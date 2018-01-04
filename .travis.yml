@@ -23,8 +23,6 @@ cache: packages
 matrix:
   exclude:
   - os: osx
-    after_success: Rscript -e 'covr::codecov()'
-  - os: osx
     r: devel
 
 
@@ -34,4 +32,4 @@ r_github_packages:
   - r-lib/covr
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - travis_wait Rscript -e 'covr::codecov()'

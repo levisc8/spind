@@ -9,3 +9,5 @@
 ^Tarball_Archive$
 ^tests/testthat/comparison to PresenceAbsence\.txt$
 ^tests/testthat/Rplots\.pdf$
+^appveyor\.yml$
+^codecov\.yml$
