@@ -1,4 +1,4 @@
-citHeader('To cite spind in publications use:')
+citHeader('To cite spind 1.0 in publications use Carl & Kuehn 2016. To cite spind (>= 2.0), use Carl, Levin & Kuehn 2018.')
 
 citEntry(entry="Article",
          title = "Spind: a package for computing spatially corrected accuracy measures.",
@@ -13,5 +13,22 @@ citEntry(entry="Article",
                              "Spind: a package for computing spatially corrected accuracy measures.",
                              "Ecography",
                              "DOI: 10.1111/ecog.02593")
+
+)
+
+citEntry(entry="Article",
+         title = "spind: an R Package to Account for Spatial Autocorrelation in the Analysis of Lattice Data.",
+         author = personList(as.person("Gudrun Carl"),
+                             as.person("Sam C Levin"),
+                             as.person("Ingolf Kuehn")),
+         journal = "Biodiversity Data Journal",
+         year = "2018",
+         DOI = "10.3897/BDJ.6.e20760",
+
+
+         textVersion = paste("Carl G, Levin SC, Kuehn I (2018)",
+                             "spind: an R Package to Account for Spatial Autocorrelation in the Analysis of Lattice Data.",
+                             "Biodiversity Data Journal",
+                             "10.3897/BDJ.6.e20760")
 
 )
