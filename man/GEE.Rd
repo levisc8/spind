@@ -2,11 +2,20 @@
 % Please edit documentation in R/GEE.R
 \name{GEE}
 \alias{GEE}
+\alias{plot.GEE}
+\alias{predict.GEE}
+\alias{summary.GEE}
 \title{GEE (Generalized Estimating Equations)}
 \usage{
 GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
   moran.params = list(), plot = FALSE, scale.fix = FALSE,
   customize_plot = NULL)
+
+\method{plot}{GEE}(x, ...)
+
+\method{predict}{GEE}(object, newdata, ...)
+
+\method{summary}{GEE}(object, ..., printAutoCorPars = TRUE)
 }
 \arguments{
 \item{formula}{Model formula. Variable names must match variables in \code{data}.}
@@ -57,13 +66,25 @@ coordinates. Currently only supports integer coordinates.}
 }}
 
 \item{plot}{A logical value indicating whether autocorrelation of
-residuals should be plotted.}
+residuals should be plotted. NOW DEPRECATED in favor of \code{plot.GEE} method.}
 
 \item{scale.fix}{A logical indicating whether or not the scale parameter should
 be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
 stepwise model selection procedures in \code{step.spind}.}
 
-\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}.
+NOW DEPRECATED in favor \code{plot.GEE} method.}
+
+\item{x}{An object of class \code{GEE} or \code{WRM}}
+
+\item{...}{Not used.}
+
+\item{object}{An object of class \code{GEE}.}
+
+\item{newdata}{A data frame containing variables to base the predictions on.}
+
+\item{printAutoCorPars}{A logical indicating whether to print the
+working autocorrelation parameters}
 }
 \value{
 An object of class \code{GEE}. This consists of a list with the
@@ -96,6 +117,9 @@ following elements:
       \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
+      \item{\code{plot}}{An object of class \code{ggplot} containing information
+      on the autocorrelation of residuals from the fitted \code{GEE} and a
+      \code{GLM}}
 }
 
 Elements can be viewed using the \code{\link{summary.GEE}} methods included in
@@ -127,11 +151,29 @@ coords<- musdata[,4:5]
 
 \dontrun{
 mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-      coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE,
-      customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
+      coord=coords, corstr="fixed",scale.fix=FALSE)
 
 summary(mgee,printAutoCorPars=TRUE)
 }
+\dontrun{
+library(ggplot2)
+plot(mgee)
+
+my_gee_plot <- mgee$plot
+
+# move the legend to a new position
+print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
+
+}
+
+data(musdata)
+coords<-musdata[,4:5]
+mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
+          coord=coords,corstr="fixed",plot=TRUE)
+
+pred<-predict(mgee,newdata=musdata)
+
+
 }
 \references{
 Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species

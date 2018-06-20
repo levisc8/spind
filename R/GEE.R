@@ -55,12 +55,13 @@
 #'   }
 #'
 #' @param plot    A logical value indicating whether autocorrelation of
-#' residuals should be plotted.
+#' residuals should be plotted. NOW DEPRECATED in favor of \code{plot.GEE} method.
 #'
 #' @param scale.fix A logical indicating whether or not the scale parameter should
 #' be fixed. The default is \code{FALSE}. Use \code{TRUE} when planning to use
 #' stepwise model selection procedures in \code{step.spind}.
-#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}.
+#' NOW DEPRECATED in favor \code{plot.GEE} method.
 #'
 #'
 #' @return An object of class \code{GEE}. This consists of a list with the
@@ -93,6 +94,9 @@
 #'       \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
 #'       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
 #'       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
+#'       \item{\code{plot}}{An object of class \code{ggplot} containing information
+#'       on the autocorrelation of residuals from the fitted \code{GEE} and a
+#'       \code{GLM}}
 #' }
 #'
 #' Elements can be viewed using the \code{\link{summary.GEE}} methods included in
@@ -113,8 +117,7 @@
 #'
 #' \dontrun{
 #' mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-#'       coord=coords, corstr="fixed", plot=TRUE,scale.fix=FALSE,
-#'       customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
+#'       coord=coords, corstr="fixed",scale.fix=FALSE)
 #'
 #' summary(mgee,printAutoCorPars=TRUE)
 #'}
@@ -136,12 +139,19 @@
 #' @importFrom geepack genZcor geese
 #' @importFrom stats glm resid fitted dist pnorm
 #' @importFrom utils capture.output
+#' @importFrom rlang quo !!
 #' @export
 #'
 #'
 GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE,scale.fix=FALSE, customize_plot = NULL){
+
+  if(!is.null(customize_plot) | plot) {
+    warning('"customize_plot" and "plot = TRUE" arguments are now soft deprecated.\n',
+            'Use plot.GEE method and access the ggplot2 object using object_name$plot\n',
+            'subsequent modification.')
+  }
 
   at <- intersect(names(data), all.vars(formula))
   if(length(at) == 0) stop("formula: specified notation is missing")
@@ -310,49 +320,52 @@ GEE <- function(formula,family,data,coord,
   ac0 <- acfft(coord, res0, lim1, lim2)
   ac <- acfft(coord, resid, lim1, lim2)
 
-  if(plot){
-    plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                        panel.grid.minor = ggplot2::element_blank(),
-                        panel.background = ggplot2::element_blank(),
-                        axis.line = ggplot2::element_line(colour = "black"),
-                        legend.title = ggplot2::element_text(size = 9))
+  plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                               panel.grid.minor = ggplot2::element_blank(),
+                               panel.background = ggplot2::element_blank(),
+                               axis.line = ggplot2::element_line(colour = "black"),
+                               legend.title = ggplot2::element_text(size = 9))
 
-    plt.data <- data.frame(val = seq_len(length(ac)),
-                           ac.gee = ac,
-                           ac.glm = ac0)
+  plt.data <- data.frame(val = seq_len(length(ac)),
+                         ac.gee = ac,
+                         ac.glm = ac0)
 
-    y.breaks <- round(seq(min(plt.data[ ,2:3])-.02,
-                          max(plt.data[ ,2:3]) + .02,
-                          length.out = 6), 2)
+  y.breaks <- round(seq(min(plt.data[ ,2:3])-.02,
+                        max(plt.data[ ,2:3]) + .02,
+                        length.out = 6), 2)
 
-    plt <- ggplot2::ggplot(data = plt.data,
-                           ggplot2::aes_(x = quote(val))) +
-           plt.blank +
-           ggplot2::geom_line(ggplot2::aes_(y = quote(ac.gee),
-                                   color = "GEE Residuals"),
-                     size = 0.9) +
-           ggplot2::geom_line(ggplot2::aes_(y = quote(ac.glm),
-                                   color = "GLM Residuals"),
-                     size = 0.9) +
-           ggplot2::geom_point(ggplot2::aes_(y = quote(ac.gee),
-                                             color = "GEE Residuals"),
-                      size = 2) +
-           ggplot2::geom_point(ggplot2::aes_(y = quote(ac.glm),
+  val <- rlang::quo(val)
+  ac.gee <- rlang::quo(ac.gee)
+  ac.glm <- rlang::quo(ac.glm)
+
+  plt <- ggplot2::ggplot(data = plt.data,
+                         ggplot2::aes(x = !! val)) +
+    plt.blank +
+    ggplot2::geom_line(ggplot2::aes(y = !! ac.gee,
+                                    color = "GEE Residuals"),
+                       size = 0.9) +
+    ggplot2::geom_line(ggplot2::aes(y = !! ac.glm,
                                     color = "GLM Residuals"),
-                      size = 2) +
-           ggplot2::scale_color_manual(paste("Correlation structure: ",
-                                             corstr),
-                              breaks = c('GEE Residuals','GLM Residuals'),
-                              values = c('blue', 'red')) +
-           ggplot2::scale_x_continuous('Lag Distance', breaks = 1:10) +
-           ggplot2::scale_y_continuous("Autocorrelation of residuals",
-                              breaks = y.breaks,
-                              limits = c(min(plt.data[ ,2:3]) - .02,
-                                         max(plt.data[ ,2:3]) + .02)) +
-           customize_plot
+                       size = 0.9) +
+    ggplot2::geom_point(ggplot2::aes(y = !! ac.gee,
+                                     color = "GEE Residuals"),
+                        size = 2) +
+    ggplot2::geom_point(ggplot2::aes(y = !! ac.glm,
+                                     color = "GLM Residuals"),
+                        size = 2) +
+    ggplot2::scale_color_manual(paste("Correlation structure: ",
+                                      corstr),
+                                breaks = c('GEE Residuals','GLM Residuals'),
+                                values = c('blue', 'red')) +
+    ggplot2::scale_x_continuous('Lag Distance', breaks = 1:10) +
+    ggplot2::scale_y_continuous("Autocorrelation of residuals",
+                                breaks = y.breaks,
+                                limits = c(min(plt.data[ ,2:3]) - .02,
+                                           max(plt.data[ ,2:3]) + .02)) +
+    customize_plot
 
+  if(plot){
     print(plt)
-
   }
 
   call <- match.call()
@@ -377,13 +390,124 @@ GEE <- function(formula,family,data,coord,
               ac.gee = ac,
               var.gee = v2,
               var.naive = var.indep.naive,
-              moran.params = moran.params)
+              moran.params = moran.params,
+              plot = plt)
 
   class(fit) <- "GEE"
   return(fit)
 
 
 }
+
+
+#' @name plot.GEE
+#' @rdname GEE
+#'
+#'
+#' @param x An object of class \code{GEE} or \code{WRM}
+#' @param ... Not used.
+#'
+#'@examples
+#' \dontrun{
+#'library(ggplot2)
+#' plot(mgee)
+#'
+#' my_gee_plot <- mgee$plot
+#'
+#' # move the legend to a new position
+#' print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
+#'
+#'}
+#'
+#' @export
+
+plot.GEE <- function(x, ...) {
+
+  print(x$plot)
+
+  invisible(x)
+
+}
+
+#' @name predict.GEE
+#' @rdname GEE
+#'
+#' @inheritParams summary.GEE
+#' @param newdata  A data frame containing variables to base the predictions on.
+#' @examples
+#' data(musdata)
+#' coords<-musdata[,4:5]
+#' mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
+#'           coord=coords,corstr="fixed",plot=TRUE)
+#'
+#' pred<-predict(mgee,newdata=musdata)
+#'
+#'
+#'@importFrom stats model.matrix
+#'@export
+predict.GEE<-function(object,newdata,...){
+
+
+  data<-newdata
+  formula<-object$formula
+  family<-object$family
+  b<-object$b
+
+  x.matrix<-stats::model.matrix(formula,data)
+  fitted<-x.matrix%*%b
+  fitted<-as.vector(fitted)
+  if(family=="poisson") fitted<-exp(fitted)
+  if(family=="binomial") fitted<-exp(fitted)/(1+exp(fitted))
+
+  return(fitted)
+}
+
+#' @name summary.GEE
+#' @rdname GEE
+#'
+#' @param object An object of class \code{GEE}.
+#' @param printAutoCorPars A logical indicating whether to print the
+#' working autocorrelation parameters
+#' @inheritParams plot.GEE
+#'
+#' @importFrom stats printCoefmat
+#' @export
+
+summary.GEE<-function(object,...,printAutoCorPars=TRUE){
+
+  cat("\n","Call:","\n")
+  print(object$call)
+  family<-object$family
+  b<-object$b
+  s.e.<-object$s.e.
+  z<-object$z
+  p<-object$p
+  QIC<-object$QIC
+  beta<-cbind(b,s.e.,z,p)
+  if(family=="gaussian")
+    colnames(beta) <- c("Estimate", "Std.Err", "t value", "Pr(>|t|)")
+  if(family=="binomial" | family=="poisson")
+    colnames(beta) <- c("Estimate", "Std.Err", "z value", "Pr(>|z|)")
+  cat("---","\n","Coefficients:","\n")
+  stats::printCoefmat(beta)
+  cat("---","\n","QIC: ",QIC,"\n" )
+  cat("---","\n")
+  ac0<-object$ac.glm
+  acg<-object$ac.gee
+  cat("Autocorrelation of GLM residuals","\n")
+  print(ac0)
+  cat("\n","Autocorrelation of GEE residuals","\n")
+  print(acg)
+
+  if(printAutoCorPars & object$corstr != "independence"){
+    cat('---','\n','Autocorrelation parameters from ',
+        object$corstr," model",'\n')
+    print(object$Mat.ac)
+  }
+}
+
+
+
 
 
 #' @title Quasi-Information Criterion for Generalized Estimating
