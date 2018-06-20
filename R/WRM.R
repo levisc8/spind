@@ -1,4 +1,7 @@
-#' Wavelet-revised models (WRMs)
+#' @name WRM
+#' @rdname WRM
+#'
+#' @title Wavelet-revised models (WRMs)
 #'
 #' @description A wavelet-based method to remove spatial autocorrelation
 #' in multiple linear regressions. Wavelet transforms are implemented using
@@ -60,8 +63,9 @@
 #'     \item\code{increment} - Step size for calculating Moran's I. Default is 1.
 #'   }
 #' @param plot     A logical value indicating whether to plot autocorrelation of
-#' residuals by distance bin
-#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
+#' residuals by distance bin. NOW DEPRECATED in favor of \code{plot.WRM} method.
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}.
+#' NOW DEPRECATED in favor of \code{plot.WRM} method.
 #'
 #' @return An object of class \code{WRM}. This consists of a list with the
 #' following elements:
@@ -93,6 +97,9 @@
 #'       \item{\code{control}}{Control parameters for the fitting process}
 #'       \item{\code{moran.params}}{Parameters for calculating Moran's I}
 #'       \item{\code{pad}}{List of parameters for padding wavelet coefficients}
+#'       \item{\code{plot}}{An object of class \code{ggplot} containing information
+#'       on the autocorrelation of residuals from the fitted \code{WRM} and a
+#'       \code{GLM}}
 #'}
 #'
 #' @note For those interested in multimodel inference approaches \code{WRM} with
@@ -115,17 +122,25 @@
 #'
 #'\dontrun{
 #' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#' coord=coords, level=1, plot=TRUE,
-#' customize_plot = scale_color_manual("Custom legend", values = c('blue','red')))
+#' coord=coords, level=1)
 #'
 #' summary(mwrm)
+#' plot(mwrm)
+#'
+#' library(ggplot2)
+#' my_wrm_plot <- mwrm$plot
+#'
+#' # increase axis text size
+#' print(my_wrm_plot + ggplot2::theme(axis.text = element_text(size = 15)))
+
 #'}
 #' @author Gudrun Carl, Sam Levin
 #' @importFrom ggplot2 theme element_blank element_line element_text
-#' ggplot aes_ geom_line geom_point scale_color_manual
+#' ggplot aes geom_line geom_point scale_color_manual
 #' scale_x_continuous scale_y_continuous
 #' @importFrom stats glm resid as.formula pt pnorm
 #' @importFrom waveslim mra.2d
+#' @importFrom rlang quo !!
 #' @export
 
 
@@ -133,6 +148,13 @@ WRM<-function(formula,family,data,coord,
               level=1,wavelet="haar",wtrafo="dwt",
               b.ini=NULL,pad=list(),control=list(),moran.params=list(),
               plot=FALSE, customize_plot = NULL){
+
+  if(!is.null(customize_plot) | plot) {
+    warning('"customize_plot" and "plot = TRUE" arguments are now soft deprecated.\n',
+            'Use plot.gee method and access the ggplot2 object using object_name$plot\n',
+            'subsequent modification.')
+  }
+
 
   n <- dim(data)[1]
   l <- dim(data)[2]
@@ -450,8 +472,7 @@ WRM<-function(formula,family,data,coord,
     }
   }
 
-  if(plot & !is.na(acw[1])){
-
+  if(!is.na(acw[1])){
     plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                                 panel.grid.minor = ggplot2::element_blank(),
                                 panel.background = ggplot2::element_blank(),
@@ -466,20 +487,24 @@ WRM<-function(formula,family,data,coord,
                           max(plt.data[ ,2:3]) + .02,
                           length.out = 6), 2)
 
+    val <- rlang::quo(val)
+    ac.wrm <- rlang::quo(ac.wrm)
+    ac.glm <- rlang::quo(ac.glm)
+
     plt <- ggplot2::ggplot(data = plt.data,
-                           ggplot2::aes_(x = quote(val))) +
+                           ggplot2::aes(x = !! val)) +
       plt.blank +
-      ggplot2::geom_line(ggplot2::aes_(y = quote(ac.wrm),
+      ggplot2::geom_line(ggplot2::aes(y = ac.wrm,
+                                      color = "WRM Residuals"),
+                         size = 0.9) +
+      ggplot2::geom_line(ggplot2::aes(y = !! ac.glm,
+                                      color = "GLM Residuals"),
+                         size = 0.9) +
+      ggplot2::geom_point(ggplot2::aes(y = !! ac.wrm,
                                        color = "WRM Residuals"),
-                         size = 0.9) +
-      ggplot2::geom_line(ggplot2::aes_(y = quote(ac.glm),
-                                       color = "GLM Residuals"),
-                         size = 0.9) +
-      ggplot2::geom_point(ggplot2::aes_(y = quote(ac.wrm),
-                                        color = "WRM Residuals"),
                           size = 2) +
-      ggplot2::geom_point(ggplot2::aes_(y = quote(ac.glm),
-                                        color = "GLM Residuals"),
+      ggplot2::geom_point(ggplot2::aes(y = !! ac.glm,
+                                       color = "GLM Residuals"),
                           size = 2) +
       ggplot2::scale_color_manual(paste('Correlation for level = ',
                                         level),
@@ -492,6 +517,10 @@ WRM<-function(formula,family,data,coord,
                                   limits = c(min(plt.data[ ,2:3]) - .02,
                                              max(plt.data[ ,2:3]) + .02)) +
       customize_plot
+
+  }
+
+  if(plot){
 
     print(plt)
 
@@ -533,8 +562,199 @@ WRM<-function(formula,family,data,coord,
             b.ini = b.ini,
             control = control,
             pad = pad,
-            moran.params = moran.params)
+            moran.params = moran.params,
+            plot = plt)
 
   class(fit) <- "WRM"
   return(fit)
 }
+
+
+#' @name plot.WRM
+#' @rdname WRM
+#'
+#' @inheritParams plot.GEE
+#'
+#' @export
+
+plot.WRM <- function(x, ...) {
+
+  print(x$plot)
+  invisible(x)
+
+}
+
+#' @name summary.WRM
+#' @rdname WRM
+#'
+#' @param object An object of class \code{WRM}
+#' @param ... Not used
+#'
+#' @importFrom stats printCoefmat
+#' @export
+
+summary.WRM<-function (object,...) {
+  cat("\n","Call:","\n")
+  print(object$call)
+  cat("\n","Pearson Residuals:","\n")
+  print(summary(object$resid))
+  family<-object$family
+  b<-object$b
+  s.e.<-object$s.e.
+  z<-object$z
+  p<-object$p
+  it<-object$it
+  n<-object$n
+  n.eff<-object$n.eff
+  AIC<-object$AIC
+  beta<-cbind(b,s.e.,z,p)
+  if(family=="gaussian")
+    colnames(beta) <- c("Estimate", "Std.Err", "t value", "Pr(>|t|)")
+  if(family=="binomial" | family=="poisson")
+    colnames(beta) <- c("Estimate", "Std.Err", "z value", "Pr(>|z|)")
+  cat("---","\n","Coefficients:","\n")
+  stats::printCoefmat(beta)
+  cat("---","\n","Number of observations n: ",n, ",  n.eff: ",
+      n.eff,",  AIC: ",AIC,"\n" )
+  cat("\n","Number of iterations: ",it,"\n")
+  cat("---","\n")
+  ac0<-object$ac.glm
+  acw<-object$ac.wrm
+  cat("Autocorrelation of glm.residuals","\n")
+  print(ac0)
+  cat("Autocorrelation of wavelet.residuals","\n")
+  print(acw)
+}
+
+#' @inheritParams summary.WRM
+#' @param newdata  A data frame containing variables used to make predictions.
+#' @param sm       Logical. Should part of smooth components be included?
+#' @param newcoord New coordinates corresponding to observations in \code{newdata}.
+#'
+#' @name predict.WRM
+#' @rdname WRM
+#' @examples
+#' data(musdata)
+#' coords<- musdata[,4:5]
+#'
+#' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
+#'           coord=coords, level=1, plot=TRUE)
+
+#' pred<-predict(mwrm,newdata=musdata)
+#'
+#' @importFrom stats model.matrix
+#' @importFrom waveslim mra.2d
+#' @export
+#'
+
+
+predict.WRM<-function(object ,newdata,sm=FALSE,newcoord=NA, ...){
+
+  data<-newdata
+  formula<-object$formula
+  family<-object$family
+  b<-object$b
+  bsm<-object$b.sm
+  level<-object$level
+  padzone<-object$padzone
+  padform<-object$padform
+  coord<-newcoord
+
+  X<-stats::model.matrix(formula,data)
+  nvar<-dim(X)[2]
+  n<-dim(data)[1]
+  l<-dim(data)[2]
+
+  if(sm) { # add part of smooth components
+    if(is.na(sum(coord))) stop("coordinates are required")
+    x<-coord[,1]
+    y<-coord[,2]
+    if(length(x)!=n) stop("error in dimension")
+    logic1<-identical(as.numeric(x),round(x,0))
+    logic2<-identical(as.numeric(y),round(y,0))
+    if(!logic1 | !logic2) stop("coordinates not integer")
+
+    n.level<-level
+    length.s<-3*n.level+1
+    s<-rep(1,length.s)
+    s[length.s]<-0
+    if(level==0) {
+      s<-c(1,1,1,1)
+      n.level<-1
+    }
+
+    pdim<- max(max(y)-min(y)+1,max(x)-min(x)+1)*padzone
+    power<-0
+    while(2^power<pdim) power<-power+1
+    xmargin<-as.integer((2^power-(max(x)-min(x)))/2)-min(x)+1
+    ymargin<-as.integer((2^power-(max(y)-min(y)))/2)-min(y)+1
+
+    Tmat<-array(NA,c(2^power,2^power,nvar))
+
+    for(ii in seq_len(n)){
+      kx<-x[ii]+xmargin
+      ky<-y[ii]+ymargin
+      for (i3 in 1:nvar)
+        Tmat[ky,kx,i3]<-X[ii,i3]
+    }  # ii loop
+
+    P<-which(is.na(Tmat), arr.ind = TRUE)
+    if(padform==0){
+      for (i3 in seq_len(nvar)){
+        i1<-P[which(P[,3]==i3),1]
+        i2<-P[which(P[,3]==i3),2]
+        for(i in seq_len(length(i1))) Tmat[i1[i],i2[i],i3]<-0
+      }
+    }
+    if(padform==1){
+      for (i3 in seq_len(nvar)){
+        i1<-P[which(P[ ,3]==i3) ,1]
+        i2<-P[which(P[ ,3]==i3) ,2]
+        for(i in seq_len(length(i1))){ Tmat[i1[i],
+                                            i2[i],
+                                            i3]<-mean(Tmat[,,i3],
+                                                      na.rm=TRUE)
+        }
+      }
+    }
+    if(padform==2){
+      for (i3 in seq_len(nvar)) Tmat[,,i3] <- padding(Tmat[,,i3])
+    }
+
+    p<-2^power*2^power
+    tt<-matrix(0,p,nvar)
+    tt0<-matrix(0,p,nvar)
+    for (i3 in seq_len(nvar)){
+      TT<-waveslim::mra.2d(Tmat[,,i3],
+                           object$wavelet,
+                           n.level,
+                           method=object$wtrafo)
+      TTS<-rep(0,length(TT[[1]]))
+      TT0<-rep(0,length(TT[[1]]))
+      for(is in seq_len(length(s))){
+        if(s[is]==1) TTS <- TTS + TT[[is]]
+        if(s[is]==0) TT0 <- TT[[is]]
+      }
+      tt[,i3]<-as.vector(TTS)
+      if(level!=0) tt0[,i3]<-as.vector(TT0)
+    }
+
+    if(level!=0) lin<- tt%*%b  + tt0%*%bsm
+    if(level==0) lin<- tt%*%b
+    Fitted<-matrix(lin,2^power,2^power)
+    fitted<-rep(0,n)
+    for(i in seq_len(n)) fitted[i]<-Fitted[y[i]+ymargin,x[i]+xmargin]
+  } # add part of smooth components
+
+  if(!sm) { # only part of detail components
+    fitted<- X%*%b
+  } # only part of detail components
+
+  lin<-as.vector(fitted)
+  if(family=="gaussian") pi<-lin
+  if(family=="binomial") pi<-exp(lin)/(1+exp(lin))
+  if(family=="poisson")  pi<-exp(lin)
+  predict<-pi
+  return(predict)
+}
+
