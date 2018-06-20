@@ -1,3 +1,19 @@
+## `spind` v2.2.0
+- deprecated `customize_plot` and `plot` arguments in favor of new `plot` methods
+for `GEE` and `WRM`.
+    + `GEE` and `WRM` now return the `ggplot` object in their respective classes.
+    Users can modify them from there rather than use the clunky interface to 
+    modify them within the model function call.
+
+- Some documentation clarification.
+
+- Behind the scenes, moved all plotting functions that use `ggplot2` to tidy 
+evaluation equivalents. If you're interested, more on that [here](https://github.com/tidyverse/ggplot2/blob/master/NEWS.md).
+
+- 
+
+
+
 ## `spind` v2.1.3
 -Updated citation information.
 

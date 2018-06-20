@@ -51,15 +51,23 @@ head(carlinadata)
 coords <- musdata[ ,4:5]
 
 mgee <- GEE(musculus ~ pollution + exposure, family = "poisson", data = musdata,
-            coord = coords, corstr = "fixed", plot = TRUE, scale.fix = FALSE,
-            customize_plot = scale_color_manual("Custom Legend", values = c('green', 'black')))
+            coord = coords, corstr = "fixed", scale.fix = FALSE)
 
 summary(mgee, printAutoCorPars = TRUE)
 
+plot(mgee)
+
 predictions <- predict(mgee, newdata = musdata)
+
+# you can modify the plot itself by extracting it from the plot object and
+# treating it as any other ggplot object.
+
+# my_plot <- mgee$plot
+
+
 ```
 
-As you can see, this package includes methods for `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). Additionally, the `plot` argument in `GEE` can be used to visually inspect the autocorrelation of the residuals from each regression. Version 2.1.0 and up also has built in `ggplot2` style graphics which the user can customize using arguments passed to the `customize_plot` argument of the function. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
+As you can see, this package includes methods for `plot`, `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). The `plot.GEE` method generates a plot of the autocorrelation of the residuals from the fitted `GEE` and a `GLM` of the same family for comparison. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
 
 Note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will produce errors as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point depending on how much RAM you have available). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
 
@@ -81,7 +89,9 @@ Next, we'll examine the other main model that is introduced in this package - th
 
 
 mwrm <- WRM(musculus ~ pollution + exposure, family = "poisson",
-            data = musdata, coord = coords, level = 1, plot = TRUE)
+            data = musdata, coord = coords, level = 1)
+
+plot(mwrm)
 
 summary(mwrm)
 
@@ -89,7 +99,7 @@ predictions <- predict(mwrm, newdata = musdata)
 
 ```
 
-`WRM` has many of the same features as `GEE`. Setting `plot = TRUE` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. `customize_plot` works the same as in `GEE` - simply pass additional arguments to `ggplot` to modify the figure to meet your needs. Methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
+`WRM` has many of the same features as `GEE`. The `plot.WRM` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. Methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
 
 #### Other features specific to WRMs
 
