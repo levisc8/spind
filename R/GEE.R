@@ -438,7 +438,7 @@ plot.GEE <- function(x, ...) {
 #' data(musdata)
 #' coords<-musdata[,4:5]
 #' mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
-#'           coord=coords,corstr="fixed",plot=TRUE)
+#'           coord=coords,corstr="fixed")
 #'
 #' pred<-predict(mgee,newdata=musdata)
 #'

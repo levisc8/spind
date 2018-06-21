@@ -18,7 +18,7 @@ Imports: gee,
 	 waveslim,
 	 rje,
 	 stringr,
-	 ggplot2,
+	 ggplot2 (>= 2.3.0),
 	 RColorBrewer,
 	 rlang
 License: GPL-3
