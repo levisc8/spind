@@ -12,7 +12,7 @@ Description: Functions for spatial methods based on generalized estimating equat
 Depends: R (>= 3.0.0)
 Imports: gee (>= 4.13.19),
 	 geepack (>= 1.2.1),
-	 MASS (>= 7.3.50),
+	 MASS (>= 7.3.49),
 	 splancs (>= 2.1.40),
 	 lattice (>= 0.20.35),
 	 waveslim (>= 1.7.5),
