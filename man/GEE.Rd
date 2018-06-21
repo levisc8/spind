@@ -169,7 +169,7 @@ print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
 data(musdata)
 coords<-musdata[,4:5]
 mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
-          coord=coords,corstr="fixed",plot=TRUE)
+          coord=coords,corstr="fixed")
 
 pred<-predict(mgee,newdata=musdata)
 
