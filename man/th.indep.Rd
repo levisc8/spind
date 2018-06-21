@@ -4,7 +4,7 @@
 \alias{th.indep}
 \title{Spatial threshold-independent accuracy measures}
 \usage{
-th.indep(data, coord, spatial = TRUE, plot.ROC = TRUE,
+th.indep(data, coord, spatial = TRUE, plot.ROC = FALSE,
   customize_plot = NULL)
 }
 \arguments{
@@ -18,11 +18,11 @@ coordinates for each actual and predicted value. Coordinates must be
 integer and consecutively numbered.}
 
 \item{spatial}{A logical value indicating whether spatial corrected
-indices (rather than classical indices) should be computed}
+indices (rather than classical indices) should be computed.}
 
-\item{plot.ROC}{A logical indicating whether the ROC should be plotted}
+\item{plot.ROC}{A logical indicating whether the ROC should be plotted. NOW DEPRECATED.}
 
-\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}. NOW DEPRECATED.}
 }
 \value{
 A list with the following components:
@@ -32,6 +32,7 @@ A list with the following components:
  \item{\code{TSS}}{Maximum TSS value}
  \item{\code{sensitivity}}{Sensitivity}
  \item{\code{Specificity}}{Specificity}
+ \item{\code{AUC.plot}}{A \code{ggplot} object}
 }
 }
 \description{
@@ -46,6 +47,7 @@ si2 <- th.indep(data, coord, spatial = TRUE)
 si2$AUC
 si2$TSS
 si2$opt.thresh
+si2$plot
 
 }
 \references{

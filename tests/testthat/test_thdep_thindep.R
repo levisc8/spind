@@ -20,7 +20,7 @@ test_that("confusion matrix and kappa are calculating correctly", {
   expect_equal(as.vector(ni1$cm), as.vector(CMX)) # Confusion Matrix
 })
 # spind metrics
-ni2<-th.indep(data, coord, spatial = FALSE, plot = FALSE)
+ni2<-th.indep(data, coord, spatial = FALSE, plot.ROC = FALSE)
 
 # PA metrics
 pi <- data[ ,2]
@@ -36,6 +36,10 @@ test_that("sens, specificity,AUC, and TSS are calculated correctly", {
   expect_equal(ni2$sensitivity, rp[ ,3]) # Sens
   expect_equal(ni2$specificity, rp[ ,4]) # Spec
   expect_equal(ni2$AUC, as.double(aucn[1])) # AUC
+  expect_is(ni2$plot, 'ggplot')
+
+  expect_warning(th.indep(data, coord, spatial = FALSE, plot.ROC = TRUE),
+                 regexp = '"customize_plot" and "plot.ROC" arguments are now soft deprecated' )
 })
 
 # calculate optimal kappa threshold for spind::th.dep
@@ -55,14 +59,14 @@ CMX<-cmx(datan, threshold = opthr[[2]][4])
 
 test_that("Optimal tresholds and th.dep indices are the same", {
   skip_on_cran()
+
   expect_equal(round(opt.thresh, 2), round(opthr[[2]][4], 2))
   expect_equal(ni1$kappa, Kappa(CMX)[[1]][1])
 })
 
 # calculate optimal threshold for spind::th.indep
-ni2<-th.indep(data, coord, spatial = FALSE, plot = FALSE)
+ni2<-th.indep(data, coord, spatial = FALSE, plot.ROC = FALSE)
 ni2$opt.thresh
-
 opthr<-optimal.thresholds(datan, opt.methods=1:4, threshold = piord)
 rpc<-roc.plot.calculate(datan, threshold = opthr[[2]][3])
 

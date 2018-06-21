@@ -23,7 +23,8 @@ are possible. \code{haar} is the default.}
 into a bigger square. Default is set to mean(f).}
 
 \item{color.maps}{A logical value. If \code{TRUE}, produces colorful maps.
-If \code{FALSE}, produces grayscale maps. Default is grayscale.}
+If \code{FALSE}, produces grayscale maps. Default is grayscale. NOW DEPRECATED,
+color maps will not be produced in future versions.}
 }
 \value{
 A set of plots showing the matrix image at each value for
@@ -44,8 +45,6 @@ coords <- carlinadata[ ,4:5]
 
 # Upscaling of smooth components
 upscale(carlinadata$land.use, coord = coords)
-upscale(carlinadata$aridity, coord = coords,pad=0,
-        color.maps = TRUE)
 
 }
 \author{

@@ -19,7 +19,8 @@ consecutively numbered coordinates for each occurence and prediction in
 Default is FALSE.}
 
 \item{color.maps}{A logical value. If \code{TRUE}, produces colorful maps.
-If \code{FALSE}, produces grayscale maps. Default is grayscale.}
+If \code{FALSE}, produces grayscale maps. Default is grayscale. NOW DEPRECATED,
+color maps will not be produced in future versions.}
 }
 \value{
 A vector of adjusted actual values.

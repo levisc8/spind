@@ -13,7 +13,8 @@
 #'@param plot.maps A logical indicating whether maps should be plotted.
 #'Default is FALSE.
 #' @param color.maps A logical value. If \code{TRUE}, produces colorful maps.
-#' If \code{FALSE}, produces grayscale maps. Default is grayscale.
+#' If \code{FALSE}, produces grayscale maps. Default is grayscale. NOW DEPRECATED,
+#' color maps will not be produced in future versions.
 #'
 #'@return A vector of adjusted actual values.
 #'
@@ -70,6 +71,9 @@ adjusted.actuals<-function(data, coord, plot.maps = FALSE, color.maps = FALSE){
       colours <- list(
         colorRampPalette(RColorBrewer::brewer.pal(10, 'Spectral'))(50)
         )
+
+      warning('"color.maps" is now soft deprecated and will be removed in future versions')
+
     } else {
       colours <- list(rev(grDevices::gray((0:45)/50)))
     }

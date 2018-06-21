@@ -1,9 +1,21 @@
 ## `spind` v2.2.0
 - deprecated `customize_plot` and `plot` arguments in favor of new `plot` methods
-for `GEE` and `WRM`.
+for `GEE` and `WRM`. 
     + `GEE` and `WRM` now return the `ggplot` object in their respective classes.
     Users can modify them from there rather than use the clunky interface to 
     modify them within the model function call.
+    
+- `rvi.plot` and `th.indep` now return
+`ggplot` as list items along with the values that they returned before. 
+`customize_plot` arguments have been deprecated in every function it appears in.
+`plot.ROC` in `th.indep` is also deprecated.
+
+- `covar.plot`'s `customize_plot` argument is also deprecated, but the `plot` 
+argument is not, as this controls which statistic is plotted (variance or covariance)
+rather than whether or not a plot is generated at all. This function no longer
+prints the `ggplot` object by default, but returns it as part of a list.
+
+- deprecated `color.maps` arguments to `upscale` and `adjusted.actuals`.
 
 - Some documentation clarification.
 

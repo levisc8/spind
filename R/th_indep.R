@@ -11,9 +11,9 @@
 #'coordinates for each actual and predicted value. Coordinates must be
 #'integer and consecutively numbered.
 #'@param spatial A logical value indicating whether spatial corrected
-#'indices (rather than classical indices) should be computed
-#'@param plot.ROC A logical indicating whether the ROC should be plotted
-#'@param customize_plot Additional plotting parameters passed to \code{ggplot}
+#'indices (rather than classical indices) should be computed.
+#'@param plot.ROC A logical indicating whether the ROC should be plotted. NOW DEPRECATED.
+#'@param customize_plot Additional plotting parameters passed to \code{ggplot}. NOW DEPRECATED.
 #'
 #'
 #'@return A list with the following components:
@@ -23,7 +23,9 @@
 #'  \item{\code{TSS}}{Maximum TSS value}
 #'  \item{\code{sensitivity}}{Sensitivity}
 #'  \item{\code{Specificity}}{Specificity}
+#'  \item{\code{AUC.plot}}{A \code{ggplot} object}
 #'}
+#'
 #'@author
 #'Gudrun Carl
 #'
@@ -37,19 +39,27 @@
 #'si2$AUC
 #'si2$TSS
 #'si2$opt.thresh
+#'si2$plot
 #'
 #' @references Carl G, Kuehn I (2017) Spind: a package for computing spatially
 #'  corrected accuracy measures. Ecography 40: 675-682.
 #'  doi: 10.1111/ecog.02593
 #'
-#' @importFrom ggplot2 theme element_blank element_line ggplot aes_
+#' @importFrom ggplot2 theme element_blank element_line ggplot aes
 #' geom_line scale_color_manual scale_x_continuous scale_y_continuous
+#' @importFrom rlang quo !!
 
 #' @export
 
 
-th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
+th.indep <- function(data, coord, spatial = TRUE, plot.ROC = FALSE,
                      customize_plot = NULL){
+
+  if(!is.null(customize_plot) | plot.ROC) {
+    warning('"customize_plot" and "plot.ROC" arguments are now soft deprecated.\n',
+            'Use object_name$plot to print the ggplot2 object and for \n',
+            'subsequent modification.')
+  }
 
   if(dim(data)[1] != dim(coord)[1]) stop("error in dimension")
 
@@ -166,39 +176,37 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
   specificity[is.na(specificity)] <- 0
   TSS <- max(sensitivity + specificity) - 1
 
+
+  plt.data <- data.frame(spec = 1-specificity,
+                         sens = sensitivity)
+
+  plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                              panel.grid.minor = ggplot2::element_blank(),
+                              panel.background = ggplot2::element_blank(),
+                              axis.line = ggplot2::element_line(colour = "black"))
+
+  spec <- rlang::quo(spec)
+  sens <- rlang::quo(sens)
+
+  plt <- ggplot2::ggplot(data = plt.data,
+                         ggplot2::aes(x = !! spec)) +
+    plt.blank +
+    ggplot2::geom_line(ggplot2::aes(y = !! spec,
+                                    color = "1:1 Line"),
+                       size = 0.9) +
+    ggplot2::geom_line(ggplot2::aes(y = !! sens,
+                                    color = "ROC"),
+                       size = 0.9) +
+    ggplot2::scale_color_manual("",
+                                breaks = c('1:1 Line','ROC'),
+                                values = c('red', 'blue')) +
+    ggplot2::scale_x_continuous('1 - Specificity', breaks = seq(0, 1, .25)) +
+    ggplot2::scale_y_continuous("Sensitivity",
+                                limits = c(0,1)) +
+    customize_plot
+
   if(plot.ROC){
-
-    plt.data <- data.frame(spec = 1-specificity,
-                           sens = sensitivity)
-
-    plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                                panel.grid.minor = ggplot2::element_blank(),
-                                panel.background = ggplot2::element_blank(),
-                                axis.line = ggplot2::element_line(colour = "black"))
-
-    plt <- ggplot2::ggplot(data = plt.data,
-                           ggplot2::aes_(x = quote(spec))) +
-      plt.blank +
-      ggplot2::geom_line(ggplot2::aes_(y = quote(spec),
-                                       color = "1:1 Line"),
-                         size = 0.9) +
-      ggplot2::geom_line(ggplot2::aes_(y = quote(sensitivity),
-                                       color = "ROC"),
-                         size = 0.9) +
-      ggplot2::scale_color_manual("",
-                                  breaks = c('1:1 Line','ROC'),
-                                  values = c('red', 'blue')) +
-      ggplot2::scale_x_continuous('1 - Specificity', breaks = seq(0, 1, .25)) +
-      ggplot2::scale_y_continuous("Sensitivity",
-                                  limits = c(0,1)) +
-      customize_plot
-
-    print(plt)
-
-    # plot(1-specificity,sensitivity,
-    #      type="l",xlim=c(0,1),ylim=c(0,1),
-    #      xlab="1 - specificity",ylab="sensitivity",main="ROC")
-    # points(c(0,1),c(0,1),type="l")
+        print(plt)
   }
 
   dat <- cbind(c(1 - specificity, 1, 1, 0),
@@ -213,6 +221,7 @@ th.indep <- function(data, coord, spatial = TRUE, plot.ROC = TRUE,
               opt.thresh = opt.thresh,
               TSS = TSS,
               sensitivity = sensitivity,
-              specificity = specificity))
+              specificity = specificity,
+              plot = plt))
 
 }

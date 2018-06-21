@@ -8,7 +8,7 @@ test_that('Coefficient estimates + SEs are as expected', {
   formula <- as.formula(musculus ~ pollution + exposure)
 
   mgee <- GEE(formula, family = "poisson", data = musdata,
-              coord = coords, corstr = "fixed", plot = F, scale.fix = FALSE)
+              coord = coords, corstr = "fixed", plot = FALSE, scale.fix = FALSE)
 
 
   mwrm <- WRM(musculus ~ pollution + exposure, family = "poisson",
@@ -26,6 +26,9 @@ test_that('Coefficient estimates + SEs are as expected', {
   expect_is(mgee, 'GEE')
   expect_true(is.list(mwrm))
   expect_is(mwrm, 'WRM')
+
+  expect_is(mgee$plot, 'ggplot')
+  expect_is(mwrm$plot, 'ggplot')
 })
 
 test_that('predict.GEE and .WRM interact properly with parent functions',{
@@ -40,10 +43,10 @@ test_that('predict.GEE and .WRM interact properly with parent functions',{
 
 
   mwrm <- WRM(musculus ~ pollution + exposure, family = "poisson",
-              data = musdata, coord = coords, level = 1, plot = F)
+              data = musdata, coord = coords, level = 1, plot = FALSE)
   expect_match(class(predict.GEE(mgee, newdata = musdata)), 'numeric')
   expect_match(class(predict.WRM(mwrm, newdata = musdata,
-                                 sm = T, newcoord = coords)), 'numeric')
+                                 sm = TRUE, newcoord = coords)), 'numeric')
   expect_match(class(predict.WRM(mwrm, newdata = musdata)), 'numeric')
 
   expect_equal(predict.GEE(mgee, newdata = musdata), mgee$fitted,
@@ -55,17 +58,26 @@ test_that('predict.GEE and .WRM interact properly with parent functions',{
 
 test_that('fails correctly', {
   skip_on_cran()
+  data(musdata)
+  coords <- musdata [ ,4:5]
+
 
   expect_error(GEE(formula, family = "poisson", data = musdata,
-               coord = coord, corstr = "fixed", plot = F, scale.fix = FALSE),
+               coord = coords, corstr = "fixed", plot = FALSE, scale.fix = FALSE),
                "formula: specified notation is missing")
 
   formula <- as.formula(musculus ~ pollution + exposure)
 
+  expect_warning(GEE(formula, family = "poisson", data = musdata,
+                  coord = coords, corstr = "fixed",
+                  plot = TRUE, scale.fix = FALSE),
+                 regexp = '"customize_plot" and')
+
+
   coord <- cbind(rnorm(400), runif(400))
 
   expect_error(GEE(formula, family = "poisson", data = musdata,
-                   coord = coord,plot = F),
+                   coord = coord, plot = FALSE),
                "coordinates not integer")
 
   coord <- cbind(round(runif(300)), round(runif(300)))

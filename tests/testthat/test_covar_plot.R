@@ -17,9 +17,11 @@ test_that('covar output is expected', {
   expect_identical(as.vector(attr(for.test$result, 'dimnames')[[1]]),
                    c('carlina.horrida-aridity','carlina.horrida-land.use'))
 
+  expect_is(for.test$plot, 'ggplot')
 
 })
 
+library(ggplot2)
 
 for.test<-covar.plot(carlina.horrida ~ aridity + land.use - 1,
                      carlinadata,coord=coords,wavelet="d4",
@@ -39,4 +41,11 @@ test_that('var output is expect',{
   expect_identical(as.vector(attr(for.test$result, 'dimnames')[[1]]),
                    c('carlina.horrida', 'aridity', 'land.use'))
 
+  expect_is(for.test$plot, 'ggplot')
+
+  expect_warning(covar.plot(carlina.horrida ~ aridity + land.use - 1,
+                            carlinadata,coord=coords,wavelet="d4",
+                            wtrafo='modwt',plot='var',
+                            customize_plot = ggplot2::theme(legend.position = 'bottom')),
+                 regexp = '"customize_plot" argument is now soft deprecated')
 })

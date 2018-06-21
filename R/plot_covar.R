@@ -11,12 +11,17 @@
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}.
 #' @param plot      Either \code{var} for wavelet variance analysis
 #'           or \code{covar} for wavelet covariance analysis.
-#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}.
+#' NOW DEPRECATED
 #'
 #' @details Each variable or pair of variables in \code{formula} is passed to \code{wavevar} or
 #' \code{wavecovar} internally, and the result is plotted as a function of \code{level}.
 #'
-#' @return    A list containing a vector of results.
+#' @return    A list containing
+#'
+#'  1. \code{result} =  a vector of results.
+#'
+#'  2. \code{plot} = a \code{ggplot} object
 #'
 #' @author Gudrun Carl
 #'
@@ -24,25 +29,40 @@
 #' data(carlinadata)
 #' coords<- carlinadata[,4:5]
 #'
-#' covar.plot(carlina.horrida ~ aridity + land.use - 1,
+#' covariance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
 #' carlinadata,coord=coords,wavelet="d4",
 #' wtrafo='modwt',plot='covar')
 #'
-#' covar.plot(carlina.horrida ~ aridity + land.use - 1,
+#' covariance$plot
+#' covariance$result
+#'
+#' variance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
 #'            carlinadata,coord=coords,wavelet="d4",
 #'            wtrafo='modwt',plot='var')
+#'
+#' variance$plot
+#' variance$result
 #'
 #' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
 #'
 #' @importFrom ggplot2 theme element_blank element_text ggplot aes_
 #' geom_point geom_line scale_x_continuous scale_y_continuous
 #' @importFrom stats model.matrix model.frame
+#' @importFrom rlang quo !!
 #' @export
 #'
 
 
 covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
                      plot="covar", customize_plot = NULL){
+
+
+  if(!is.null(customize_plot)) {
+    warning('"customize_plot" argument is now soft deprecated.\n',
+            'Use object_name$plot to print the ggplot2 object and for \n',
+            'subsequent modification.')
+  }
+
 
   x <- coord[ ,1]
   y <- coord[ ,2]
@@ -125,28 +145,31 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     ylim <- c(SeqBegin, SeqEnd)
   }
 
+  Level <- rlang::quo(Level)
+  Variable <- rlang::quo(Variable)
+  Variance <- rlang::quo(Variance)
+
   plt.blank <-  ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                                panel.grid.minor = ggplot2::element_blank(),
                                panel.background = ggplot2::element_blank(),
                                axis.line = ggplot2::element_line(colour = "black"))
 
   Plt <- ggplot2::ggplot(PltData,
-                         ggplot2::aes_(x = quote(Level),
-                                       y = quote(Variance))) +
+                         ggplot2::aes(x = !! Level,
+                                       y = !! Variance)) +
     plt.blank +
-    ggplot2::geom_point(ggplot2::aes_(colour = quote(Variable),
-                                      shape = quote(Variable)),
+    ggplot2::geom_point(ggplot2::aes(colour = !! Variable,
+                                      shape = !! Variable),
                         size = 3) +
-    ggplot2::geom_line(ggplot2::aes_(colour = quote(Variable)),
+    ggplot2::geom_line(ggplot2::aes(colour = !! Variable),
                        linetype = 2,
                        size = 1) +
     ggplot2::scale_x_continuous("Level", breaks = 1:nscale) +
-    ggplot2::scale_y_continuous(paste("Wavelet ",VarType),
+    ggplot2::scale_y_continuous(paste("Wavelet ", VarType),
                                 breaks = y_scale,
                                 limits = ylim) +
     customize_plot
 
-  print(Plt)
 
 
   if(plot == "var"){
@@ -158,6 +181,7 @@ covar.plot<-function(formula,data,coord,wavelet="haar",wtrafo="dwt",
     rownames(res) <- paste(namresp, namvar, sep = "-")
   }
 
-  fit <- list(result = res)
-  fit
+  fit <- list(result = res,
+              plot = Plt)
+  return(fit)
 }

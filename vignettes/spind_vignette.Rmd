@@ -62,14 +62,21 @@ predictions <- predict(mgee, newdata = musdata)
 # you can modify the plot itself by extracting it from the plot object and
 # treating it as any other ggplot object.
 
-# my_plot <- mgee$plot
+library(ggplot2)
+my_plot <- mgee$plot
+
+# more of a base-R graphic feel
+my_plot + 
+  theme(plot.background = element_rect(fill = NA,
+                                       color = 'black',
+                                       size = 1.25))
 
 
 ```
 
 As you can see, this package includes methods for `plot`, `summary` and `predict`. These are useful in evaluating model fit and autocorrelation of residuals compared to a non-spatial model (in this case, a GLM with the same family as the GEE). The `plot.GEE` method generates a plot of the autocorrelation of the residuals from the fitted `GEE` and a `GLM` of the same family for comparison. Note that a QIC (Quasi-information criterion) score is reported as opposed to AIC. This is calculated based on the method described in Hardin & Hilbe[^4]^,^[^5] and is implemented using the function `qic.calc`. 
 
-Note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will produce errors as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point depending on how much RAM you have available). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
+Also note that trying to fit GEEs with `corstr = "fixed"` to large data sets (i.e. number of observations is approximately `sqrt(.Machine$integer.max)`) will produce errors as the resulting variance-covariance matrices will be too large to be handled in _R_ (you may well run into problems before this point depending on how much RAM you have available). This is where fitting clustered models can come in handy, as they work with smaller, more manageable matrices. These can be specified by changing the `corstr` to either `"quadratic"` or `"exchangeable"`.
 
 [^4]: Hardin, J.W. & Hilbe, J.M. (2003) Generalized Estimating Equations. Chapman and Hall, New York.
 
@@ -99,7 +106,7 @@ predictions <- predict(mwrm, newdata = musdata)
 
 ```
 
-`WRM` has many of the same features as `GEE`. The `plot.WRM` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. Methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE.
+`WRM` has many of the same features as `GEE`. The `plot.WRM` allows you to visually examine the autocorrelation of residuals from a GLM of the same error family as your WRM. Methods for `predict` and `summary` allow you to examine outputs from the model using the same code as you might use for a GLM. However, note that this reports an AIC score, rather than a QIC score as in the GEE. You can extract and modify the `ggplot` output from `WRM` as well using the `plot` slot in the `WRM` class.
 
 #### Other features specific to WRMs
 
@@ -109,17 +116,27 @@ predictions <- predict(mwrm, newdata = musdata)
 
 coords <- carlinadata[ ,4:5]
 
-covar.plot(carlina.horrida ~ aridity + land.use - 1,
-           data = carlinadata, coord = coords, wavelet = "d4",
-           wtrafo = 'modwt', plot = 'covar')
+wave_covariance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
+                              data = carlinadata, coord = coords, wavelet = "d4",
+                              wtrafo = 'modwt', plot = 'covar')
 
-covar.plot(carlina.horrida ~ aridity + land.use - 1,
-           data = carlinadata, coord = coords, wavelet = "d4",
-           wtrafo = 'modwt', plot = 'var')
+wave_variance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
+                            data = carlinadata, coord = coords, wavelet = "d4",
+                            wtrafo = 'modwt', plot = 'var')
+
+wave_variance$result
+wave_covariance$result
+
+# view plots side by side
+
+library(gridExtra)
+grid.arrange(wave_variance$plot, wave_covariance$plot)
 
 ```
 
-You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function. `upscale` allows you to visually examine your data at a number of different levels of `scale` which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components. The default padding level is the mean value of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. Finally, you can optionally produce gray scale or colorized maps using the `color.maps` argument. A quick example below using `carlinadata` data set.
+You may also want to view the smooth components of your wavelets at different `scale`s. For this, we offer the `upscale` function. `upscale` allows you to visually examine your data at a number of different levels of `scale` which controls the resolution of the grid cells in your data set.[^8] It also offers the option to adjust padding settings so you can see how that influences your smooth components. The default padding level is the mean value of your input vector, but it can be easily switched using the `pad` argument, which works the same way as in the other `WRM` functions. A quick example below using `carlinadata` data set.
+
+**NOTE:** The `color.maps` argument is soft-deprecated from `spind  >= v2.2`. 
 
 [^8]: Carl G, Doktor D, Schweiger O, Kuehn I (2016) Assessing relative variable importance across different spatial scales: a two-dimensional wavelet analysis. Journal of Biogeography 43: 2502-2512.
 
@@ -127,7 +144,7 @@ You may also want to view the smooth components of your wavelets at different `s
 ```{r Upscale Example, fig.width = 7.15, fig.height = 7}
 
 upscale(carlinadata$land.use, coord = coords,
-        pad = mean(carlinadata$land.use), color.maps = FALSE)
+        pad = mean(carlinadata$land.use))
 
 
 ```
@@ -217,9 +234,12 @@ Finally, we offer one further model selection procedure specific to WRMs. `rvi.p
 data(carlinadata)
 coords <- carlinadata[ ,4:5]
 
-rvi.plot(carlina.horrida ~ aridity + land.use, family = "poisson",
-         data = carlinadata, coord = coords, maxlevel = 4, 
-         detail = TRUE, wavelet = "d4")
+rvi <- rvi.plot(carlina.horrida ~ aridity + land.use, family = "poisson",
+                data = carlinadata, coord = coords, maxlevel = 4, 
+                detail = TRUE, wavelet = "d4")
+
+rvi$rvi
+rvi$plot
 
 ```
 
@@ -257,13 +277,16 @@ th.dep.indices$kappa
 
 # Threshold independent metrics
 th.indep.indices <- th.indep(data = df, coord = coords, 
-                             spatial = TRUE, plot.ROC = TRUE)
+                             spatial = TRUE)
 
 # AUC
 th.indep.indices$AUC
 
 # TSS
 th.indep.indices$TSS
+
+# AUC plot
+th.indep.indices$plot
 
 
 

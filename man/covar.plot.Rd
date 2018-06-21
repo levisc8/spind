@@ -22,10 +22,15 @@ corresponding x,y-coordinates which have to be integer.}
 \item{plot}{Either \code{var} for wavelet variance analysis
 or \code{covar} for wavelet covariance analysis.}
 
-\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}.
+NOW DEPRECATED}
 }
 \value{
-A list containing a vector of results.
+A list containing
+
+ 1. \code{result} =  a vector of results.
+
+ 2. \code{plot} = a \code{ggplot} object
 }
 \description{
 Plots the wavelet variance or covariance for the specified formula.
@@ -39,13 +44,19 @@ Each variable or pair of variables in \code{formula} is passed to \code{wavevar}
 data(carlinadata)
 coords<- carlinadata[,4:5]
 
-covar.plot(carlina.horrida ~ aridity + land.use - 1,
+covariance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
 carlinadata,coord=coords,wavelet="d4",
 wtrafo='modwt',plot='covar')
 
-covar.plot(carlina.horrida ~ aridity + land.use - 1,
+covariance$plot
+covariance$result
+
+variance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
            carlinadata,coord=coords,wavelet="d4",
            wtrafo='modwt',plot='var')
+
+variance$plot
+variance$result
 
 }
 \seealso{

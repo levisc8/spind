@@ -23,10 +23,16 @@
 #' @param wtrafo   Type of wavelet transform: \code{dwt} or \code{modwt}
 #' @param n.eff    A numeric value of effective sample size
 #' @param trace Should R print progress updates to the console? Default is FALSE
-#' @param customize_plot Additional plotting parameters passed to \code{ggplot}
+#' @param customize_plot Additional plotting parameters passed to \code{ggplot}.
+#' NOW DEPRECATED.
 #'
-#' @return A matrix containing the relative importance of each variable
+#' @return A list containing
+#'
+#' 1. A matrix containing the relative importance of each variable
 #' in the regression at each value of the scale level.
+#'
+#' 2. A \code{ggplot} object containing a plot of the relative
+#' variable importance
 #'
 #' @examples
 #' data(carlinadata)
@@ -37,16 +43,20 @@
 #' wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
 #'               carlinadata,coords,level=1,wavelet="d4")
 #'
-#' mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
-#'
+#' mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=TRUE)
 #'
 #'
 #' # Plot scale-dependent relative variable importance
-#' rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
+#' rvi <- rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
 #'          carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+#'
+#' rvi$plot
+#' rvi$rvi
+#'
 #'}
 #' @importFrom ggplot2 theme element_blank element_line ggplot
-#' aes_ geom_point geom_line scale_x_continuous scale_y_continuous
+#' aes geom_point geom_line scale_x_continuous scale_y_continuous
+#' @importFrom rlang !! quo
 
 #' @export
 
@@ -54,6 +64,12 @@
 rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
                      wavelet = "haar", wtrafo = "dwt",
                      n.eff = NULL, trace = FALSE, customize_plot = NULL){
+
+  if(!is.null(customize_plot)) {
+    warning('"customize_plot" argument is now soft deprecated.\n',
+            'Use object_name$plot to print the ggplot2 object and for \n',
+            'subsequent modification.')
+  }
   if(trace){
     cat("\n","Model selection tables:","\n","\n")
   }
@@ -121,23 +137,29 @@ rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
                                panel.background = ggplot2::element_blank(),
                                axis.line = element_line(colour = "black"))
 
+
+  Level <- rlang::quo(Level)
+  Variable <- rlang::quo(Variable)
+  Weight <- rlang::quo(Weight)
+
   Plt <- ggplot2::ggplot(PltData,
-                         ggplot2::aes_(x = quote(Level),
-                                       y = quote(Weight))) +
+                         ggplot2::aes(x = !! Level,
+                                       y = !! Weight)) +
          plt.blank +
-    ggplot2::geom_point(ggplot2::aes_(colour = quote(Variable),
-                                      shape = quote(Variable)),
+    ggplot2::geom_point(ggplot2::aes(colour = !! Variable,
+                                      shape = !! Variable),
                         size = 3) +
-    ggplot2::geom_line(ggplot2::aes_(colour = quote(Variable)),
+    ggplot2::geom_line(ggplot2::aes(colour = !! Variable),
                        linetype = 2,
                        size = 1) +
     ggplot2::scale_x_continuous("Level", breaks = 1:maxlevel) +
     ggplot2::scale_y_continuous("Relative Variable Importance",
-                                breaks = seq(0, max(WeightSums),
+                                breaks = seq(0,
+                                             max(WeightSums),
                                              length.out = 6)) +
          customize_plot
 
-  print(Plt)
+  #print(Plt)
 
   rownames(WeightSums) <- leg
   colnames(WeightSums) <- paste("level", c(1:klimitscale), sep = "=")
@@ -146,7 +168,10 @@ rvi.plot <- function(formula, family, data, coord, maxlevel, detail = TRUE,
     print(WeightSums)
   }
 
-  fit <- list(rvi = WeightSums)
+  fit <- list(rvi = WeightSums,
+              plot = Plt)
+
+  return(fit)
 
 }
 

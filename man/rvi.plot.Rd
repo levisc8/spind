@@ -32,11 +32,17 @@ If set to \code{FALSE}, smooth and detail components are analyzed. Default is \c
 
 \item{trace}{Should R print progress updates to the console? Default is FALSE}
 
-\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}}
+\item{customize_plot}{Additional plotting parameters passed to \code{ggplot}.
+NOW DEPRECATED.}
 }
 \value{
-A matrix containing the relative importance of each variable
+A list containing
+
+1. A matrix containing the relative importance of each variable
 in the regression at each value of the scale level.
+
+2. A \code{ggplot} object containing a plot of the relative
+variable importance
 }
 \description{
 Creates model selection tables, calculates and plots relative
@@ -57,12 +63,15 @@ coords<- carlinadata[,4:5]
 wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
               carlinadata,coords,level=1,wavelet="d4")
 
-mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=T)
-
+mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=TRUE)
 
 
 # Plot scale-dependent relative variable importance
-rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
+rvi <- rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
          carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+
+rvi$plot
+rvi$rvi
+
 }
 }

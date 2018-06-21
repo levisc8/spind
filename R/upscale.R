@@ -19,7 +19,8 @@
 #' @param pad       A numeric value for padding the matrix
 #' into a bigger square. Default is set to mean(f).
 #' @param color.maps A logical value. If \code{TRUE}, produces colorful maps.
-#' If \code{FALSE}, produces grayscale maps. Default is grayscale.
+#' If \code{FALSE}, produces grayscale maps. Default is grayscale. NOW DEPRECATED,
+#' color maps will not be produced in future versions.
 #'
 #' @return A set of plots showing the matrix image at each value for
 #' \code{level}.
@@ -32,8 +33,6 @@
 #'
 #' # Upscaling of smooth components
 #' upscale(carlinadata$land.use, coord = coords)
-#' upscale(carlinadata$aridity, coord = coords,pad=0,
-#'         color.maps = TRUE)
 #'
 #' @importFrom grDevices colorRampPalette gray
 #' @importFrom graphics par
@@ -69,20 +68,18 @@ upscale<-function(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
                 mai = c(0.1, 0, 0.4, 0),
                 omi = c(0, 0, 0, 0),
                 pty = "s",cex.main=1)
+
   if(color.maps){
     colors <- list(grDevices::colorRampPalette(RColorBrewer::brewer.pal(10,
                                                              'Spectral'))(100))
+    warning('"color.maps" is now soft deprecated and will be removed in future versions')
+
   } else {
     colors <- list(grDevices::gray((0:50)/50))
   }
   minvec <- rep(NA, 4)
   maxvec <- rep(NA, 4)
 
-  MatDat <- data.frame(x = NA,
-                       y = NA,
-                       val = NA,
-                       facetx = NA,
-                       facety = NA)
 
   for (i in 1:4){
     if(i == 1){
