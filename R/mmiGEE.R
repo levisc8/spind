@@ -71,7 +71,7 @@
 mmiGEE<-function(object,data, trace = FALSE){
 
 
-  if(class(object)!="GEE") stop("Input model is not of class 'GEE'")
+  if(!inherits(object, "GEE")) stop("Input model is not of class 'GEE'")
 
   family<-object$family
   formula<-object$formula
