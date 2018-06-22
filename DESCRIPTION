@@ -28,7 +28,7 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: 
     knitr (>= 1.15.1),
-    rmarkdown (>= 1.10),
+    rmarkdown (>= 1.9),
     gridExtra (>= 2.3),
     testthat (>= 2.0.0),
     PresenceAbsence (>= 1.1.9),
