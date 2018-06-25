@@ -116,10 +116,26 @@
 #' coords<- musdata[,4:5]
 #'
 #' \dontrun{
-#' mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-#'       coord=coords, corstr="fixed",scale.fix=FALSE)
+#' mgee <- GEE(musculus ~ pollution + exposure,
+#'             family = "poisson",
+#'             data =  musdata,
+#'             coord = coords,
+#'             corstr = "fixed",
+#'             scale.fix = FALSE)
 #'
-#' summary(mgee,printAutoCorPars=TRUE)
+#' summary(mgee, printAutoCorPars = TRUE)
+#'
+#' pred <- predict(mgee, newdata = musdata)
+#'
+#' library(ggplot2)
+#'
+#' plot(mgee)
+#'
+#' my_gee_plot <- mgee$plot
+#'
+#' # move the legend to a new position
+#' print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
+#'
 #'}
 #' @references
 #' Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species
@@ -407,18 +423,6 @@ GEE <- function(formula,family,data,coord,
 #' @param x An object of class \code{GEE} or \code{WRM}
 #' @param ... Not used.
 #'
-#'@examples
-#' \dontrun{
-#'library(ggplot2)
-#' plot(mgee)
-#'
-#' my_gee_plot <- mgee$plot
-#'
-#' # move the legend to a new position
-#' print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
-#'
-#'}
-#'
 #' @export
 
 plot.GEE <- function(x, ...) {
@@ -434,14 +438,6 @@ plot.GEE <- function(x, ...) {
 #'
 #' @inheritParams summary.GEE
 #' @param newdata  A data frame containing variables to base the predictions on.
-#' @examples
-#' data(musdata)
-#' coords<-musdata[,4:5]
-#' mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
-#'           coord=coords,corstr="fixed")
-#'
-#' pred<-predict(mgee,newdata=musdata)
-#'
 #'
 #'@importFrom stats model.matrix
 #'@export

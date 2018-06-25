@@ -6,7 +6,7 @@
 #'@param data A data frame or matrix with two columns. The first column
 #'should contain actual presence/absence data (binary, 0 or 1) and the
 #'second column should contain model predictions of probability of
-#'occurence (numeric, between 0 and 1).
+#'occurrence (numeric, between 0 and 1).
 #'@param coord A data frame or matrix with two columns containing x,y
 #'coordinates for each actual and predicted value. Coordinates must be
 #'integer and consecutively numbered.
@@ -21,7 +21,7 @@
 #'  \item{\code{cm}}{Confusion matrix}
 #'  \item{\code{sensitivity}}{Sensitivity}
 #'  \item{\code{specificity}}{Specificity}
-#'  \item{\code{actuals}}{Actual occurence data or adjusted actual occurence data}
+#'  \item{\code{actuals}}{Actual occurrence data or adjusted actual occurrence data}
 #'  \item{\code{splitlevel.pred}}{Level splitting of predicted values}
 #'  \item{\code{splitlevel.act}}{Level splitting of actuals or adjusted actuals}
 #'  \item{\code{splitposition.pred}}{Position splitting of predicted values}
@@ -34,7 +34,7 @@
 #'
 #'@references Carl G, Kuehn I (2017) Spind: a package for computing
 #' spatially corrected accuracy measures.
-#' Ecography 40: 675-682. doi: 10.1111/ecog.02593
+#' Ecography 40: 675-682. DOI: 10.1111/ecog.02593
 #'
 #'@examples
 #'data(hook)

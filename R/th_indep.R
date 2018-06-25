@@ -6,7 +6,7 @@
 #'@param data A data frame or matrix with two columns. The first column
 #'should contain actual presence/absence data (binary, 0 or 1) and the
 #'second column should contain model predictions of probability of
-#'occurence (numeric, between 0 and 1).
+#'occurrence (numeric, between 0 and 1).
 #'@param coord A data frame or matrix with two columns containing x,y
 #'coordinates for each actual and predicted value. Coordinates must be
 #'integer and consecutively numbered.
@@ -43,7 +43,7 @@
 #'
 #' @references Carl G, Kuehn I (2017) Spind: a package for computing spatially
 #'  corrected accuracy measures. Ecography 40: 675-682.
-#'  doi: 10.1111/ecog.02593
+#'  DOI: 10.1111/ecog.02593
 #'
 #' @importFrom ggplot2 theme element_blank element_line ggplot aes
 #' geom_line scale_color_manual scale_x_continuous scale_y_continuous

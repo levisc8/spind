@@ -11,7 +11,7 @@ th.indep(data, coord, spatial = TRUE, plot.ROC = FALSE,
 \item{data}{A data frame or matrix with two columns. The first column
 should contain actual presence/absence data (binary, 0 or 1) and the
 second column should contain model predictions of probability of
-occurence (numeric, between 0 and 1).}
+occurrence (numeric, between 0 and 1).}
 
 \item{coord}{A data frame or matrix with two columns containing x,y
 coordinates for each actual and predicted value. Coordinates must be
@@ -53,7 +53,7 @@ si2$plot
 \references{
 Carl G, Kuehn I (2017) Spind: a package for computing spatially
  corrected accuracy measures. Ecography 40: 675-682.
- doi: 10.1111/ecog.02593
+ DOI: 10.1111/ecog.02593
 }
 \seealso{
 \code{\link{th.dep}}

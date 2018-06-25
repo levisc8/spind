@@ -62,25 +62,34 @@
 #' @examples
 #' # For demonstration only. We are artificially imposing a grid structure
 #' # on data that is not actually spatial data
+#'
 #' library(MASS)
 #' data(birthwt)
 #'
+#' x <- rep(1:14, 14)
+#' y <- as.integer(gl(14, 14))
+#' coords <- cbind(x[-(190:196)], y[-(190:196)])
 #'
-#' x<-rep(1:14,14)
-#' y<-as.integer(gl(14,14))
-#' coords<-cbind(x[-(190:196)],y[-(190:196)])
 #' \dontrun{
-#' formula<-formula(low ~ age+ lwt+ race+ smoke+ ftv+  bwt)
+#' formula <- formula(low ~ age + lwt + race + smoke + ftv + bwt)
 #'
-#' mgee<-GEE(formula, family = "gaussian", data = birthwt,
-#'           coord=coords, corstr="fixed",scale.fix=TRUE)
+#' mgee <- GEE(formula,
+#'             family = "gaussian",
+#'             data = birthwt,
+#'             coord = coords,
+#'             corstr = "fixed",
+#'             scale.fix = TRUE)
 #'
-#' ss<-step.spind(mgee,birthwt)
+#' ss <- step.spind(mgee, birthwt)
 #'
-#' best.mgee<-GEE(ss$model, family = "gaussian", data = birthwt,
-#'            coord=coords, corstr="fixed",scale.fix=TRUE)
+#' best.mgee <- GEE(ss$model,
+#'                  family = "gaussian",
+#'                  data = birthwt,
+#'                  coord = coords,
+#'                  corstr = "fixed",
+#'                  scale.fix = TRUE)
 #'
-#' summary(best.mgee,printAutoCorPars=FALSE)
+#' summary(best.mgee, printAutoCorPars = FALSE)
 #'}
 #'
 #' @importFrom stats terms update.formula as.formula

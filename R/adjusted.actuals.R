@@ -8,7 +8,7 @@
 #'0 or 1) values in 1st column and predicted values (numeric between 0 and 1)
 #'in 2nd column.
 #'@param coord a matrix of two columns of the same length providing integer,
-#'consecutively numbered coordinates for each occurence and prediction in
+#'consecutively numbered coordinates for each occurrence and prediction in
 #'\code{data}.
 #'@param plot.maps A logical indicating whether maps should be plotted.
 #'Default is FALSE.
@@ -22,9 +22,9 @@
 #'
 #'@examples
 #'data(hook)
-#'data<- hook[,1:2]
-#'coord<- hook[,3:4]
-#'aa<-adjusted.actuals(data,coord,plot.maps=TRUE)
+#'data <- hook[ ,1:2]
+#'coord <- hook[ ,3:4]
+#'aa <- adjusted.actuals(data, coord, plot.maps = TRUE)
 #'
 #'@importFrom lattice trellis.par.get levelplot trellis.par.set
 #'@importFrom grDevices gray

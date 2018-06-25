@@ -15,15 +15,16 @@
 #'
 #' @examples
 #' data(musdata)
-#' coords<- musdata[,4:5]
+#' coords <- musdata[ ,4:5]
 #' mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
 #'
-#' ac<-acfft(coords,resid(mglm,type="pearson"),lim1=0,lim2=1)
+#' ac <- acfft(coords, resid(mglm, type = "pearson"), lim1 = 0, lim2 = 1)
 #' ac
 #'
 #' @author Gudrun Carl
 #' @importFrom stats convolve
 #' @export
+
 acfft<-function(coord, f, lim1 = 1, lim2 = 2, dmax = 10){
 
   x <- coord[ ,1]

@@ -143,32 +143,34 @@ Futhermore, this function requires that \strong{all predictor variables
 be continuous}.
 }
 \note{
-For those interested in multimodel inference approaches \code{WRM} with
-\code{level}=1 is identical to \code{mmiWMRR} with \code{scale}=1.
+For those interested in multimodel inference approaches, \code{WRM} with
+\code{level = 1} is identical to \code{mmiWMRR} with \code{scale = 1}.
 }
 \examples{
 data(musdata)
-coords<- musdata[,4:5]
+coords <- musdata[,4:5]
 
 \dontrun{
-mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-coord=coords, level=1)
+mwrm <- WRM(musculus ~ pollution + exposure,
+            family = "poisson",
+            data = musdata,
+            coord = coords,
+            level = 1)
+
+pred <- predict(mwrm, newdata = musdata)
 
 summary(mwrm)
+
 plot(mwrm)
 
 library(ggplot2)
+
 my_wrm_plot <- mwrm$plot
 
 # increase axis text size
 print(my_wrm_plot + ggplot2::theme(axis.text = element_text(size = 15)))
-}
-data(musdata)
-coords<- musdata[,4:5]
 
-mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-          coord=coords, level=1, plot=TRUE)
-pred<-predict(mwrm,newdata=musdata)
+}
 
 }
 \references{

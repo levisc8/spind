@@ -150,13 +150,19 @@ data(musdata)
 coords<- musdata[,4:5]
 
 \dontrun{
-mgee<-GEE(musculus ~ pollution + exposure, "poisson", musdata,
-      coord=coords, corstr="fixed",scale.fix=FALSE)
+mgee <- GEE(musculus ~ pollution + exposure,
+            family = "poisson",
+            data =  musdata,
+            coord = coords,
+            corstr = "fixed",
+            scale.fix = FALSE)
 
-summary(mgee,printAutoCorPars=TRUE)
-}
-\dontrun{
+summary(mgee, printAutoCorPars = TRUE)
+
+pred <- predict(mgee, newdata = musdata)
+
 library(ggplot2)
+
 plot(mgee)
 
 my_gee_plot <- mgee$plot
@@ -165,15 +171,6 @@ my_gee_plot <- mgee$plot
 print(my_gee_plot + ggplot2::theme(legend.position = 'top'))
 
 }
-
-data(musdata)
-coords<-musdata[,4:5]
-mgee<-GEE(musculus ~ pollution + exposure,'poisson',musdata,
-          coord=coords,corstr="fixed")
-
-pred<-predict(mgee,newdata=musdata)
-
-
 }
 \references{
 Carl G & Kuehn I, 2007. Analyzing Spatial Autocorrelation in Species

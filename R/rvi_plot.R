@@ -40,15 +40,24 @@
 #'
 #'\dontrun{
 #'
-#' wrm<- WRM(carlina.horrida ~ aridity + land.use,"poisson",
-#'               carlinadata,coords,level=1,wavelet="d4")
+#' wrm <- WRM(carlina.horrida ~ aridity + land.use,
+#'            family = "poisson",
+#'            data = carlinadata,
+#'            coord = coords,
+#'            level = 1,
+#'            wavelet = "d4")
 #'
-#' mmi<- mmiWMRR(wrm,data=carlinadata,scale=3,detail=TRUE)
+#' mmi <- mmiWMRR(wrm, data = carlinadata, scale = 3, detail = TRUE)
 #'
 #'
 #' # Plot scale-dependent relative variable importance
-#' rvi <- rvi.plot(carlina.horrida ~ aridity + land.use,"poisson",
-#'          carlinadata,coords,maxlevel=4,detail=TRUE,wavelet="d4")
+#' rvi <- rvi.plot(carlina.horrida ~ aridity + land.use,
+#'                 family = "poisson",
+#'                 data = carlinadata,
+#'                 coord = coords,
+#'                 maxlevel = 4,
+#'                 detail = TRUE,
+#'                 wavelet = "d4")
 #'
 #' rvi$plot
 #' rvi$rvi

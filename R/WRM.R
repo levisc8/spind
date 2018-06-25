@@ -102,8 +102,8 @@
 #'       \code{GLM}}
 #'}
 #'
-#' @note For those interested in multimodel inference approaches \code{WRM} with
-#' \code{level}=1 is identical to \code{mmiWMRR} with \code{scale}=1.
+#' @note For those interested in multimodel inference approaches, \code{WRM} with
+#' \code{level = 1} is identical to \code{mmiWMRR} with \code{scale = 1}.
 #'
 #' @seealso \code{\link{mmiWMRR}}, \code{\link{predict.WRM}}, \code{\link{summary.WRM}},
 #' \code{\link{aic.calc}}
@@ -118,22 +118,30 @@
 #' and three-dimensional signal processing. R package version 1.5.
 #' @examples
 #' data(musdata)
-#' coords<- musdata[,4:5]
+#' coords <- musdata[,4:5]
 #'
 #'\dontrun{
-#' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#' coord=coords, level=1)
+#' mwrm <- WRM(musculus ~ pollution + exposure,
+#'             family = "poisson",
+#'             data = musdata,
+#'             coord = coords,
+#'             level = 1)
+#'
+#' pred <- predict(mwrm, newdata = musdata)
 #'
 #' summary(mwrm)
+#'
 #' plot(mwrm)
 #'
 #' library(ggplot2)
+#'
 #' my_wrm_plot <- mwrm$plot
 #'
 #' # increase axis text size
 #' print(my_wrm_plot + ggplot2::theme(axis.text = element_text(size = 15)))
-
+#'
 #'}
+#'
 #' @author Gudrun Carl, Sam Levin
 #' @importFrom ggplot2 theme element_blank element_line element_text
 #' ggplot aes geom_line geom_point scale_color_manual
@@ -633,14 +641,6 @@ summary.WRM<-function (object,...) {
 #'
 #' @name predict.WRM
 #' @rdname WRM
-#' @examples
-#' data(musdata)
-#' coords<- musdata[,4:5]
-#'
-#' mwrm<-WRM(musculus ~ pollution + exposure, "poisson", musdata,
-#'           coord=coords, level=1, plot=TRUE)
-
-#' pred<-predict(mwrm,newdata=musdata)
 #'
 #' @importFrom stats model.matrix
 #' @importFrom waveslim mra.2d

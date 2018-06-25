@@ -12,7 +12,7 @@ adjusted.actuals(data, coord, plot.maps = FALSE, color.maps = FALSE)
 in 2nd column.}
 
 \item{coord}{a matrix of two columns of the same length providing integer,
-consecutively numbered coordinates for each occurence and prediction in
+consecutively numbered coordinates for each occurrence and prediction in
 \code{data}.}
 
 \item{plot.maps}{A logical indicating whether maps should be plotted.
@@ -32,9 +32,9 @@ model predictions, un-modified actual presence/absence, and adjusted  values.
 }
 \examples{
 data(hook)
-data<- hook[,1:2]
-coord<- hook[,3:4]
-aa<-adjusted.actuals(data,coord,plot.maps=TRUE)
+data <- hook[ ,1:2]
+coord <- hook[ ,3:4]
+aa <- adjusted.actuals(data, coord, plot.maps = TRUE)
 
 }
 \author{

@@ -24,7 +24,7 @@
 #' also includes S3 methods for \code{summary} and \code{predict}
 #' so you can interact with these models in the same way you might
 #' interact with a \code{glm} or \code{lm}. There are also a number
-#' of helper functions that help you finetune the fitting process
+#' of helper functions that help you fine tune the fitting process
 #' that are specific to WRMs. Please see the documentation for
 #' \code{WRM} for more details on those.
 #'

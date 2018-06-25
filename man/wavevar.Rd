@@ -27,9 +27,16 @@ multiresolution analysis.
 }
 \examples{
 data(carlinadata)
+
 coords <- carlinadata[ ,4:5]
-pc <- covar.plot(carlina.horrida ~ aridity + land.use, carlinadata, coords,
-                 wavelet = 'd4', wtrafo = 'modwt', plot = 'covar')
+pv <- covar.plot(carlina.horrida ~ aridity + land.use,
+                 data = carlinadata,
+                 coord = coords,
+                 wavelet = 'd4',
+                 wtrafo = 'modwt',
+                 plot = 'var')
+
+pv$plot
 
 }
 \seealso{

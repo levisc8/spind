@@ -27,18 +27,24 @@
 #'
 #' @examples
 #' data(carlinadata)
-#' coords<- carlinadata[,4:5]
+#' coords <- carlinadata[,4:5]
 #'
 #' covariance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
-#' carlinadata,coord=coords,wavelet="d4",
-#' wtrafo='modwt',plot='covar')
+#'                          data = carlinadata,
+#'                          coord = coords,
+#'                          wavelet = "d4",
+#'                          wtrafo = 'modwt',
+#'                          plot = 'covar')
 #'
 #' covariance$plot
 #' covariance$result
 #'
 #' variance <- covar.plot(carlina.horrida ~ aridity + land.use - 1,
-#'            carlinadata,coord=coords,wavelet="d4",
-#'            wtrafo='modwt',plot='var')
+#'                        data = carlinadata,
+#'                        coord = coords,
+#'                        wavelet = "d4",
+#'                        wtrafo = 'modwt',
+#'                        plot = 'var')
 #'
 #' variance$plot
 #' variance$result

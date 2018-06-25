@@ -27,10 +27,10 @@ A function for calculating spatial autocorrelation using Moran's I.
 }
 \examples{
 data(musdata)
-coords<- musdata[,4:5]
+coords <- musdata[ ,4:5]
 mglm <- glm(musculus ~ pollution + exposure, "poisson", musdata)
 
-ac<-acfft(coords,resid(mglm,type="pearson"),lim1=0,lim2=1)
+ac <- acfft(coords, resid(mglm, type = "pearson"), lim1 = 0, lim2 = 1)
 ac
 
 }
