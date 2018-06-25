@@ -5,7 +5,7 @@
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/spind)](https://cran.r-project.org/package=spind)
 [![codecov](https://codecov.io/gh/levisc8/spind/branch/master/graph/badge.svg)](https://codecov.io/gh/levisc8/spind)
 [![DOI](https://zenodo.org/badge/DOI/10.3897/BDJ.6.e20760.svg)](https://doi.org/10.3897/BDJ.6.e20760)
-[![DOI](https://zenodo.org/badge/DOI/10.1111/ecog.02593 .svg)](https://doi.org/10.1111/ecog.02593)
+[![DOI](https://zenodo.org/badge/DOI/10.1111/ecog.02593.svg)](https://doi.org/10.1111/ecog.02593)
 
 
 # spind 
