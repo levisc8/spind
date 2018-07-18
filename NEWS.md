@@ -17,13 +17,10 @@ prints the `ggplot` object by default, but returns it as part of a list.
 
 - deprecated `color.maps` arguments to `upscale` and `adjusted.actuals`.
 
-- Some documentation clarification.
+- Some documentation clarification and typo fixes.
 
 - Behind the scenes, moved all plotting functions that use `ggplot2` to tidy 
 evaluation equivalents. If you're interested, more on that [here](https://github.com/tidyverse/ggplot2/blob/master/NEWS.md).
-
-- 
-
 
 
 ## `spind` v2.1.3
