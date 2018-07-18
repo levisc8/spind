@@ -11,7 +11,7 @@
 #' regressions (i.e. where \code{\link{scaleWMRR}} can be used). AIC is
 #' used to obtain model
 #' selection weights and to rank the models.
-#' Futhermore, this function requires that \strong{all predictor variables
+#' Furthermore, this function requires that \strong{all predictor variables
 #' be continuous}.
 #'
 #'

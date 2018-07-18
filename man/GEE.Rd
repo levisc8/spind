@@ -114,7 +114,7 @@ following elements:
       be plotted}
       \item{\code{moran.params}}{Parameters for calculating Moran's I}
       \item{\code{v2}}{Parameter variance of the \code{GEE} model}
-      \item{\code{var.naive}}{Paramter variance of the \code{independence} model}
+      \item{\code{var.naive}}{Parameter variance of the \code{independence} model}
       \item{\code{ac.glm}}{Autocorrelation of GLM residuals}
       \item{\code{ac.gee}}{Autocorrelation of GEE residuals}
       \item{\code{plot}}{An object of class \code{ggplot} containing information
@@ -136,7 +136,7 @@ As a spatial model, it is a generalized linear model in which the residuals
 may be autocorrelated. It accounts for spatial (2-dimensional)
 autocorrelation of the residuals in cases of regular gridded datasets
 and returns corrected parameter estimates. The grid cells are assumed to be square.
-Futhermore, this function requires that \strong{all predictor variables
+Furthermore, this function requires that \strong{all predictor variables
 be continuous}.
 }
 \note{
