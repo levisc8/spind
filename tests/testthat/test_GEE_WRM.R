@@ -60,7 +60,7 @@ test_that('fails correctly', {
   skip_on_cran()
   data(musdata)
   coords <- musdata [ ,4:5]
-
+  # rm(formula)
 
   expect_error(GEE(formula, family = "poisson", data = musdata,
                coord = coords, corstr = "fixed", plot = FALSE, scale.fix = FALSE),
@@ -97,7 +97,7 @@ test_that('fails correctly', {
 
   expect_error(WRM(musculus ~ pollution + exposure, family = "poisson",
                    data = musdata, coord = coord, plot = F),
-               "error in dimension")
+               "length of data does not match length of coordinates")
 
 })
 
