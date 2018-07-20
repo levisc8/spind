@@ -19,6 +19,8 @@ prints the `ggplot` object by default, but returns it as part of a list.
 
 - Some documentation clarification and typo fixes.
 
+- Updated a couple error messages for consistency across functions.
+
 - Behind the scenes, moved all plotting functions that use `ggplot2` to tidy 
 evaluation equivalents. If you're interested, more on that [here](https://github.com/tidyverse/ggplot2/blob/master/NEWS.md).
 
