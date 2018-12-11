@@ -149,7 +149,7 @@
 #' R package version 0.2.10.
 #'
 #' @importFrom ggplot2 theme element_blank element_line element_text
-#' ggplot aes_ geom_line geom_point scale_color_manual
+#' ggplot aes geom_line geom_point scale_color_manual
 #' scale_x_continuous scale_y_continuous
 #' @importFrom gee gee
 #' @importFrom geepack genZcor geese

@@ -51,7 +51,7 @@
 #'
 #' @seealso \code{\link{wavevar}}, \code{\link{wavecovar}}
 #'
-#' @importFrom ggplot2 theme element_blank element_text ggplot aes_
+#' @importFrom ggplot2 theme element_blank element_text ggplot aes
 #' geom_point geom_line scale_x_continuous scale_y_continuous
 #' @importFrom stats model.matrix model.frame
 #' @importFrom rlang quo !!

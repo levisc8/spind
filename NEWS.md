@@ -1,3 +1,7 @@
+## `spind` v2.2.1
+- Removed unneeded functions from Namespace
+
+
 ## `spind` v2.2.0
 - deprecated `customize_plot` and `plot` arguments in favor of new `plot` methods
 for `GEE` and `WRM`. 
