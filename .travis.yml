@@ -14,7 +14,7 @@ os:
 
 # options for Linux tests
 sudo: false
-dist: trusty
+dist: xenial
 cache: packages
 
 # Exclude R-devel on MacOS. It's buggy and shouldn't cause problems.

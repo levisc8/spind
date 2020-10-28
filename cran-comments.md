@@ -9,7 +9,7 @@ Tested on:
 * Windows 10, R 4.0.2
 * ubuntu 12.04.5 (on Travis-CI) -- R-devel, R-release, R-oldrelease
 * MacOSX Sierra 10.12.6 (on Travis-CI) -- R-release, R-oldrelease
-* Windows Server 2012 R2 (on Appveyor-CI) -- R-devel, R-release, r-oldrelease
+* Windows Server 2008 (on Win-Builder) -- R-devel, R-release, r-oldrelease
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
