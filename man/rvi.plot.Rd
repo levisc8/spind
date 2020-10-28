@@ -4,9 +4,19 @@
 \alias{rvi.plot}
 \title{Relative Variable Importance}
 \usage{
-rvi.plot(formula, family, data, coord, maxlevel, detail = TRUE,
-  wavelet = "haar", wtrafo = "dwt", n.eff = NULL, trace = FALSE,
-  customize_plot = NULL)
+rvi.plot(
+  formula,
+  family,
+  data,
+  coord,
+  maxlevel,
+  detail = TRUE,
+  wavelet = "haar",
+  wtrafo = "dwt",
+  n.eff = NULL,
+  trace = FALSE,
+  customize_plot = NULL
+)
 }
 \arguments{
 \item{formula}{A model formula}

@@ -4,14 +4,16 @@
 \name{hook}
 \alias{hook}
 \title{Hook data set}
-\format{A data frame with 100 rows and 4 columns
+\format{
+A data frame with 100 rows and 4 columns
  \describe{
    \item{actuals}{integer - Presence/absence records}
    \item{predictions}{numeric - predicted probabilities of occurrence}
    \item{x}{integer - x-coordinates for each grid cell}
    \item{y}{integer - y-coordinates for each grid cell}
 
- }}
+ }
+}
 \usage{
 hook
 }

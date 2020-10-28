@@ -4,8 +4,7 @@
 \alias{th.indep}
 \title{Spatial threshold-independent accuracy measures}
 \usage{
-th.indep(data, coord, spatial = TRUE, plot.ROC = FALSE,
-  customize_plot = NULL)
+th.indep(data, coord, spatial = TRUE, plot.ROC = FALSE, customize_plot = NULL)
 }
 \arguments{
 \item{data}{A data frame or matrix with two columns. The first column

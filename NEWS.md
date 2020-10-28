@@ -1,6 +1,8 @@
 ## `spind` v2.2.1
+
 - Removed unneeded functions from Namespace
 
+- Makes WRM a lot noisier when the model breaks.
 
 ## `spind` v2.2.0
 - deprecated `customize_plot` and `plot` arguments in favor of new `plot` methods

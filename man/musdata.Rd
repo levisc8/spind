@@ -4,7 +4,8 @@
 \name{musdata}
 \alias{musdata}
 \title{Mus musculus data set}
-\format{A data frame with 400 rows and 5 columns
+\format{
+A data frame with 400 rows and 5 columns
  \describe{
    \item{musculus}{integer - Simulated count data for Mus musculus}
    \item{pollution}{numeric - Simulated variable that describes degree
@@ -13,7 +14,8 @@
     exposure for each grid cell}
    \item{x}{integer - x-coordinates for each grid cell}
    \item{y}{integer - y-coordinates for each grid cell}
- }}
+ }
+}
 \usage{
 musdata
 }

@@ -7,9 +7,21 @@
 \alias{predict.WRM}
 \title{Wavelet-revised models (WRMs)}
 \usage{
-WRM(formula, family, data, coord, level = 1, wavelet = "haar",
-  wtrafo = "dwt", b.ini = NULL, pad = list(), control = list(),
-  moran.params = list(), plot = FALSE, customize_plot = NULL)
+WRM(
+  formula,
+  family,
+  data,
+  coord,
+  level = 1,
+  wavelet = "haar",
+  wtrafo = "dwt",
+  b.ini = NULL,
+  pad = list(),
+  control = list(),
+  moran.params = list(),
+  plot = FALSE,
+  customize_plot = NULL
+)
 
 \method{plot}{WRM}(x, ...)
 

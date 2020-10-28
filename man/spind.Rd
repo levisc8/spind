@@ -3,7 +3,6 @@
 \docType{package}
 \name{spind}
 \alias{spind}
-\alias{spind-package}
 \title{spind: Spatial Methods and Indices}
 \description{
 The \code{spind} package provides convenient implementation of Generalized

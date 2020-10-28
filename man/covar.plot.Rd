@@ -4,8 +4,15 @@
 \alias{covar.plot}
 \title{Plot wavelet variance/covariance}
 \usage{
-covar.plot(formula, data, coord, wavelet = "haar", wtrafo = "dwt",
-  plot = "covar", customize_plot = NULL)
+covar.plot(
+  formula,
+  data,
+  coord,
+  wavelet = "haar",
+  wtrafo = "dwt",
+  plot = "covar",
+  customize_plot = NULL
+)
 }
 \arguments{
 \item{formula}{With specified notation according to names in data frame.}

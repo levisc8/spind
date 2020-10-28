@@ -4,8 +4,14 @@
 \alias{upscale}
 \title{Upscaling of smooth components}
 \usage{
-upscale(f, coord, wavelet = "haar", wtrafo = "dwt", pad = mean(f),
-  color.maps = FALSE)
+upscale(
+  f,
+  coord,
+  wavelet = "haar",
+  wtrafo = "dwt",
+  pad = mean(f),
+  color.maps = FALSE
+)
 }
 \arguments{
 \item{f}{A vector.}

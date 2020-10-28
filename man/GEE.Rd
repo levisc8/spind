@@ -7,9 +7,18 @@
 \alias{summary.GEE}
 \title{GEE (Generalized Estimating Equations)}
 \usage{
-GEE(formula, family, data, coord, corstr = "fixed", cluster = 3,
-  moran.params = list(), plot = FALSE, scale.fix = FALSE,
-  customize_plot = NULL)
+GEE(
+  formula,
+  family,
+  data,
+  coord,
+  corstr = "fixed",
+  cluster = 3,
+  moran.params = list(),
+  plot = FALSE,
+  scale.fix = FALSE,
+  customize_plot = NULL
+)
 
 \method{plot}{GEE}(x, ...)
 

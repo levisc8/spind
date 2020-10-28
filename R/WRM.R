@@ -157,7 +157,7 @@ WRM<-function(formula,family,data,coord,
               b.ini=NULL,pad=list(),control=list(),moran.params=list(),
               plot=FALSE, customize_plot = NULL){
 
-  if(!is.null(customize_plot) | plot) {
+  if(!is.null(customize_plot) & plot) {
     warning('"customize_plot" and "plot = TRUE" arguments are now soft deprecated.\n',
             'Use plot.gee method and access the ggplot2 object using object_name$plot\n',
             'subsequent modification.')
@@ -377,6 +377,9 @@ WRM<-function(formula,family,data,coord,
         pi <- exp(lin)
         if(min(pi) < 1e-10 | max(pi) > 1e+10) {
           mdwt$coeff <- rep(NA, nvar)
+          fitted.sm  <- NA_real_
+          warning("Estimates of fitted values have collapsed to 0. Exiting early.",
+                  call. = FALSE)
           break
         }
       }
@@ -481,7 +484,7 @@ WRM<-function(formula,family,data,coord,
     }
   }
 
-  if(!is.na(acw[1])){
+  if(!is.na(acw[1])) {
     plt.blank <- ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                                 panel.grid.minor = ggplot2::element_blank(),
                                 panel.background = ggplot2::element_blank(),
@@ -527,9 +530,16 @@ WRM<-function(formula,family,data,coord,
                                              max(plt.data[ ,2:3]) + .02)) +
       customize_plot
 
+  } else {
+
+    warning("NAs generated when calculating auto-correlation of residuals.\n",
+            "Could not generate autocorrelation plot.",
+            call. = FALSE)
+    plt <- NA
+
   }
 
-  if(plot){
+  if(plot & !is.na(acw[1])) {
 
     print(plt)
 

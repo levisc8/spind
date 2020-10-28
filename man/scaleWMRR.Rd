@@ -4,9 +4,21 @@
 \alias{scaleWMRR}
 \title{Scaling by wavelet multiresolution regression (WMRR)}
 \usage{
-scaleWMRR(formula, family, data, coord, scale = 1, detail = TRUE,
-  wavelet = "haar", wtrafo = "dwt", b.ini = NULL, pad = list(),
-  control = list(), moran.params = list(), trace = FALSE)
+scaleWMRR(
+  formula,
+  family,
+  data,
+  coord,
+  scale = 1,
+  detail = TRUE,
+  wavelet = "haar",
+  wtrafo = "dwt",
+  b.ini = NULL,
+  pad = list(),
+  control = list(),
+  moran.params = list(),
+  trace = FALSE
+)
 }
 \arguments{
 \item{formula}{With specified notation according to names in data frame.}
