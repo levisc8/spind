@@ -378,8 +378,6 @@ WRM<-function(formula,family,data,coord,
         if(min(pi) < 1e-10 | max(pi) > 1e+10) {
           mdwt$coeff <- rep(NA, nvar)
           fitted.sm  <- NA_real_
-          warning("Estimates of fitted values have collapsed to 0. Exiting early.",
-                  call. = FALSE)
           break
         }
       }
@@ -447,6 +445,11 @@ WRM<-function(formula,family,data,coord,
 
     i4 <- i4 + 1
   } # i4 loop #..........................................
+
+  if(all(is.na(mdwt$coeff))) {
+    warning("Could not estimate coefficients!",
+            call. = FALSE)
+  }
 
   glm.beta <- beta0
   wavelet.beta <- apply(beta, 2, mean, na.rm = TRUE)

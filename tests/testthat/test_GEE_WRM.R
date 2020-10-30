@@ -10,7 +10,6 @@ test_that('Coefficient estimates + SEs are as expected', {
   mgee <- GEE(formula, family = "poisson", data = musdata,
               coord = coords, corstr = "fixed", plot = FALSE, scale.fix = FALSE)
 
-
   mwrm <- WRM(musculus ~ pollution + exposure, family = "poisson",
               data = musdata, coord = coords, level = 1, plot = F)
   expect_equal(as.vector(mgee$b), c(-1.904747, 3.362160, -1.463483),
@@ -70,7 +69,8 @@ test_that('fails correctly', {
 
   expect_warning(GEE(formula, family = "poisson", data = musdata,
                   coord = coords, corstr = "fixed",
-                  plot = TRUE, scale.fix = FALSE),
+                  plot = TRUE, scale.fix = FALSE,
+                  customize_plot = theme(axis.title = element_blank())),
                  regexp = '"customize_plot" and')
 
 
