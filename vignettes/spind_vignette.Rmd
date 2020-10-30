@@ -314,6 +314,6 @@ Note that you can adjust the number of distance bins to examine in `acfft` using
 ## Wrapping up
 Hopefully, you are now ready to utilize GEEs and WRMs to conquer the world of spatial modeling. However, if this vignette has not served its purpose and you still have questions about how to use these tools, please let us know. Of course, no package is complete without bugs and we are always trying to improve our code. If you find any bugs that need squashing, have suggestions for additional functionality or improvements to existing functionality (or this vignette), please don't hesitate to contact us[^10]. 
 
-[^10]: Contact email - <levisc8@gmail.com> or visit the Github repo and create an issue at <http://github.com/levisc8/spind/issues>. 
+[^10]: Contact email - <levisc8@gmail.com> or visit the Github repo and create an issue at <https://github.com/levisc8/spind/issues>. 
 
 
