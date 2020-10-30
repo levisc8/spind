@@ -163,7 +163,7 @@ GEE <- function(formula,family,data,coord,
               corstr="fixed",cluster=3,moran.params=list(),
               plot=FALSE,scale.fix=FALSE, customize_plot = NULL){
 
-  if(!is.null(customize_plot) | plot) {
+  if(!is.null(customize_plot) & plot) {
     warning('"customize_plot" and "plot = TRUE" arguments are now soft deprecated.\n',
             'Use plot.GEE method and access the ggplot2 object using object_name$plot\n',
             'subsequent modification.')
