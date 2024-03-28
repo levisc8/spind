@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/levisc8/spind.svg?branch=master)](https://travis-ci.org/levisc8/spind)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/levisc8/spind?branch=master&svg=true)](https://ci.appveyor.com/project/levisc8/spind)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/spind)](https://cran.r-project.org/package=spind)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/spind)](https://cran.r-project.org/package=spind)
