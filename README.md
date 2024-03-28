@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/levisc8/spind.svg?branch=master)](https://travis-ci.org/levisc8/spind)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/levisc8/spind?branch=master&svg=true)](https://ci.appveyor.com/project/levisc8/spind)
-[![cran checks](https://badges.cranchecks.info/worst/spind.svg)](https://badges.cranchecks.info/pkgs/spind)
-[![CRAN_Status_Badge](https://badges.cranchecks.info/summary/spind.svg)](http://cran.r-project.org/package=spind)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/spind)](https://cran.r-project.org/package=spind)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/spind)](https://cran.r-project.org/package=spind)
 [![codecov](https://codecov.io/gh/levisc8/spind/branch/master/graph/badge.svg)](https://codecov.io/gh/levisc8/spind)
 [![DOI](https://zenodo.org/badge/DOI/10.3897/BDJ.6.e20760.svg)](https://doi.org/10.3897/BDJ.6.e20760)
